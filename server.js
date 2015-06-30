@@ -1,12 +1,21 @@
-var express = require('express');
-var fs      = require('fs');
-var request = require('request');
-var cheerio = require('cheerio');
-var app     = express();
+var express  = require('express'),
+    fs       = require('fs'),
+    request  = require('request'),
+    cheerio  = require('cheerio'),
+    TelegramBot = require('node-telegram-bot-api');
 
+var app      = express();
+
+var token = '118760525:AAFcwJxKeF7pWce47z57NcU4ONBCzR8hDbA';
+// Setup polling way
+var bot = new TelegramBot(token, {polling: true});
+
+bot.on('message', function (msg) {
+    var chatId = msg.chat.id;
+    bot.sendMessage(chatId, 'Ciaooooo bottana');
+});
 
 app.get('/', function(req, res){
-
     function getQueryVariable(variable){
         var query = req.url,
             vars = query.split("?");
@@ -23,11 +32,7 @@ app.get('/', function(req, res){
 
     googleUrl = 'http://www.google.it/movies?near='+location;
 
-
-
-
     request(googleUrl, function(error, response, html){
-
 
         if(!error){
             var $ = cheerio.load(html);

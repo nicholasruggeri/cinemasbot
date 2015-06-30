@@ -1,5 +1,5 @@
 {
-  "name"         : "cinemas-bot-scraper",
+  "name"         : "cinemasbot",
   "version"      : "0.0.1",
   "description"  : "Scrape le web.",
   "main"         : "server.js",
@@ -8,6 +8,6 @@
     "express"    : "latest",
     "request"    : "latest",
     "cheerio"    : "latest",
-    "telegram-bot-api" : "latest"
+    "node-telegram-bot-api" : "latest"
   }
 }
