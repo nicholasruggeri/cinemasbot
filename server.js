@@ -1,18 +1,24 @@
-var express  = require('express'),
-    fs       = require('fs'),
-    request  = require('request'),
-    cheerio  = require('cheerio'),
+var express = require('express'),
+    fs = require('fs'),
+    request = require('request'),
+    cheerio = require('cheerio'),
     TelegramBot = require('node-telegram-bot-api');
 
-var app      = express();
-
+var app = express();
 var token = '118760525:AAFcwJxKeF7pWce47z57NcU4ONBCzR8hDbA';
-// Setup polling way
 var bot = new TelegramBot(token, {polling: true});
 
 bot.on('message', function (msg) {
     var chatId = msg.chat.id;
-    bot.sendMessage(chatId, 'Ciaooooo bottana');
+    var msg = msg.text;
+    var responseMsg = "test msg"
+
+    if (msg == "/start"){
+        responseMsg = "Hello! Type /getcinema and your city for the list of the theaters"
+    }
+
+
+    bot.sendMessage(chatId, responseMsg);
 });
 
 app.get('/', function(req, res){
@@ -27,40 +33,38 @@ app.get('/', function(req, res){
     }
 
     var url = req.url,
-        location = getQueryVariable('near'),
-        googleUrl;
+        location = getQueryVariable('near')
 
-    googleUrl = 'http://www.google.it/movies?near='+location;
+    get_cinema(location, res)
+});
 
+
+
+var get_cinema = function(location, res){
+    var googleUrl = 'http://www.google.it/movies?near='+location;
     request(googleUrl, function(error, response, html){
-
         if(!error){
             var $ = cheerio.load(html);
             var theaters = [];
-
             $('.theater > .desc > .name a').each(function(index){
-
                 var element = {};
                 var data = $(this);
-
                 var name = data.text(),
                     info = data.parent().parent().find('.info').text();
-
                 element.name = name;
-                element.info = info;
-
+                // element.info = info;
                 theaters.push({theater: element});
-
             });
         }
-
         fs.writeFile('output.json', JSON.stringify(theaters, null, 4), function(err){
             console.log('File successfully written! - Check your project directory for the output.json file');
         });
-
         res.send(JSON.stringify(theaters, null, 4));
     });
-});
+}
+
+
+
 
 app.listen(process.env.PORT);
 console.log('Magic happens on port ' + process.env.PORT);
