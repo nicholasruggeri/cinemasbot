@@ -9,16 +9,19 @@ var token = '118760525:AAFcwJxKeF7pWce47z57NcU4ONBCzR8hDbA';
 var bot = new TelegramBot(token, {polling: true});
 
 bot.on('message', function (msg) {
+    console.log('msg received')
     var chatId = msg.chat.id;
     var msg = msg.text;
-    var responseMsg = "test msg"
-
+    var responseMsg = "test msg";
     if (msg == "/start"){
         responseMsg = "Hello! Type /getcinema and your city for the list of the theaters"
+        bot.sendMessage(chatId, responseMsg);
+    }
+    if (msg == "/getcinema"){
+        responseMsg = "Type the fxgfd";
+        bot.sendMessage(chatId, responseMsg, {reply_markup:{keyboard:[['yes','no']]}});
     }
 
-
-    bot.sendMessage(chatId, responseMsg);
 });
 
 app.get('/', function(req, res){
