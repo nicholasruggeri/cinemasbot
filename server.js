@@ -32,7 +32,14 @@ app.get('/near', function(req, res){
 app.get('/theater', function(req, res){
     location = getQueryVariable('city', req);
     theater = getQueryVariable('theater', req);
-    getFilm(location, theater, res);
+    getTheater(location, theater, res);
+});
+
+app.get('/movie', function(req, res){
+    location = getQueryVariable('city', req);
+    theater = getQueryVariable('theater', req);
+    movie = getQueryVariable('movie', req);
+    getMovie(location, theater, movie, res);
 });
 
 
@@ -72,19 +79,15 @@ var getCinema = function(location, res){
     });
 }
 
-var getFilm = function(location, theater, res){
+var getTheater = function(location, theater, res){
     var googleUrl = 'http://www.google.it/movies?near='+location;
     request(googleUrl, function(error, response, html){
         if(!error){
-
             var $ = cheerio.load(html);
-
-            var films = [];
-
+            var movies = [];
             $('.theater .desc h2.name a').each(function(index){
                 var text = $(this).text()
                 if (decodeURI(text) == decodeURI(theater)){
-                    var element = {};
                     var data = $(this);
                     data.parent().parent().siblings('.showtimes').find('.movie').each(function(){
                         var element = {};
@@ -92,31 +95,46 @@ var getFilm = function(location, theater, res){
                         var name = data.find('a').text();
                         element.name = name;
                         console.log(name);
-                        films.push({film: element});
+                        movies.push({film: element});
                     });
                 }
-            })
-
-        }
-        fs.writeFile('output.json', JSON.stringify(films, null, 4), function(err){
+            });
+        };
+        fs.writeFile('output.json', JSON.stringify(movies, null, 4), function(err){
             console.log('File successfully written! - Check your project directory for the output.json file');
         });
-        res.send(JSON.stringify(films, null, 4));
+        res.send(JSON.stringify(movies, null, 4));
     });
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
+var getMovie = function(location, theater, movie, res){
+    var googleUrl = 'http://www.google.it/movies?near='+location;
+    request(googleUrl, function(error, response, html){
+        if(!error){
+            var $ = cheerio.load(html);
+            var times = [];
+            $('.theater .desc h2.name a').each(function(index){
+                var text = $(this).text()
+                if (decodeURI(text) == decodeURI(theater)){
+                    var data = $(this);
+                    data.parent().parent().siblings('.showtimes').find('.movie').each(function(){
+                        var text = $(this).find('.name').text();
+                        if (decodeURI(text) == decodeURI(movie)){
+                            var data = $(this);
+                            var movieTimes = data.find('.times').text();
+                            var responseTimes = "Gli orari di " + decodeURI(movie) + " sono: " + movieTimes;
+                            res.send(responseTimes);
+                            return;
+                        }
+                    });
+                }
+            });
+        };
+        // fs.writeFile('output.json', JSON.stringify(times, null, 4), function(err){
+        //     console.log('File successfully written! - Check your project directory for the output.json file');
+        // });
+    });
+}
 
 
 
