@@ -11,8 +11,6 @@ var googleUrl;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
-
 app.post('/', function (req, res) {
 
     console.log(JSON.stringify(req.body));
