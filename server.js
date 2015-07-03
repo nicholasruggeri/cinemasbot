@@ -27,9 +27,17 @@ app.post('/', function (req, res) {
          * START THE BOT OR START VOTING
          */
         case '/start':
-        console.log('msg');
         qs = {
-            reply_markup: JSON.stringify({ "keyboard": [ ["Yes", "No"] ] }),
+            // reply_markup: JSON.stringify({ "keyboard": [ ["Yes", "No"] ] }),
+            chat_id: chat_id,
+            text: "Welcome, " + req.body.message.chat.first_name + ", please vote"
+        };
+        break;
+
+
+        case '/get_cinema':
+        qs = {
+            reply_markup: JSON.stringify({ "keyboard": [ ["Capitol Multisala", "Arena Esterno Notte"], ["Capitol Multisala", "Arena Esterno Notte"], ["Capitol Multisala", "Arena Esterno Notte"], ["Capitol Multisala", "Arena Esterno Notte"] ] }),
             chat_id: chat_id,
             text: "Welcome, " + req.body.message.chat.first_name + ", please vote"
         };
