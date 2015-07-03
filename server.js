@@ -132,7 +132,7 @@ var getCinema = function(location, res){
                 element.name = name;
                 // element.link = link;
                 // element.info = info;
-                theaters.push({theater: element});
+                theaters.push([element]);
             });
         }
         res.send(JSON.stringify(theaters, null, 4));
