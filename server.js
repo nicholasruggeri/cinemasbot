@@ -27,9 +27,9 @@ app.post('/', function (req, res) {
         case '/start':
             console.log('msg');
             qs = {
-                reply_markup: JSON.stringify({ "keyboard": [ ["Yes", "No"] ] }),
                 chat_id: chat_id,
-                text: "Welcome, " + req.body.message.chat.first_name + ", please vote"
+                text: "Welcome, " + req.body.message.chat.first_name + ", please vote",
+                reply_markup: JSON.stringify({ "keyboard": [ ["Yes", "No"] ] })
             };
         break;
         /**
