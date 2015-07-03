@@ -1,27 +1,68 @@
 var express = require('express'),
-    fs = require('fs'),
+    bodyParser = require('body-parser'),
     request = require('request'),
-    cheerio = require('cheerio'),
-    TelegramBot = require('node-telegram-bot-api');
+    cheerio = require('cheerio');
 
 var app = express();
 var token = '118760525:AAFcwJxKeF7pWce47z57NcU4ONBCzR8hDbA';
-var bot = new TelegramBot(token, {polling: true});
+var googleUrl;
 
-bot.on('message', function (msg) {
-    console.log('msg received')
-    var chatId = msg.chat.id;
-    var msg = msg.text;
-    var responseMsg = "test msg";
-    if (msg == "/start"){
-        responseMsg = "Hello! Type /getcinema and your city for the list of the theaters"
-        bot.sendMessage(chatId, responseMsg);
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+
+
+app.post('/', function (req, res) {
+
+    console.log(JSON.stringify(req.body));
+
+    var chat_id = req.body.message.chat.id, // telegram chat ID
+        text = req.body.message.text.toLowerCase(), // the text the user has written
+        qs = {}; // object containing the query string that will be serialized
+
+    switch(text) {
+
+        /**
+         * START THE BOT OR START VOTING
+         */
+        case '/start':
+        qs = {
+            reply_markup: JSON.stringify({ "keyboard": [ ["Yes", "No"] ] }),
+            chat_id: chat_id,
+            text: "Welcome, " + req.body.message.chat.first_name + ", please vote"
+        };
+        break;
+
     }
-    if (msg == "/getcinema"){
-        responseMsg = "Type the fxgfd";
-        bot.sendMessage(chatId, responseMsg, {reply_markup:{keyboard:[['yes','no']]}});
-    }
+
+    // sent the response message (telegram message)
+    request({
+        url: 'https://api.telegram.org/bot' + token + '/sendMessage',
+        method: 'POST',
+        qs: qs
+    }, function (err, response, body) {
+        if (err) { console.log(err); return; }
+
+        console.log('Got response ' + response.statusCode);
+        console.log(body);
+
+        res.send();
+    });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 app.get('/near', function(req, res){
@@ -44,6 +85,17 @@ app.get('/movie', function(req, res){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 var getQueryVariable = function(variable, req){
     var query = req.url,
         vars = query.split("?");
@@ -55,7 +107,7 @@ var getQueryVariable = function(variable, req){
 }
 
 var getCinema = function(location, res){
-    var googleUrl = 'http://www.google.it/movies?near='+location;
+    googleUrl = 'http://www.google.it/movies?near='+location;
     request(googleUrl, function(error, response, html){
         if(!error){
             var $ = cheerio.load(html);
@@ -72,15 +124,12 @@ var getCinema = function(location, res){
                 theaters.push({theater: element});
             });
         }
-        fs.writeFile('output.json', JSON.stringify(theaters, null, 4), function(err){
-            console.log('File successfully written! - Check your project directory for the output.json file');
-        });
         res.send(JSON.stringify(theaters, null, 4));
     });
 }
 
 var getTheater = function(location, theater, res){
-    var googleUrl = 'http://www.google.it/movies?near='+location;
+    googleUrl = 'http://www.google.it/movies?near='+location;
     request(googleUrl, function(error, response, html){
         if(!error){
             var $ = cheerio.load(html);
@@ -100,15 +149,12 @@ var getTheater = function(location, theater, res){
                 }
             });
         };
-        fs.writeFile('output.json', JSON.stringify(movies, null, 4), function(err){
-            console.log('File successfully written! - Check your project directory for the output.json file');
-        });
         res.send(JSON.stringify(movies, null, 4));
     });
 }
 
 var getMovie = function(location, theater, movie, res){
-    var googleUrl = 'http://www.google.it/movies?near='+location;
+    googleUrl = 'http://www.google.it/movies?near='+location;
     request(googleUrl, function(error, response, html){
         if(!error){
             var $ = cheerio.load(html);
@@ -130,9 +176,6 @@ var getMovie = function(location, theater, movie, res){
                 }
             });
         };
-        // fs.writeFile('output.json', JSON.stringify(times, null, 4), function(err){
-        //     console.log('File successfully written! - Check your project directory for the output.json file');
-        // });
     });
 }
 

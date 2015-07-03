@@ -8,6 +8,7 @@
     "express"    : "latest",
     "request"    : "latest",
     "cheerio"    : "latest",
-    "node-telegram-bot-api" : "latest"
+    "node-telegram-bot-api" : "latest",
+    "body-parser": "1.13.1"
   }
 }
