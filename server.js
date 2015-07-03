@@ -11,6 +11,8 @@ var googleUrl;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+
+
 app.post('/', function (req, res) {
 
     console.log(JSON.stringify(req.body));
@@ -25,32 +27,12 @@ app.post('/', function (req, res) {
          * START THE BOT OR START VOTING
          */
         case '/start':
-            console.log('msg');
-            qs = {
-                chat_id: chat_id,
-                text: "Welcome, " + req.body.message.chat.first_name + ", please vote",
-                reply_markup: JSON.stringify({ "keyboard": [ ["Yes", "No"] ] })
-            };
-        break;
-        /**
-         * VOTE YES
-         */
-        case 'yes':
-            qs = {
-                chat_id: chat_id,
-                text: 'You said: ' + text,
-                reply_markup: JSON.stringify({"hide_keyboard": true})
-            };
-        break;
-        /**
-         * VOTE NO
-         */
-        case 'no':
-            qs = {
-                chat_id: chat_id,
-                text: 'You said: ' + text,
-                reply_markup: JSON.stringify({"hide_keyboard": true})
-            };
+        console.log('msg');
+        qs = {
+            reply_markup: JSON.stringify({ "keyboard": [ ["Yes", "No"] ] }),
+            chat_id: chat_id,
+            text: "Welcome, " + req.body.message.chat.first_name + ", please vote"
+        };
         break;
 
     }
