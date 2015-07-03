@@ -21,29 +21,33 @@ bot.on('message', function (msg) {
         responseMsg = "Type the fxgfd";
         bot.sendMessage(chatId, responseMsg, {reply_markup:{keyboard:[['yes','no']]}});
     }
-
 });
 
-app.get('/', function(req, res){
-    function getQueryVariable(variable){
-        var query = req.url,
-            vars = query.split("?");
-        for (var i=0;i<vars.length;i++) {
-            var pair = vars[i].split("=");
-            if(pair[0] == variable){return pair[1];}
-        }
-        return(false);
+
+app.get('/near', function(req, res){
+    location = getQueryVariable('city', req);
+    getCinema(location, res);
+});
+
+app.get('/theater', function(req, res){
+    location = getQueryVariable('city', req);
+    theater = getQueryVariable('theater', req);
+    getFilm(location, theater, res);
+});
+
+
+
+var getQueryVariable = function(variable, req){
+    var query = req.url,
+        vars = query.split("?");
+    for (var i=0;i<vars.length;i++) {
+        var pair = vars[i].split("=");
+        if(pair[0] == variable){return pair[1];}
     }
+    return(false);
+}
 
-    var url = req.url,
-        location = getQueryVariable('near')
-
-    get_cinema(location, res)
-});
-
-
-
-var get_cinema = function(location, res){
+var getCinema = function(location, res){
     var googleUrl = 'http://www.google.it/movies?near='+location;
     request(googleUrl, function(error, response, html){
         if(!error){
@@ -53,8 +57,10 @@ var get_cinema = function(location, res){
                 var element = {};
                 var data = $(this);
                 var name = data.text(),
-                    info = data.parent().parent().find('.info').text();
+                    info = data.parent().parent().find('.info').text(),
+                    link = data.attr('href');
                 element.name = name;
+                // element.link = link;
                 // element.info = info;
                 theaters.push({theater: element});
             });
@@ -65,6 +71,51 @@ var get_cinema = function(location, res){
         res.send(JSON.stringify(theaters, null, 4));
     });
 }
+
+var getFilm = function(location, theater, res){
+    var googleUrl = 'http://www.google.it/movies?near='+location;
+    request(googleUrl, function(error, response, html){
+        if(!error){
+
+            var $ = cheerio.load(html);
+
+            var films = [];
+
+            $('.theater .desc h2.name a').each(function(index){
+                var text = $(this).text()
+                if (decodeURI(text) == decodeURI(theater)){
+                    var element = {};
+                    var data = $(this);
+                    data.parent().parent().siblings('.showtimes').find('.movie').each(function(){
+                        var element = {};
+                        var data = $(this);
+                        var name = data.find('a').text();
+                        element.name = name;
+                        console.log(name);
+                        films.push({film: element});
+                    });
+                }
+            })
+
+        }
+        fs.writeFile('output.json', JSON.stringify(films, null, 4), function(err){
+            console.log('File successfully written! - Check your project directory for the output.json file');
+        });
+        res.send(JSON.stringify(films, null, 4));
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
