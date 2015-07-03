@@ -37,8 +37,9 @@ app.post('/', function (req, res) {
 
 
         case '/getcinema':
+        var array = getCinema('bergamo', res);
         qs = {
-            reply_markup: JSON.stringify({ "keyboard": [ ["Capitol Multisala", "Arena Esterno Notte"], ["Capitol Multisala", "Arena Esterno Notte"], ["Capitol Multisala", "Arena Esterno Notte"], ["Capitol Multisala", "Arena Esterno Notte"] ] }),
+            reply_markup: JSON.stringify({ "keyboard": array }),
             chat_id: chat_id,
             text: "Scegli il cinema che preferisci"
         };
@@ -135,6 +136,7 @@ var getCinema = function(location, res){
                 theaters.push([element]);
             });
         }
+        return theaters;
         res.send(JSON.stringify(theaters, null, 4));
     });
 }
