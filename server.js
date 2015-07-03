@@ -22,13 +22,15 @@ app.post('/', function (req, res) {
         qs = {}; // object containing the query string that will be serialized
 
     switch(text) {
+
         /**
          * START THE BOT OR START VOTING
          */
-        case '/start':
+        case '/getcinema':
         qs = {
             chat_id: chat_id,
-            text: "Welcome, " + req.body.message.chat.first_name + ", please vote"
+            text: "Welcome, " + req.body.message.chat.first_name + ", please vote",
+            reply_markup: JSON.stringify({ "keyboard": [ theaters ] }),
         };
         break;
 
@@ -123,6 +125,7 @@ var getCinema = function(location, res){
                 theaters.push({theater: element});
             });
         }
+        return theaters;
         res.send(JSON.stringify(theaters, null, 4));
     });
 }
