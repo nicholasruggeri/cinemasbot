@@ -38,6 +38,7 @@ app.post('/', function (req, res) {
 
         case '/getcinema':
         var array = getCinema('bergamo', res);
+        console.log(array);
         qs = {
             reply_markup: JSON.stringify({ "keyboard": array }),
             chat_id: chat_id,
