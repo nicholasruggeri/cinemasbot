@@ -39,7 +39,7 @@ app.post('/', function (req, res) {
 
     // sent the response message (telegram message)
     request({
-        url: 'https://api.telegram.org/bot' + token + '/sendMessage',
+        url: 'https://api.telegram.org/' + token + '/sendMessage',
         method: 'POST',
         qs: qs
     }, function (err, response, body) {
