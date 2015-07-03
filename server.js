@@ -27,9 +27,7 @@ app.post('/', function (req, res) {
          * START THE BOT OR START VOTING
          */
         case '/start':
-        console.log('msg');
         qs = {
-            reply_markup: JSON.stringify({ "keyboard": [ ["Yes", "No"] ] }),
             chat_id: chat_id,
             text: "Welcome, " + req.body.message.chat.first_name + ", please vote"
         };
