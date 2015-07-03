@@ -18,6 +18,7 @@ app.post('/', function (req, res) {
     console.log(JSON.stringify(req.body));
 
     var chat_id = req.body.message.chat.id, // telegram chat ID
+        // text = req.body.message.text.toLowerCase(). // the text the user has written
         text = req.body.message.text, // the text the user has written
         qs = {}; // object containing the query string that will be serialized
 
@@ -28,9 +29,9 @@ app.post('/', function (req, res) {
          */
         case '/start':
         qs = {
-            // reply_markup: JSON.stringify({ "keyboard": [ ["Yes", "No"] ] }),
+            reply_markup: JSON.stringify({"hide_keyboard": true}),
             chat_id: chat_id,
-            text: "Welcome, " + req.body.message.chat.first_name + ", please vote"
+            text: "Ciao, " + req.body.message.chat.first_name + ", usa /getcinema o /getfilm per avere le informazioni che preferisci"
         };
         break;
 
