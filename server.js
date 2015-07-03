@@ -26,11 +26,11 @@ app.post('/', function (req, res) {
         /**
          * START THE BOT OR START VOTING
          */
-        case '/getcinema':
+        case '/start':
         qs = {
             chat_id: chat_id,
-            text: "Welcome, " + req.body.message.chat.first_name + ", please vote",
-            reply_markup: JSON.stringify({ "keyboard": [ theaters ] }),
+            text: "Welcome, " + req.body.message.chat.first_name,
+            reply_markup: JSON.stringify({"hide_keyboard": true})
         };
         break;
 
