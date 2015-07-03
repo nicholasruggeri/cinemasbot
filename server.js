@@ -129,7 +129,7 @@ var getCinema = function(location, res){
                 var name = data.text(),
                     info = data.parent().parent().find('.info').text(),
                     link = data.attr('href');
-                element.name = name;
+                element = name;
                 // element.link = link;
                 // element.info = info;
                 theaters.push([element]);
