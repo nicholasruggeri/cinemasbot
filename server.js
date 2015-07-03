@@ -18,7 +18,7 @@ app.post('/', function (req, res) {
     console.log(JSON.stringify(req.body));
 
     var chat_id = req.body.message.chat.id, // telegram chat ID
-        text = req.body.message.text.toLowerCase(), // the text the user has written
+        text = req.body.message.text.toString().toLowerCase(), // the text the user has written
         qs = {}; // object containing the query string that will be serialized
 
     switch(text) {
