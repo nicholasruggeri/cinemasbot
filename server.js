@@ -40,7 +40,7 @@ app.post('/', function (req, res) {
         var array = getCinema('bergamo', res);
         console.log(array);
         qs = {
-            reply_markup: JSON.stringify({ "keyboard": array }),
+            reply_markup: JSON.stringify({ "keyboard": [['ciao'], ['sbo']] }),
             chat_id: chat_id,
             text: "Scegli il cinema che preferisci"
         };
