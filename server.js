@@ -4,7 +4,8 @@ var express = require('express'),
     cheerio = require('cheerio');
 
 var app = express();
-var token = '118760525:AAFcwJxKeF7pWce47z57NcU4ONBCzR8hDbA';
+// var token = 'bot118760525:AAFcwJxKeF7pWce47z57NcU4ONBCzR8hDbA';
+var token = process.env.TELEGRAM_TOKEN;
 var googleUrl;
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -26,6 +27,7 @@ app.post('/', function (req, res) {
          * START THE BOT OR START VOTING
          */
         case '/start':
+        console.log('msg');
         qs = {
             reply_markup: JSON.stringify({ "keyboard": [ ["Yes", "No"] ] }),
             chat_id: chat_id,
