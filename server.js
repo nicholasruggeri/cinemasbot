@@ -35,9 +35,9 @@ app.post('/', function (req, res) {
         break;
 
 
-        case '/get_cinema':
+        case '/getcinema':
         qs = {
-            reply_markup: JSON.stringify({ "keyboard": [ ["Capitol Multisala", "Arena Esterno Notte"], ["Capitol Multisala", "Arena Esterno Notte"], ["Capitol Multisala", "Arena Esterno Notte"], ["Capitol Multisala", "Arena Esterno Notte"] ] }),
+            reply_markup: JSON.stringify({ "keyboard": [ ["Capitol Multisala", "Arena Esterno Notte"], ["Capitol Multisala", "Arena Esterno Notte"], ["Capitol Multisala", "Arena Esterno Notte"], ["Capitol Multisala", "Arena Esterno Notte"], ["Capitol Multisala", "Arena Esterno Notte"], ["Capitol Multisala", "Arena Esterno Notte"] ] }),
             chat_id: chat_id,
             text: "Welcome, " + req.body.message.chat.first_name + ", please vote"
         };
