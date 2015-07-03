@@ -27,11 +27,32 @@ app.post('/', function (req, res) {
          * START THE BOT OR START VOTING
          */
         case '/start':
-        qs = {
-            chat_id: chat_id,
-            text: "Welcome, " + req.body.message.chat.first_name,
-            reply_markup: JSON.stringify({"hide_keyboard": true})
-        };
+            console.log('msg');
+            qs = {
+                reply_markup: JSON.stringify({ "keyboard": [ ["Yes", "No"] ] }),
+                chat_id: chat_id,
+                text: "Welcome, " + req.body.message.chat.first_name + ", please vote"
+            };
+        break;
+        /**
+         * VOTE YES
+         */
+        case 'yes':
+            qs = {
+                chat_id: chat_id,
+                text: 'You said: ' + text,
+                reply_markup: JSON.stringify({"hide_keyboard": true})
+            };
+        break;
+        /**
+         * VOTE NO
+         */
+        case 'no':
+            qs = {
+                chat_id: chat_id,
+                text: 'You said: ' + text,
+                reply_markup: JSON.stringify({"hide_keyboard": true})
+            };
         break;
 
     }
@@ -125,7 +146,6 @@ var getCinema = function(location, res){
                 theaters.push({theater: element});
             });
         }
-        return theaters;
         res.send(JSON.stringify(theaters, null, 4));
     });
 }
