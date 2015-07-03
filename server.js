@@ -37,8 +37,7 @@ app.post('/', function (req, res) {
 
 
         case '/getcinema':
-        var array = getCinema('bergamo', res);
-        console.log(array);
+        console.log(getCinema('bergamo'));
         qs = {
             reply_markup: JSON.stringify({ "keyboard": [['ciao'], ['sbo']] }),
             chat_id: chat_id,
@@ -119,7 +118,7 @@ var getQueryVariable = function(variable, req){
     return(false);
 }
 
-var getCinema = function(location, res){
+var getCinema = function(location){
     googleUrl = 'http://www.google.it/movies?near='+location;
     request(googleUrl, function(error, response, html){
         if(!error){
