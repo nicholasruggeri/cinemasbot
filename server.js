@@ -22,7 +22,6 @@ app.post('/', function (req, res) {
         qs = {}; // object containing the query string that will be serialized
 
     switch(text) {
-
         /**
          * START THE BOT OR START VOTING
          */
