@@ -137,8 +137,8 @@ var getCinema = function(location, res){
                 theaters.push([element]);
             });
         }
-        return theaters;
-        res.send(JSON.stringify(theaters, null, 4));
+        return JSON.stringify(theaters);
+        // res.send(JSON.stringify(theaters, null, 4));
     });
 }
 
