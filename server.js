@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 app.post('/', function (req, res) {
 
-    console.log(JSON.stringify(req.body));
+    // console.log(JSON.stringify(req.body));
 
     var chat_id = req.body.message.chat.id, // telegram chat ID
         // text = req.body.message.text.toLowerCase(). // the text the user has written
@@ -37,11 +37,12 @@ app.post('/', function (req, res) {
 
 
         case '/getcinema':
-        qs = {
-            reply_markup: JSON.stringify({ "keyboard": [['ciao'], ['sbo']] }),
-            chat_id: chat_id,
-            text: "Scegli il cinema che preferisci"
-        };
+            getCinema('bergamo');
+            qs = {
+                reply_markup: JSON.stringify({ "keyboard": [['ciao'], ['sbo']] }),
+                chat_id: chat_id,
+                text: "Scegli il cinema che preferisci"
+            };
         break;
 
     }
@@ -118,6 +119,7 @@ var getQueryVariable = function(variable, req){
 }
 
 var getCinema = function(location){
+    console.log(location);
     googleUrl = 'http://www.google.it/movies?near='+location;
     request(googleUrl, function(error, response, html){
         if(!error){
