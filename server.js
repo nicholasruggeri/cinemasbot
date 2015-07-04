@@ -39,7 +39,7 @@
                 qs = {
                     reply_markup: JSON.stringify({ "keyboard": [['ciao'], ['sbo']] }),
                     chat_id: chat_id,
-                    text: array.toString()
+                    text: array
                 };
             break;
 
