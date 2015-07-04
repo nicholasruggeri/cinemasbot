@@ -36,10 +36,11 @@
 
             case '/getcinema':
                 var array = cinemasBot.getCinema('bergamo');
+                console.log(array);
                 qs = {
                     reply_markup: JSON.stringify({ "keyboard": [['ciao'], ['sbo']] }),
                     chat_id: chat_id,
-                    text: array
+                    text: 'Ecco i risultati'
                 };
             break;
 
@@ -110,7 +111,6 @@
                         // element.info = info;
                         theaters.push([element]);
                     });
-                    console.log('results', theaters);
                     return theaters;
                 }
                 // res.send(JSON.stringify(theaters, null, 4));
