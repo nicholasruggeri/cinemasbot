@@ -40,7 +40,7 @@
                         theaters.push([element]);
                     });
                     // console.log('getCinema', theaters);
-                    if (typeof callback == function)
+                    if (typeof callback == "function")
                         return callback(theaters);
                     else
                         return theaters;
