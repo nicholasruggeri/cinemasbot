@@ -68,8 +68,8 @@
     //     getMovie(location, theater, movie, res);
     // });
 
-    // app.listen(process.env.PORT);
-    // console.log('Magic happens on port ' + process.env.PORT);
+    app.listen(process.env.PORT);
+    console.log('Magic happens on port ' + process.env.PORT);
 
 }());
 
