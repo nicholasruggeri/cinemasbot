@@ -3,6 +3,23 @@ var request = require('request'),
 
 module.exports = {
 
+    sendToTelegram: function(qs){
+
+        request({
+            url: 'https://api.telegram.org/' + token + '/sendMessage',
+            method: 'POST',
+            qs: qs
+        }, function (err, response, body) {
+            if (err) { console.log(err); return; }
+
+            console.log('Got response ' + response.statusCode);
+            console.log(body);
+
+            res.send();
+        });
+
+    },
+
     getQueryVariable: function(variable, req){
         var query = req.url,
             vars = query.split("?");
