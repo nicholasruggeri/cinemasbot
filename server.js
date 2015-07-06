@@ -38,36 +38,35 @@
             }, function (err, response, body) {
                 if (err) { console.log(err); return; }
 
-                // console.log('Got response ' + response.statusCode);
-                // console.log(body);
+                console.log('Got response ' + response.statusCode);
+                console.log(body);
 
                 res.send();
             });
             break;
 
+            // case '/getcinema':
+            //     var results;
+            //     cinemasBot.getCinema('bergamo', function(theaters){
+            //         qs = {
+            //             reply_markup: JSON.stringify({ "keyboard": theaters}),
+            //             chat_id: chat_id,
+            //             text: 'Ecco i risultati'
+            //         };
+            //         request({
+            //             url: 'https://api.telegram.org/' + token + '/sendMessage',
+            //             method: 'POST',
+            //             qs: qs
+            //         }, function (err, response, body) {
+            //             if (err) { console.log(err); return; }
 
-            case '/getcinema':
-                var results;
-                cinemasBot.getCinema('bergamo', function(theaters){
-                    qs = {
-                        reply_markup: JSON.stringify({ "keyboard": theaters}),
-                        chat_id: chat_id,
-                        text: 'Ecco i risultati'
-                    };
-                    request({
-                        url: 'https://api.telegram.org/' + token + '/sendMessage',
-                        method: 'POST',
-                        qs: qs
-                    }, function (err, response, body) {
-                        if (err) { console.log(err); return; }
+            //             // console.log('Got response ' + response.statusCode);
+            //             // console.log(body);
 
-                        // console.log('Got response ' + response.statusCode);
-                        // console.log(body);
-
-                        res.send();
-                    });
-                })
-            break;
+            //             res.send();
+            //         });
+            //     })
+            // break;
         }
     });
 
