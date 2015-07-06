@@ -10,77 +10,6 @@
     // var token = process.env.TELEGRAM_TOKEN;
     var googleUrl;
 
-    app.use(bodyParser.urlencoded({ extended: false }));
-    app.use(bodyParser.json());
-
-    app.post('/', function (req, res) {
-
-        var chat_id = req.body.message.chat.id, // telegram chat ID
-            // text = req.body.message.text.toLowerCase(). // the text the user has written
-            text = req.body.message.text, // the text the user has written
-            qs = {}; // object containing the query string that will be serialized
-
-        switch(text) {
-
-            /**
-             * START THE BOT OR START VOTING
-             */
-            case '/start':
-            qs = {
-                reply_markup: JSON.stringify({"hide_keyboard": true}),
-                chat_id: chat_id,
-                text: "Ciao, " + req.body.message.chat.first_name + ", usa /getcinema o /getfilm per avere le informazioni che preferisci"
-            };
-            break;
-
-
-            case '/getcinema':
-                var array = cinemasBot.getCinema('bergamo');
-                console.log(array);
-                qs = {
-                    reply_markup: JSON.stringify({ "keyboard": [['ciao'], ['sbo']] }),
-                    chat_id: chat_id,
-                    text: 'Ecco i risultati'
-                };
-            break;
-
-        }
-
-        // sent the response message (telegram message)
-        request({
-            url: 'https://api.telegram.org/' + token + '/sendMessage',
-            method: 'POST',
-            qs: qs
-        }, function (err, response, body) {
-            if (err) { console.log(err); return; }
-
-            console.log('Got response ' + response.statusCode);
-            console.log(body);
-
-            res.send();
-        });
-    });
-
-    app.get('/near', function(req, res){
-        location = cinemasBot.getQueryVariable('city', req);
-        var results = cinemasBot.getCinema(location, res);
-    });
-
-    app.get('/theater', function(req, res){
-        location = cinemasBot.getQueryVariable('city', req);
-        theater = cinemasBot.getQueryVariable('theater', req);
-        getTheater(location, theater, res);
-    });
-
-    app.get('/movie', function(req, res){
-        location = cinemasBot.getQueryVariable('city', req);
-        theater = cinemasBot.getQueryVariable('theater', req);
-        movie = cinemasBot.getQueryVariable('movie', req);
-        getMovie(location, theater, movie, res);
-    });
-
-
-
     var cinemasBot = (function() {
 
 
@@ -94,8 +23,9 @@
             return(false);
         }
 
-        var getCinema = function(location){
+        var getCinema = function(location, callback){
             googleUrl = 'http://www.google.it/movies?near='+location;
+
             request(googleUrl, function(error, response, html){
                 if(!error){
                     var $ = cheerio.load(html);
@@ -107,11 +37,12 @@
                             info = data.parent().parent().find('.info').text(),
                             link = data.attr('href');
                         element = name;
-                        // element.link = link;
-                        // element.info = info;
                         theaters.push([element]);
                     });
-                    return theaters;
+                    // console.log('getCinema', theaters);
+                    return callback(theaters);
+                } else {
+                    return 'error';
                 }
                 // res.send(JSON.stringify(theaters, null, 4));
             });
@@ -181,6 +112,78 @@
             getMovie: getMovie
         };
     }());
+
+    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.json());
+
+    app.post('/', function (req, res) {
+
+        var chat_id = req.body.message.chat.id, // telegram chat ID
+            // text = req.body.message.text.toLowerCase(). // the text the user has written
+            text = req.body.message.text, // the text the user has written
+            qs = {}; // object containing the query string that will be serialized
+
+        switch(text) {
+
+            /**
+             * START THE BOT OR START VOTING
+             */
+            case '/start':
+            qs = {
+                reply_markup: JSON.stringify({"hide_keyboard": true}),
+                chat_id: chat_id,
+                text: "Ciao, " + req.body.message.chat.first_name + ", usa /getcinema o /getfilm per avere le informazioni che preferisci"
+            };
+            break;
+
+
+            case '/getcinema':
+                qs = {
+                    reply_markup: JSON.stringify({ "keyboard": cinemasBot.getCinema('bergamo') }),
+                    chat_id: chat_id,
+                    text: 'Ecco i risultati'
+                };
+            break;
+
+        }
+
+        // sent the response message (telegram message)
+        request({
+            url: 'https://api.telegram.org/' + token + '/sendMessage',
+            method: 'POST',
+            qs: qs
+        }, function (err, response, body) {
+            if (err) { console.log(err); return; }
+
+            console.log('Got response ' + response.statusCode);
+            console.log(body);
+
+            res.send();
+        });
+    });
+
+    app.get('/near', function(req, res){
+        console.log('/near')
+        location = cinemasBot.getQueryVariable('city', req);
+        console.log('location', location);
+        cinemasBot.getCinema(location, function(theaters){
+            console.log(theaters);
+        });
+    });
+
+    app.get('/theater', function(req, res){
+        location = cinemasBot.getQueryVariable('city', req);
+        theater = cinemasBot.getQueryVariable('theater', req);
+        getTheater(location, theater, res);
+    });
+
+    app.get('/movie', function(req, res){
+        location = cinemasBot.getQueryVariable('city', req);
+        theater = cinemasBot.getQueryVariable('theater', req);
+        movie = cinemasBot.getQueryVariable('movie', req);
+        getMovie(location, theater, movie, res);
+    });
+
 
 
     // cinemasBot.init();
