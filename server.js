@@ -141,28 +141,43 @@
 
 
             case '/getcinema':
-                qs = {
-                    reply_markup: JSON.stringify({ "keyboard": cinemasBot.getCinema('bergamo', function(theaters){return [['ciao'],['sbo']]})}),
-                    chat_id: chat_id,
-                    text: 'Ecco i risultati'
-                };
+                var results;
+                cinemasBot.getCinema('bergamo', function(theaters){
+                    qs = {
+                        reply_markup: JSON.stringify({ "keyboard": theaters}),
+                        chat_id: chat_id,
+                        text: 'Ecco i risultati'
+                    };
+                    request({
+                        url: 'https://api.telegram.org/' + token + '/sendMessage',
+                        method: 'POST',
+                        qs: qs
+                    }, function (err, response, body) {
+                        if (err) { console.log(err); return; }
+
+                        console.log('Got response ' + response.statusCode);
+                        console.log(body);
+
+                        res.send();
+                    });
+                })
             break;
 
         }
 
         // sent the response message (telegram message)
-        request({
-            url: 'https://api.telegram.org/' + token + '/sendMessage',
-            method: 'POST',
-            qs: qs
-        }, function (err, response, body) {
-            if (err) { console.log(err); return; }
+        // request({
+        //     url: 'https://api.telegram.org/' + token + '/sendMessage',
+        //     method: 'POST',
+        //     qs: qs
+        // }, function (err, response, body) {
+        //     if (err) { console.log(err); return; }
 
-            console.log('Got response ' + response.statusCode);
-            console.log(body);
+        //     console.log('Got response ' + response.statusCode);
+        //     console.log(body);
 
-            res.send();
-        });
+        //     res.send();
+        // });
     });
 
     app.get('/near', function(req, res){
