@@ -44,13 +44,6 @@
         //     break;
         // }
 
-        qs = {
-            chat_id: chat_id,
-            text: "Ciao, " + req.body.message.chat.first_name + ", usa /getcinema o /getfilm per avere le informazioni che preferisci"
-        };
-        cinemasBot.sendToTelegram(token, qs);
-
-
     });
 
     // app.get('/near', function(req, res){
