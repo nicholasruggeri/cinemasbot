@@ -14,38 +14,44 @@
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
-    // app.post('/', function (req, res) {
+    app.post('/', function (req, res) {
 
-    //     var chat_id = req.body.message.chat.id, // telegram chat ID
-    //         // text = req.body.message.text.toLowerCase(). // the text the user has written
-    //         text = req.body.message.text, // the text the user has written
-    //         qs = {}; // object containing the query string that will be serialized
+        var chat_id = req.body.message.chat.id, // telegram chat ID
+            // text = req.body.message.text.toLowerCase(). // the text the user has written
+            text = req.body.message.text, // the text the user has written
+            qs = {}; // object containing the query string that will be serialized
 
-    //     switch(text) {
+        // switch(text) {
 
-    //         case '/start':
-    //             qs = {
-    //                 reply_markup: JSON.stringify({"hide_keyboard": true}),
-    //                 chat_id: chat_id,
-    //                 text: "Ciao, " + req.body.message.chat.first_name + ", usa /getcinema o /getfilm per avere le informazioni che preferisci"
-    //             };
-    //             cinemasBot.sendToTelegram(qs);
-    //         break;
+        //     case '/start':
+        //         qs = {
+        //             reply_markup: JSON.stringify({"hide_keyboard": true}),
+        //             chat_id: chat_id,
+        //             text: "Ciao, " + req.body.message.chat.first_name + ", usa /getcinema o /getfilm per avere le informazioni che preferisci"
+        //         };
+        //         cinemasBot.sendToTelegram(qs);
+        //     break;
 
-    //         case '/getcinema':
-    //             var results;
-    //             cinemasBot.getCinema('bergamo', function(theaters){
-    //                 qs = {
-    //                     reply_markup: JSON.stringify({ "keyboard": theaters}),
-    //                     chat_id: chat_id,
-    //                     text: 'Ecco i risultati'
-    //                 };
-    //                 cinemasBot.sendToTelegram(qs);
-    //             })
-    //         break;
+        //     case '/getcinema':
+        //         var results;
+        //         cinemasBot.getCinema('bergamo', function(theaters){
+        //             qs = {
+        //                 reply_markup: JSON.stringify({ "keyboard": theaters}),
+        //                 chat_id: chat_id,
+        //                 text: 'Ecco i risultati'
+        //             };
+        //             cinemasBot.sendToTelegram(qs);
+        //         })
+        //     break;
 
-    //     }
-    // });
+        // }
+        //
+        qs = {
+            chat_id: chat_id,
+            text: "Ciao, " + req.body.message.chat.first_name + ", usa /getcinema o /getfilm per avere le informazioni che preferisci"
+        };
+        cinemasBot.sendToTelegram(qs);
+    });
 
     app.get('/near', function(req, res){
         location = cinemasBot.getQueryVariable('city', req);
