@@ -4,6 +4,7 @@ var request = require('request'),
 module.exports = {
 
     sendToTelegram: function(token, qs){
+        console.log('enter sendToTelegram');
 
         request({
             url: 'https://api.telegram.org/' + token + '/sendMessage',
