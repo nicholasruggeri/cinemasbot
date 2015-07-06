@@ -45,6 +45,19 @@
                 });
             break;
 
+            case '/reset':
+                qs = {
+                    reply_markup: JSON.stringify({"hide_keyboard": true}),
+                    chat_id: chat_id,
+                    text: "Reset keyboard"
+                };
+                request({
+                    url: 'https://api.telegram.org/' + token + '/sendMessage',
+                    method: 'POST',
+                    qs: qs
+                });
+            break;
+
             case '/getcinema':
                 var results;
                 cinemasBot.getCinema('bergamo', function(theaters){
@@ -68,25 +81,6 @@
                 })
             break;
 
-            default:
-                qs = {
-                    reply_markup: JSON.stringify({"hide_keyboard": true}),
-                    chat_id: chat_id,
-                    text: "Ciao" + req.body.message.text
-                };
-                request({
-                    url: 'https://api.telegram.org/' + token + '/sendMessage',
-                    method: 'POST',
-                    qs: qs
-                }, function (err, response, body) {
-                    if (err) { console.log(err); return; }
-
-                    console.log('Got response ' + response.statusCode);
-                    console.log(body);
-
-                    res.send();
-                });
-            break;
         }
     });
 
