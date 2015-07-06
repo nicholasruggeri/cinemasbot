@@ -141,9 +141,9 @@
 
 
             case '/getcinema':
-                console.log(cinemasBot.getCinema('bergamo', function(theaters){
-                    return theaters;
-                }));
+                cinemasBot.getCinema('bergamo', function(theaters){
+                    console.log(theaters);
+                });
                 qs = {
                     reply_markup: JSON.stringify({ "keyboard": [['ciao'], ['sbo']] }),
                     chat_id: chat_id,
