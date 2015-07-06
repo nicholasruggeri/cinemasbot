@@ -4,7 +4,7 @@
         bodyParser = require('body-parser'),
         request = require('request'),
         cheerio = require('cheerio'),
-        cinemasBot = require('./cinemasBot');
+        cinemasBot = require('./cinemasbot');
 
     var app = express();
     var token = 'bot118760525:AAFcwJxKeF7pWce47z57NcU4ONBCzR8hDbA';
