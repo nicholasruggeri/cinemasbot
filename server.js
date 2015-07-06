@@ -22,6 +22,8 @@
             text = req.body.message.text, // the text the user has written
             qs = {}; // object containing the query string that will be serialized
 
+        console.log('msg: ', text);
+
         // switch(text) {
         //     case '/start':
         //         qs = {
