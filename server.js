@@ -20,20 +20,33 @@
             text = req.body.message.text, // the text the user has written
             qs = {}; // object containing the query string that will be serialized
 
-        if (text == "/start") {
-            console.log('start');
-            cinemasBot.getCinema('bergamo', function(theaters){
-                console.log('theaters', theater);
-                qs = {
-                    chat_id: chat_id,
-                    text: 'Ciao'
-                };
-                cinemasBot.sendToTelegram(token, qs);
-            });
-        } else {
-            console.log('nope');
-        }
+        // switch(text) {
+        //     case '/start':
+        //         qs = {
+        //             reply_markup: JSON.stringify({"hide_keyboard": true}),
+        //             chat_id: chat_id,
+        //             text: "Ciao, " + req.body.message.chat.first_name + ", usa /getcinema o /getfilm per avere le informazioni che preferisci"
+        //         };
+        //         cinemasBot.sendToTelegram(token, qs);
+        //     break;
+        //     case '/getcinema':
+        //         var results;
+        //         cinemasBot.getCinema('bergamo', function(theaters){
+        //             qs = {
+        //                 reply_markup: JSON.stringify({ "keyboard": theaters}),
+        //                 chat_id: chat_id,
+        //                 text: 'Ecco i risultati'
+        //             };
+        //             cinemasBot.sendToTelegram(token, qs);
+        //         })
+        //     break;
+        // }
 
+        qs = {
+            chat_id: chat_id,
+            text: "Ciao, " + req.body.message.chat.first_name + ", usa /getcinema o /getfilm per avere le informazioni che preferisci"
+        };
+        cinemasBot.sendToTelegram(token, qs);
 
 
     });
