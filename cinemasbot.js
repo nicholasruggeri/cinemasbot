@@ -11,11 +11,9 @@ module.exports = {
             qs: qs
         }, function (err, response, body) {
             if (err) { console.log(err); return; }
-
             console.log('Got response ' + response.statusCode);
             console.log(body);
-
-            res.send();
+            // res.send();
         });
 
     },
