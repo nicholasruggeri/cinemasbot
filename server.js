@@ -16,6 +16,8 @@
 
     app.post('/', function (req, res) {
 
+        console.log('****** enter /')
+
         var chat_id = req.body.message.chat.id, // telegram chat ID
             text = req.body.message.text, // the text the user has written
             qs = {}; // object containing the query string that will be serialized
