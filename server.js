@@ -36,11 +36,10 @@
             case '/reset':
                cinemasBot.getCinema('bergamo', function(theaters){
                     qs = {
-                        reply_markup: JSON.stringify({ "keyboard": theaters}),
                         chat_id: chat_id,
-                        text: 'Ecco i risultati'
+                        text: 'reset'
                     };
-                    cinemasBot.sendToTelegram(token, qs);
+                    // cinemasBot.sendToTelegram(token, qs);
                 });
             break;
             case '/getcinema':
