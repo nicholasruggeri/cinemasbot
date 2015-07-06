@@ -137,6 +137,18 @@
                 chat_id: chat_id,
                 text: "Ciao, " + req.body.message.chat.first_name + ", usa /getcinema o /getfilm per avere le informazioni che preferisci"
             };
+            request({
+                url: 'https://api.telegram.org/' + token + '/sendMessage',
+                method: 'POST',
+                qs: qs
+            }, function (err, response, body) {
+                if (err) { console.log(err); return; }
+
+                console.log('Got response ' + response.statusCode);
+                console.log(body);
+
+                res.send();
+            });
             break;
 
 
