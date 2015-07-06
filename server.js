@@ -1,6 +1,6 @@
+(function(exports) {
 
-
-    console.log('init');
+    console.log('init')
 
     var express = require('express'),
         bodyParser = require('body-parser'),
@@ -57,3 +57,4 @@
     app.listen(process.env.PORT);
     console.log('Magic happens on port ' + process.env.PORT);
 
+}());
