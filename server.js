@@ -26,23 +26,23 @@
              * START THE BOT OR START VOTING
              */
             case '/start':
-            qs = {
-                reply_markup: JSON.stringify({"hide_keyboard": true}),
-                chat_id: chat_id,
-                text: "Ciao, " + req.body.message.chat.first_name + ", usa /getcinema o /getfilm per avere le informazioni che preferisci"
-            };
-            request({
-                url: 'https://api.telegram.org/' + token + '/sendMessage',
-                method: 'POST',
-                qs: qs
-            }, function (err, response, body) {
-                if (err) { console.log(err); return; }
+                qs = {
+                    reply_markup: JSON.stringify({"hide_keyboard": true}),
+                    chat_id: chat_id,
+                    text: "Ciao, " + req.body.message.chat.first_name + ", usa /getcinema o /getfilm per avere le informazioni che preferisci"
+                };
+                request({
+                    url: 'https://api.telegram.org/' + token + '/sendMessage',
+                    method: 'POST',
+                    qs: qs
+                }, function (err, response, body) {
+                    if (err) { console.log(err); return; }
 
-                console.log('Got response ' + response.statusCode);
-                console.log(body);
+                    console.log('Got response ' + response.statusCode);
+                    console.log(body);
 
-                res.send();
-            });
+                    res.send();
+                });
             break;
 
             // case '/getcinema':
