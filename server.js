@@ -142,7 +142,7 @@
 
             case '/getcinema':
                 qs = {
-                    reply_markup: JSON.stringify({ "keyboard": cinemasBot.getCinema('bergamo', function(theaters){return theaters})}),
+                    reply_markup: JSON.stringify({ "keyboard": cinemasBot.getCinema('bergamo', function(theaters){return [['ciao'],['sbo']]})}),
                     chat_id: chat_id,
                     text: 'Ecco i risultati'
                 };
