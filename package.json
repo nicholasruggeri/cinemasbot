@@ -1,14 +1,13 @@
 {
   "name": "cinemasbot",
   "version": "0.0.1",
-  "description": "Scrape le web.",
+  "description": "Get theaters and movies.",
   "main": "server.js",
-  "author": "Scotch",
+  "author": "Nicholas Ruggeri",
   "dependencies": {
     "express": "latest",
     "request": "latest",
     "cheerio": "latest",
-    "node-telegram-bot-api": "latest",
     "body-parser": "1.13.1"
   }
 }
