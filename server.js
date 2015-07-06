@@ -33,6 +33,14 @@
                 };
                 cinemasBot.sendToTelegram(token, qs);
             break;
+            case '/reset':
+                qs = {
+                    reply_markup: JSON.stringify({"hide_keyboard": true}),
+                    chat_id: chat_id,
+                    text: "DIOPORCO HO CAPITO"
+                };
+                cinemasBot.sendToTelegram(token, qs);
+            break;
             case '/getcinema':
                 cinemasBot.getCinema('bergamo', function(theaters){
                     qs = {
