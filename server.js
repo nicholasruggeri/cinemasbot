@@ -63,7 +63,7 @@
                     return 'error';
                 }
             });
-        }
+        },
 
         getTheater: function(location, theater){
             var googleUrl = 'http://www.google.it/movies?near='+location;
