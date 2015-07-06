@@ -68,7 +68,7 @@
                 })
             break;
 
-            case default:
+            default:
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard": true}),
                     chat_id: chat_id,
