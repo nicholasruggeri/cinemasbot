@@ -39,7 +39,7 @@
                         chat_id: chat_id,
                         text: 'reset'
                     };
-                    // cinemasBot.sendToTelegram(token, qs);
+                    cinemasBot.sendToTelegram(token, qs);
                 });
             break;
             case '/getcinema':
