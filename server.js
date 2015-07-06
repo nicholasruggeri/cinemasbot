@@ -22,9 +22,6 @@
 
         switch(text) {
 
-            /**
-             * START THE BOT
-             */
             case '/start':
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard": true}),
@@ -42,19 +39,6 @@
                     console.log(body);
 
                     res.send();
-                });
-            break;
-
-            case '/reset':
-                qs = {
-                    reply_markup: JSON.stringify({"hide_keyboard": true}),
-                    chat_id: chat_id,
-                    text: "Reset keyboard"
-                };
-                request({
-                    url: 'https://api.telegram.org/' + token + '/sendMessage',
-                    method: 'POST',
-                    qs: qs
                 });
             break;
 
