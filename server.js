@@ -1,5 +1,7 @@
 (function(exports) {
 
+    console.log('init');
+
     var express = require('express'),
         bodyParser = require('body-parser'),
         request = require('request'),
