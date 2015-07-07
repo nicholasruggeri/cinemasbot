@@ -24,7 +24,7 @@ app.post('/', function (req, res) {
 
     console.log('******* user_command: ', user_command);
     console.log('******* user_parameter: ', user_parameter);
-    console.log('req.body.message.text', req.body.message.text);
+    console.log('req.body.message.text', req.body.message);
 
     switch(user_command) {
         case '/start':
