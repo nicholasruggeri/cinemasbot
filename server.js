@@ -73,7 +73,7 @@ app.post('/', function (req, res) {
             console.log('keyboard click');
             cinemasBot.getTheater(session_location, user_action, function(movies){
                 qs = {
-                    reply_markup: JSON.stringify({"keyboard": movies,"one_time_keyboard": true,"resize_keyboard": true}),
+                    reply_markup: JSON.stringify({"keyboard": movies}),
                     chat_id: chat_id,
                     text: 'Scegli il film:'
                 };
@@ -81,7 +81,6 @@ app.post('/', function (req, res) {
                 session_request = false;
                 session_location = false;
             });
-
         }
     }
 

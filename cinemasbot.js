@@ -69,6 +69,7 @@ module.exports = {
                         var name = data.find('a').text();
                         element.name = name;
                         movies.push([element]);
+                        console.log('MOVIES', movies);
                     });
                 });
                 if (typeof callback == "function")
