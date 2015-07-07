@@ -32,6 +32,7 @@ app.post('/', function (req, res) {
             cinemasBot.getCinema('bergamo', function(theaters){
                 qs = {
                     reply_markup: JSON.stringify({ "keyboard": theaters}),
+                    one_time_keyboard: true,
                     chat_id: chat_id,
                     text: 'Ecco i risultati'
                 };
