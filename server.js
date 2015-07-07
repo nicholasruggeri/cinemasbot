@@ -40,6 +40,8 @@ app.post('/', function (req, res) {
         break;
     };
 
+    res.send();
+
 });
 
 app.listen(process.env.PORT);
