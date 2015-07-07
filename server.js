@@ -32,14 +32,25 @@ app.post('/', function (req, res) {
             cinemasBot.sendToTelegram(token, qs);
         break;
         case '/getcinema':
-            cinemasBot.getCinema(user_parameter, function(theaters){
-                qs = {
-                    reply_markup: JSON.stringify({ "keyboard": theaters, "one_time_keyboard": true}),
-                    chat_id: chat_id,
-                    text: user_parameter ? 'Ecco i risultati' : 'Controlla il comando'
-                };
-                cinemasBot.sendToTelegram(token, qs);
-            });
+            if (!user_parameter){
+                cinemasBot.getCinema(user_parameter, function(theaters){
+                    qs = {
+                        reply_markup: JSON.stringify({"hide_keyboard": true}),
+                        chat_id: chat_id,
+                        text: 'Controlla il comando'
+                    };
+                    cinemasBot.sendToTelegram(token, qs);
+                });
+            } else {
+                cinemasBot.getCinema(user_parameter, function(theaters){
+                    qs = {
+                        reply_markup: JSON.stringify({ "keyboard": theaters, "one_time_keyboard": true}),
+                        chat_id: chat_id,
+                        text: 'Ecco i risultati'
+                    };
+                    cinemasBot.sendToTelegram(token, qs);
+                });
+            }
         break;
         case 'Capitol Multisala':
             cinemasBot.getCinema('treviso', function(theaters){
