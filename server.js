@@ -16,11 +16,13 @@ app.post('/', function (req, res) {
 
     var chat_id = req.body.message.chat.id,
         user_action = req.body.message.text,
-        user_command = user_action.split(' ')[0];
-        user_parameter = user_action.split(' ')[1] || false;
+        user_command = user_action.split(' ')[0],
+        user_parameter = user_action.substring(user_command.length+1, user_action.length)),
         qs = {}; // object containing the query string that will be serialized
 
-    console.log('******* msg: ', user_command);
+    console.log('******* user_action: ', user_action);
+    console.log('******* user_command: ', user_command);
+    console.log('******* user_parameter: ', user_parameter);
 
     switch(user_command) {
         case '/start':
