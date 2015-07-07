@@ -26,6 +26,7 @@ app.post('/', function (req, res) {
     console.log('******* user_action: ', user_action);
     console.log('******* user_command: ', user_command);
     console.log('******* user_parameter: ', user_parameter);
+    console.log('******* session_request: ', session_request);
 
 
     if (user_command.charAt(0) == '/') {
@@ -48,6 +49,7 @@ app.post('/', function (req, res) {
                     cinemasBot.sendMessage(token, qs);
                 });
             } else {
+                console.log('******* session_request: ', session_request);
                 cinemasBot.getCinema(user_parameter, function(theaters){
                     qs = {
                         reply_markup: JSON.stringify({"keyboard": theaters,"one_time_keyboard": true,"resize_keyboard": true}),
@@ -57,12 +59,14 @@ app.post('/', function (req, res) {
                     cinemasBot.sendMessage(token, qs);
                     session_request = true;
                     session_location = user_parameter;
+                    console.log('******* session_request: ', session_request);
                 });
             }
         }
 
     } else {
         console.log('other command');
+        console.log('******* session_request: ', session_request);
         if (session_request) {
             console.log('keyboard click');
             cinemasBot.getTheater(session_location, user_action, function(movies){
