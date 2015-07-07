@@ -16,8 +16,8 @@ app.post('/', function (req, res) {
 
     var chat_id = req.body.message.chat.id,
         user_action = req.body.message.text,
-        user_command = user_action.split(' ')[0];
-        user_parameter = user_action.split(' ')[1] || false;
+        user_command = user_action.substr(0, user_action.indexOf(' '));
+        user_parameter = user_action.substr(user_action.indexOf(' '), user_action.length);
         qs = {}; // object containing the query string that will be serialized
 
     console.log('******* msg: ', user_command);
@@ -27,7 +27,7 @@ app.post('/', function (req, res) {
             qs = {
                 reply_markup: JSON.stringify({"hide_keyboard": true}),
                 chat_id: chat_id,
-                text: "Ciao, " + req.body.message.chat.first_name + " utilizza /getcinema seguito dalla tua città per ricevere la lista dei teatri e dei film della tua zona"
+                text: "Ciao " + req.body.message.chat.first_name + ", utilizza /getcinema seguito dalla tua città per ricevere la lista dei teatri e dei film della tua zona"
             };
             cinemasBot.sendToTelegram(token, qs);
         break;
