@@ -20,6 +20,9 @@ app.post('/', function (req, res) {
         user_parameter = user_action.substring(user_command.length+1, user_action.length),
         qs = {}; // object containing the query string that will be serialized
 
+    var session_request = false;
+    var session_location;
+
     console.log('******* user_action: ', user_action);
     console.log('******* user_command: ', user_command);
     console.log('******* user_parameter: ', user_parameter);
@@ -52,9 +55,26 @@ app.post('/', function (req, res) {
                         text: 'Scegli il cinema:'
                     };
                     cinemasBot.sendMessage(token, qs);
+                    session_request = true;
+                    session_location = user_parameter;
                 });
             }
-        } else {}
+        } else {
+            if (session_request) {
+
+                cinemasBot.getTheater(session_location, user_action, function(movies){
+                    qs = {
+                        reply_markup: JSON.stringify({"keyboard": movies,"one_time_keyboard": true,"resize_keyboard": true}),
+                        chat_id: chat_id,
+                        text: 'Scegli il film:'
+                    };
+                    cinemasBot.sendMessage(token, qs);
+                    session_request = false;
+                    session_location = false;
+                });
+
+            }
+        }
 
     }
 
