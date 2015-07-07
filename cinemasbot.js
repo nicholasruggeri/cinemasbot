@@ -71,7 +71,6 @@ module.exports = {
                         movies.push([element]);
                     });
                 });
-                console.log('MOVIES', movies);
                 if (typeof callback == "function")
                     return callback(movies);
                 else

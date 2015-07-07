@@ -77,6 +77,7 @@ app.post('/', function (req, res) {
                     chat_id: chat_id,
                     text: 'Scegli il film:'
                 };
+                console.log('MOVIES', movies);
                 cinemasBot.sendMessage(token, qs);
                 session_request = false;
                 session_location = false;
