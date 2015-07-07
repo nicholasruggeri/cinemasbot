@@ -67,11 +67,11 @@ module.exports = {
                         var element = {};
                         var data = $(this);
                         var name = data.find('a').text();
-                        element.name = name;
+                        element = name;
                         movies.push([element]);
-                        console.log('MOVIES', movies);
                     });
                 });
+                console.log('MOVIES', movies);
                 if (typeof callback == "function")
                     return callback(movies);
                 else
