@@ -27,16 +27,16 @@ app.post('/', function (req, res) {
                 chat_id: chat_id,
                 text: "Ciao, " + req.body.message.chat.first_name
             };
-            cinemasBot.sendToTelegram(token, qs, res);
+            cinemasBot.sendToTelegram(token, qs);
         break;
         case '/getcinema':
             cinemasBot.getCinema('bergamo', function(theaters){
                 qs = {
-                    reply_markup: JSON.stringify({ "keyboard": theaters}, {"one_time_keyboard": true}),
+                    reply_markup: JSON.stringify({ "keyboard": theaters, "one_time_keyboard": true}),
                     chat_id: chat_id,
                     text: 'Ecco i risultati'
                 };
-                cinemasBot.sendToTelegram(token, qs, res);
+                cinemasBot.sendToTelegram(token, qs);
             });
         break;
     };
