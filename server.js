@@ -24,16 +24,17 @@ app.post('/', function (req, res) {
     console.log('******* user_command: ', user_command);
     console.log('******* user_parameter: ', user_parameter);
 
-    switch(user_command) {
-        case '/start':
+
+    if (user_command.charAt(0) == '/') {
+
+        if (user_command == '/start') {
             qs = {
                 reply_markup: JSON.stringify({"hide_keyboard":true}),
                 chat_id: chat_id,
                 text: "Ciao " + req.body.message.chat.first_name + ", utilizza /getcinema seguito dalla tua città per ricevere la lista dei teatri e dei film della tua zona"
             };
             cinemasBot.sendMessage(token, qs);
-        break;
-        case '/getcinema':
+        } else if (user_command == 'getcinema'){
             if (!user_parameter){
                 cinemasBot.getCinema(user_parameter, function(theaters){
                     qs = {
@@ -46,15 +47,17 @@ app.post('/', function (req, res) {
             } else {
                 cinemasBot.getCinema(user_parameter, function(theaters){
                     qs = {
-                        reply_markup: JSON.stringify({"keyboard": theaters,"one_time_keyboard": true,"selective": true}),
+                        reply_markup: JSON.stringify({"keyboard": theaters,"one_time_keyboard": true,"resize_keyboard": true}),
                         chat_id: chat_id,
                         text: 'Scegli il cinema:'
                     };
                     cinemasBot.sendMessage(token, qs);
                 });
             }
-        break;
-    };
+        } else {}
+
+    }
+
 
     res.send();
 
