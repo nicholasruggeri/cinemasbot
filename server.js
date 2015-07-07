@@ -23,6 +23,7 @@ app.post('/', function (req, res) {
     switch(text) {
         case '/start':
             qs = {
+                reply_markup: JSON.stringify({"hide_keyboard": true}),
                 chat_id: chat_id,
                 text: "Ciao, " + req.body.message.chat.first_name
             };
@@ -31,7 +32,7 @@ app.post('/', function (req, res) {
         case '/getcinema':
             cinemasBot.getCinema('bergamo', function(theaters){
                 qs = {
-                    reply_markup: JSON.stringify({ "keyboard": theaters}),
+                    reply_markup: JSON.stringify({ "keyboard": theaters}, {"one_time_keyboard": true}),
                     chat_id: chat_id,
                     text: 'Ecco i risultati'
                 };
