@@ -54,6 +54,7 @@ module.exports = {
     },
 
     getTheater: function(location, theater, res){
+        console.log('****** enter getTheater');
         var googleUrl = 'http://www.google.it/movies?near='+location;
         request(googleUrl, function(error, response, html){
             if(!error){
@@ -61,16 +62,14 @@ module.exports = {
                 var movies = [];
                 $('.theater .desc h2.name a').each(function(index){
                     var text = $(this).text()
-                    if (decodeURI(text) == decodeURI(theater)){
+                    var data = $(this);
+                    data.parent().parent().siblings('.showtimes').find('.movie').each(function(){
+                        var element = {};
                         var data = $(this);
-                        data.parent().parent().siblings('.showtimes').find('.movie').each(function(){
-                            var element = {};
-                            var data = $(this);
-                            var name = data.find('a').text();
-                            element.name = name;
-                            movies.push([element]);
-                        });
-                    }
+                        var name = data.find('a').text();
+                        element.name = name;
+                        movies.push([element]);
+                    });
                 });
                 if (typeof callback == "function")
                     return callback(movies);
