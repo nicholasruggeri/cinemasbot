@@ -31,26 +31,28 @@ app.post('/', function (req, res) {
                 chat_id: chat_id,
                 text: "Ciao " + req.body.message.chat.first_name + ", utilizza /getcinema seguito dalla tua città per ricevere la lista dei teatri e dei film della tua zona"
             };
-            cinemasBot.sendToTelegram(token, qs);
+            cinemasBot.sendMessage(token, qs);
         break;
         case '/getcinema':
             if (!user_parameter){
                 cinemasBot.getCinema(user_parameter, function(theaters){
                     qs = {
                         reply_markup: JSON.stringify({"hide_keyboard": true}),
+                        reply_to_message_id: req.body.message.id,
                         chat_id: chat_id,
                         text: 'Aggiungi una città dopo /getcinema'
                     };
-                    cinemasBot.sendToTelegram(token, qs);
+                    cinemasBot.sendMessage(token, qs);
                 });
             } else {
                 cinemasBot.getCinema(user_parameter, function(theaters){
                     qs = {
-                        reply_markup: JSON.stringify({ "keyboard": theaters, "one_time_keyboard": true}),
+                        reply_markup: JSON.stringify({ "keyboard": theaters, "one_time_keyboard": true, "selective": true}),
+                        reply_to_message_id: req.body.message.id,
                         chat_id: chat_id,
                         text: 'Scegli il cinema:'
                     };
-                    cinemasBot.sendToTelegram(token, qs);
+                    cinemasBot.sendMessage(token, qs);
                 });
             }
         break;
