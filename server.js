@@ -20,7 +20,8 @@ app.post('/', function (req, res) {
         user_parameter = user_action.substr(user_action.indexOf(' '), user_action.length);
         qs = {}; // object containing the query string that will be serialized
 
-    console.log('******* msg: ', user_command);
+    console.log('******* user_command: ', user_command);
+    console.log('******* user_parameter: ', user_command);
 
     switch(user_command) {
         case '/start':
