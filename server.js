@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 
 app.post('/', function (req) {
 
-    console.log('****** enter server')
+    console.log('****** enter server');
 
     var chat_id = req.body.message.chat.id,
         text = req.body.message.text,
@@ -29,6 +29,7 @@ app.post('/', function (req) {
             cinemasBot.sendToTelegram(token, qs);
         break;
     };
+
 });
 
 app.listen(process.env.PORT);
