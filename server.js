@@ -11,8 +11,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 var session_request = false,
-    session_location,
-    session_theaters;
+    session_location = false,
+    session_theaters = false;
 
 app.post('/', function (req, res) {
 
@@ -70,6 +70,7 @@ app.post('/', function (req, res) {
         console.log('other command');
         console.log('******* session_request: ', session_request);
         if (session_request) {
+            // inserire controllo se user_action == session_theaters[i]
             console.log('keyboard click');
             cinemasBot.getMovies(session_location, user_action, function(movies){
                 qs = {
