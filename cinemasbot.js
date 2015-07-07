@@ -71,10 +71,13 @@ module.exports = {
                         movies.push([element]);
                     });
                 });
-                if (typeof callback == "function")
+                if (typeof callback == "function"){
+                    console.log('callback');
                     return callback(movies);
-                else
+                } else {
+                    console.log('array');
                     return movies;
+                }
             } else {
                 return 'error';
             }
