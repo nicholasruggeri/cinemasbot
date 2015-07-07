@@ -28,20 +28,19 @@ app.post('/', function (req, res) {
             };
             cinemasBot.sendToTelegram(token, qs, res);
         break;
+        case '/getcinema':
+            cinemasBot.getCinema('bergamo', function(theaters){
+                qs = {
+                    reply_markup: JSON.stringify({ "keyboard": theaters}),
+                    chat_id: chat_id,
+                    text: 'Ecco i risultati'
+                };
+                cinemasBot.sendToTelegram(token, qs, res);
+            });
+        break;
     };
 
 });
 
 app.listen(process.env.PORT);
 console.log('Magic happens on port ' + process.env.PORT);
-
-// case '/getcinema':
-//     cinemasBot.getCinema('bergamo', function(theaters){
-//         qs = {
-//             reply_markup: JSON.stringify({ "keyboard": theaters}),
-//             chat_id: chat_id,
-//             text: 'Ecco i risultati'
-//         };
-//         cinemasBot.sendToTelegram(token, qs);
-//     });
-// break;
