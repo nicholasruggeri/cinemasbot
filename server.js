@@ -10,21 +10,17 @@ var token = process.env.TELEGRAM_TOKEN;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-Array.prototype.isArray = true;
-
 app.post('/', function (req, res) {
 
     console.log('****** enter server');
 
     var chat_id = req.body.message.chat.id,
-        user_action = req.body.message.text + " ";
-        user_command = user_action.substring(user_action.indexOf('/'), user_action.indexOf(' '));
-        user_parameter = user_action.substring(user_action.indexOf(' '), user_action.length);
+        user_action = req.body.message.text,
+        user_command = user_action.split(' ')[0];
+        user_parameter = user_action.split(' ')[1] || false;
         qs = {}; // object containing the query string that will be serialized
 
-    console.log('******* user_command: ', user_command);
-    console.log('******* user_parameter: ', user_parameter);
-    console.log('req.body.message.text', req.body.message);
+    console.log('******* msg: ', user_command);
 
     switch(user_command) {
         case '/start':
@@ -36,7 +32,7 @@ app.post('/', function (req, res) {
             cinemasBot.sendToTelegram(token, qs);
         break;
         case '/getcinema':
-            if (user_parameter == " " || !user_parameter){
+            if (!user_parameter){
                 cinemasBot.getCinema(user_parameter, function(theaters){
                     qs = {
                         reply_markup: JSON.stringify({"hide_keyboard": true}),
