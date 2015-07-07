@@ -24,6 +24,7 @@ app.post('/', function (req, res) {
 
     console.log('******* user_command: ', user_command);
     console.log('******* user_parameter: ', user_parameter);
+    console.log('req.body.message.text', req.body.message.text);
 
     switch(user_command) {
         case '/start':
@@ -35,7 +36,7 @@ app.post('/', function (req, res) {
             cinemasBot.sendToTelegram(token, qs);
         break;
         case '/getcinema':
-            if (!user_parameter){
+            if (user_parameter == " " || !user_parameter){
                 cinemasBot.getCinema(user_parameter, function(theaters){
                     qs = {
                         reply_markup: JSON.stringify({"hide_keyboard": true}),
