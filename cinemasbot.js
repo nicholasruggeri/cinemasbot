@@ -53,8 +53,8 @@ module.exports = {
         });
     },
 
-    getTheater: function(location, theater, callback){
-        console.log('****** enter getTheater');
+    getMovies: function(location, theater, callback){
+        console.log('****** enter getMovies');
         var googleUrl = 'http://www.google.it/movies?near='+location;
         request(googleUrl, function(error, response, html){
             if(!error){
@@ -85,32 +85,7 @@ module.exports = {
     },
 }
 
-
-    // getTheater: function(location, theater, res){
-    //     var googleUrl = 'http://www.google.it/movies?near='+location;
-    //     request(googleUrl, function(error, response, html){
-    //         if(!error){
-    //             var $ = cheerio.load(html);
-    //             var movies = [];
-    //             $('.theater .desc h2.name a').each(function(index){
-    //                 var text = $(this).text()
-    //                 if (decodeURI(text) == decodeURI(theater)){
-    //                     var data = $(this);
-    //                     data.parent().parent().siblings('.showtimes').find('.movie').each(function(){
-    //                         var element = {};
-    //                         var data = $(this);
-    //                         var name = data.find('a').text();
-    //                         element.name = name;
-    //                         movies.push({film: element});
-    //                     });
-    //                 }
-    //             });
-    //         };
-    //         // res.send(JSON.stringify(movies, null, 4));
-    //     });
-    // },
-
-    // getMovie: function(location, theater, movie, res){
+    // getTime: function(location, theater, movie, res){
     //     var googleUrl = 'http://www.google.it/movies?near='+location;
     //     request(googleUrl, function(error, response, html){
     //         if(!error){

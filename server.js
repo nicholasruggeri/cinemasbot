@@ -10,8 +10,9 @@ var token = process.env.TELEGRAM_TOKEN;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-var session_request = false;
-var session_location;
+var session_request = false,
+    session_location,
+    session_theaters;
 
 app.post('/', function (req, res) {
 
@@ -37,19 +38,17 @@ app.post('/', function (req, res) {
             qs = {
                 reply_markup: JSON.stringify({"hide_keyboard":true}),
                 chat_id: chat_id,
-                text: "Ciao " + req.body.message.chat.first_name + ", utilizza /getcinema seguito dalla tua città per ricevere la lista dei teatri e dei film della tua zona"
+                text: "Ciao " + req.body.message.chat.first_name + ", utilizza /getcinema seguito dalla tua città per ricevere la lista dei teatri e dei film nella tua zona"
             };
             cinemasBot.sendMessage(token, qs);
         } else if (user_command == '/getcinema'){
             if (!user_parameter){
-                cinemasBot.getCinema(user_parameter, function(theaters){
-                    qs = {
-                        reply_markup: JSON.stringify({"hide_keyboard": true}),
-                        chat_id: chat_id,
-                        text: 'Aggiungi una città dopo /getcinema'
-                    };
-                    cinemasBot.sendMessage(token, qs);
-                });
+                qs = {
+                    reply_markup: JSON.stringify({"hide_keyboard": true}),
+                    chat_id: chat_id,
+                    text: 'Aggiungi una città dopo /getcinema'
+                };
+                cinemasBot.sendMessage(token, qs);
             } else {
                 console.log('******* session_request: ', session_request);
                 cinemasBot.getCinema(user_parameter, function(theaters){
@@ -61,6 +60,7 @@ app.post('/', function (req, res) {
                     cinemasBot.sendMessage(token, qs);
                     session_request = true;
                     session_location = user_parameter;
+                    session_theaters = theaters;
                     console.log('******* session_request: ', session_request);
                 });
             }
@@ -71,11 +71,11 @@ app.post('/', function (req, res) {
         console.log('******* session_request: ', session_request);
         if (session_request) {
             console.log('keyboard click');
-            cinemasBot.getTheater(session_location, user_action, function(movies){
+            cinemasBot.getMovies(session_location, user_action, function(movies){
                 qs = {
                     reply_markup: JSON.stringify({"keyboard": movies}),
                     chat_id: chat_id,
-                    text: 'Scegli il film:'
+                    text: 'Clicca sul film per sapere gli orari'
                 };
                 console.log('MOVIES', movies);
                 cinemasBot.sendMessage(token, qs);
