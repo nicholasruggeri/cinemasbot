@@ -42,9 +42,8 @@ app.post('/', function (req, res) {
         case 'Capitol Multisala':
             cinemasBot.getCinema('treviso', function(theaters){
                 qs = {
-                    reply_markup: JSON.stringify({ "keyboard": theaters, "one_time_keyboard": true}),
                     chat_id: chat_id,
-                    text: 'Ecco i risultati di treviso'
+                    text: 'Ecco i risultati di treviso \n test a capo'
                 };
                 cinemasBot.sendToTelegram(token, qs);
             });
