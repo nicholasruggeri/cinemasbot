@@ -10,7 +10,7 @@ var token = process.env.TELEGRAM_TOKEN;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.post('/', function (req) {
+app.post('/', function (req, res) {
 
     console.log('****** enter server');
 
@@ -26,7 +26,7 @@ app.post('/', function (req) {
                 chat_id: chat_id,
                 text: "Ciao, " + req.body.message.chat.first_name
             };
-            cinemasBot.sendToTelegram(token, qs);
+            cinemasBot.sendToTelegram(token, qs, res);
         break;
     };
 

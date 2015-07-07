@@ -3,16 +3,20 @@ var request = require('request'),
 
 module.exports = {
 
-    sendToTelegram: function(token, qs){
+    sendToTelegram: function(token, qs, res){
         console.log('****** enter sendToTelegram');
         request({
             url: 'https://api.telegram.org/' + token + '/sendMessage',
             method: 'POST',
             qs: qs
         }, function (err, response, body) {
-            if (err) { console.log(err); return; }
+            if (err) {
+                console.log(err); return;
+            }
             console.log('Got response ' + response.statusCode);
             console.log(body);
+
+            res.send();
         });
     },
 
