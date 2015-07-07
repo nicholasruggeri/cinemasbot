@@ -27,7 +27,7 @@ app.post('/', function (req, res) {
             qs = {
                 reply_markup: JSON.stringify({"hide_keyboard": true}),
                 chat_id: chat_id,
-                text: "Ciao, " + req.body.message.chat.first_name
+                text: "Ciao, " + req.body.message.chat.first_name + " utilizza /getcinema seguito dalla tua città per ricevere la lista dei teatri e dei film della tua zona"
             };
             cinemasBot.sendToTelegram(token, qs);
         break;
@@ -37,7 +37,7 @@ app.post('/', function (req, res) {
                     qs = {
                         reply_markup: JSON.stringify({"hide_keyboard": true}),
                         chat_id: chat_id,
-                        text: 'Controlla il comando'
+                        text: 'Aggiungi una città dopo /getcinema'
                     };
                     cinemasBot.sendToTelegram(token, qs);
                 });
@@ -46,20 +46,11 @@ app.post('/', function (req, res) {
                     qs = {
                         reply_markup: JSON.stringify({ "keyboard": theaters, "one_time_keyboard": true}),
                         chat_id: chat_id,
-                        text: 'Ecco i risultati'
+                        text: 'Scegli il cinema:'
                     };
                     cinemasBot.sendToTelegram(token, qs);
                 });
             }
-        break;
-        case 'Capitol Multisala':
-            cinemasBot.getCinema('treviso', function(theaters){
-                qs = {
-                    chat_id: chat_id,
-                    text: 'Ecco i risultati di treviso \n test a capo'
-                };
-                cinemasBot.sendToTelegram(token, qs);
-            });
         break;
     };
 

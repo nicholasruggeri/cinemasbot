@@ -53,7 +53,7 @@ module.exports = {
         });
     },
 
-    getMovies: function(location, theater, callback){
+    getTheater: function(location, theater, res){
         var googleUrl = 'http://www.google.it/movies?near='+location;
         request(googleUrl, function(error, response, html){
             if(!error){
@@ -68,7 +68,7 @@ module.exports = {
                             var data = $(this);
                             var name = data.find('a').text();
                             element.name = name;
-                            movies.push({film: element});
+                            movies.push([element]);
                         });
                     }
                 });
