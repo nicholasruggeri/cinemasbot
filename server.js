@@ -34,7 +34,7 @@ app.post('/', function (req, res) {
                 text: "Ciao " + req.body.message.chat.first_name + ", utilizza /getcinema seguito dalla tua città per ricevere la lista dei teatri e dei film della tua zona"
             };
             cinemasBot.sendMessage(token, qs);
-        } else if (user_command == 'getcinema'){
+        } else if (user_command == '/getcinema'){
             if (!user_parameter){
                 cinemasBot.getCinema(user_parameter, function(theaters){
                     qs = {
