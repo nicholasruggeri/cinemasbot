@@ -15,9 +15,9 @@ app.post('/', function (req, res) {
     console.log('****** enter server');
 
     var chat_id = req.body.message.chat.id,
-        user_action = req.body.message.text,
-        user_command = user_action.substr(user_action.indexOf('/'), user_action.indexOf(' '));
-        user_parameter = user_action.substr(user_action.indexOf(' '), user_action.length);
+        user_action = req.body.message.text.split(" "),
+        user_command = user_action[0];
+        user_parameter = user_action.pop.join(" ");
         qs = {}; // object containing the query string that will be serialized
 
     console.log('******* user_command: ', user_command);
