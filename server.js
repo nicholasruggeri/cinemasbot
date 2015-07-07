@@ -59,24 +59,24 @@ app.post('/', function (req, res) {
                     session_location = user_parameter;
                 });
             }
-        } else {
-            console.log('other command');
-            if (session_request) {
-                console.log('keyboard click');
-                cinemasBot.getTheater(session_location, user_action, function(movies){
-                    qs = {
-                        reply_markup: JSON.stringify({"keyboard": movies,"one_time_keyboard": true,"resize_keyboard": true}),
-                        chat_id: chat_id,
-                        text: 'Scegli il film:'
-                    };
-                    cinemasBot.sendMessage(token, qs);
-                    session_request = false;
-                    session_location = false;
-                });
-
-            }
         }
 
+    } else {
+        console.log('other command');
+        if (session_request) {
+            console.log('keyboard click');
+            cinemasBot.getTheater(session_location, user_action, function(movies){
+                qs = {
+                    reply_markup: JSON.stringify({"keyboard": movies,"one_time_keyboard": true,"resize_keyboard": true}),
+                    chat_id: chat_id,
+                    text: 'Scegli il film:'
+                };
+                cinemasBot.sendMessage(token, qs);
+                session_request = false;
+                session_location = false;
+            });
+
+        }
     }
 
 
