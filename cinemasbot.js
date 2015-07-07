@@ -5,7 +5,6 @@ module.exports = {
 
     sendToTelegram: function(token, qs){
         console.log('****** enter sendToTelegram');
-
         request({
             url: 'https://api.telegram.org/' + token + '/sendMessage',
             method: 'POST',
@@ -15,7 +14,6 @@ module.exports = {
             console.log('Got response ' + response.statusCode);
             console.log(body);
         });
-
     },
 
     getQueryVariable: function(variable, req){
@@ -26,32 +24,37 @@ module.exports = {
             if(pair[0] == variable){return pair[1];}
         }
         return(false);
-    },
-
-    getCinema: function(location, callback){
-        var googleUrl = 'http://www.google.it/movies?near='+location;
-        request(googleUrl, function(error, response, html){
-            if(!error){
-                var $ = cheerio.load(html);
-                var theaters = [];
-                $('.theater > .desc > .name a').each(function(index){
-                    var element = {};
-                    var data = $(this);
-                    var name = data.text(),
-                        info = data.parent().parent().find('.info').text(),
-                        link = data.attr('href');
-                    element = name;
-                    theaters.push([element]);
-                });
-                if (typeof callback == "function")
-                    return callback(theaters);
-                else
-                    return theaters;
-            } else {
-                return 'error';
-            }
-        });
     }
+}
+
+
+
+
+
+    // getCinema: function(location, callback){
+    //     var googleUrl = 'http://www.google.it/movies?near='+location;
+    //     request(googleUrl, function(error, response, html){
+    //         if(!error){
+    //             var $ = cheerio.load(html);
+    //             var theaters = [];
+    //             $('.theater > .desc > .name a').each(function(index){
+    //                 var element = {};
+    //                 var data = $(this);
+    //                 var name = data.text(),
+    //                     info = data.parent().parent().find('.info').text(),
+    //                     link = data.attr('href');
+    //                 element = name;
+    //                 theaters.push([element]);
+    //             });
+    //             if (typeof callback == "function")
+    //                 return callback(theaters);
+    //             else
+    //                 return theaters;
+    //         } else {
+    //             return 'error';
+    //         }
+    //     });
+    // }
 
     // getTheater: function(location, theater, res){
     //     var googleUrl = 'http://www.google.it/movies?near='+location;
@@ -102,5 +105,3 @@ module.exports = {
     //         };
     //     });
     // }
-
-}
