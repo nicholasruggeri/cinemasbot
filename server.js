@@ -10,6 +10,8 @@ var token = process.env.TELEGRAM_TOKEN;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+Array.prototype.isArray = true;
+
 app.post('/', function (req, res) {
 
     console.log('****** enter server');
@@ -17,7 +19,7 @@ app.post('/', function (req, res) {
     var chat_id = req.body.message.chat.id,
         user_action = req.body.message.text.split(" "),
         user_command = user_action[0];
-        user_parameter = typeof user_action == "Array" ? user_action.shift().join(" ") : false;
+        user_parameter = user_action.isArray ? user_action.shift().join(" ") : false;
         qs = {}; // object containing the query string that will be serialized
 
     console.log('******* user_command: ', user_command);
