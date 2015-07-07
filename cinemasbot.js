@@ -53,7 +53,7 @@ module.exports = {
         });
     },
 
-    getTheater: function(location, theater, res){
+    getTheater: function(location, theater, callback){
         console.log('****** enter getTheater');
         var googleUrl = 'http://www.google.it/movies?near='+location;
         request(googleUrl, function(error, response, html){
