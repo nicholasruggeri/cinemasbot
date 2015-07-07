@@ -27,7 +27,7 @@ app.post('/', function (req, res) {
     switch(user_command) {
         case '/start':
             qs = {
-                reply_markup: JSON.stringify({"hide_keyboard": true}),
+                reply_markup: JSON.stringify({"hide_keyboard":true}),
                 chat_id: chat_id,
                 text: "Ciao " + req.body.message.chat.first_name + ", utilizza /getcinema seguito dalla tua città per ricevere la lista dei teatri e dei film della tua zona"
             };
@@ -46,7 +46,7 @@ app.post('/', function (req, res) {
             } else {
                 cinemasBot.getCinema(user_parameter, function(theaters){
                     qs = {
-                        reply_markup: JSON.stringify({ "keyboard": theaters, "one_time_keyboard": true}),
+                        reply_markup: JSON.stringify({"keyboard": theaters,"one_time_keyboard": true,"selective": true}),
                         chat_id: chat_id,
                         text: 'Scegli il cinema:'
                     };
