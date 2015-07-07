@@ -51,7 +51,36 @@ module.exports = {
                 return 'error';
             }
         });
-    }
+    },
+
+    getMovies: function(location, theater, callback){
+        var googleUrl = 'http://www.google.it/movies?near='+location;
+        request(googleUrl, function(error, response, html){
+            if(!error){
+                var $ = cheerio.load(html);
+                var movies = [];
+                $('.theater .desc h2.name a').each(function(index){
+                    var text = $(this).text()
+                    if (decodeURI(text) == decodeURI(theater)){
+                        var data = $(this);
+                        data.parent().parent().siblings('.showtimes').find('.movie').each(function(){
+                            var element = {};
+                            var data = $(this);
+                            var name = data.find('a').text();
+                            element.name = name;
+                            movies.push({film: element});
+                        });
+                    }
+                });
+                if (typeof callback == "function")
+                    return callback(movies);
+                else
+                    return movies;
+            } else {
+                return 'error';
+            }
+        });
+    },
 }
 
 

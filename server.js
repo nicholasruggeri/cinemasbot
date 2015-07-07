@@ -15,12 +15,14 @@ app.post('/', function (req, res) {
     console.log('****** enter server');
 
     var chat_id = req.body.message.chat.id,
-        text = req.body.message.text,
+        user_action = req.body.message.text,
+        user_command = user_action.split(' ')[0];
+        user_parameter = user_action.split(' ')[1] || false;
         qs = {}; // object containing the query string that will be serialized
 
-    console.log('******* msg: ', text);
+    console.log('******* msg: ', user_command);
 
-    switch(text) {
+    switch(user_command) {
         case '/start':
             qs = {
                 reply_markup: JSON.stringify({"hide_keyboard": true}),
@@ -30,11 +32,11 @@ app.post('/', function (req, res) {
             cinemasBot.sendToTelegram(token, qs);
         break;
         case '/getcinema':
-            cinemasBot.getCinema('bergamo', function(theaters){
+            cinemasBot.getCinema(user_parameter, function(theaters){
                 qs = {
                     reply_markup: JSON.stringify({ "keyboard": theaters, "one_time_keyboard": true}),
                     chat_id: chat_id,
-                    text: 'Ecco i risultati'
+                    text: user_parameter ? 'Ecco i risultati' : 'Controlla il comando'
                 };
                 cinemasBot.sendToTelegram(token, qs);
             });
