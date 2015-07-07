@@ -10,6 +10,9 @@ var token = process.env.TELEGRAM_TOKEN;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+var session_request = false;
+var session_location;
+
 app.post('/', function (req, res) {
 
     console.log('****** enter server');
@@ -20,8 +23,7 @@ app.post('/', function (req, res) {
         user_parameter = user_action.substring(user_command.length+1, user_action.length),
         qs = {}; // object containing the query string that will be serialized
 
-    var session_request = false;
-    var session_location;
+
 
     console.log('******* user_action: ', user_action);
     console.log('******* user_command: ', user_command);
