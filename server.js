@@ -73,9 +73,9 @@ app.post('/', function (req, res) {
             console.log('keyboard click');
             cinemasBot.getMovies(session_location, user_action, function(movies){
                 qs = {
-                    reply_markup: JSON.stringify({"keyboard": movies}),
+                    reply_markup: JSON.stringify({"keyboard": movies,"one_time_keyboard": true,"resize_keyboard": true}),
                     chat_id: chat_id,
-                    text: 'Clicca sul film per sapere gli orari'
+                    text: 'Clicca sul film per saperne gli orari'
                 };
                 console.log('MOVIES', movies);
                 cinemasBot.sendMessage(token, qs);
