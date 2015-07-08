@@ -33,54 +33,51 @@ app.post('/', function (req, res) {
 
 
     if (user_command.charAt(0) == '/') {
-
-        // Command
-
-        // /start
-        if (user_command == '/start') {
-            qs = {
-                reply_markup: JSON.stringify({"hide_keyboard":true}),
-                chat_id: chat_id,
-                text: "Ciao " + req.body.message.chat.first_name + ", utilizza /getcinema seguito dalla tua città per ricevere la lista dei teatri e dei film nella tua zona"
-            };
-            cinemasBot.sendMessage(token, qs);
-        }
-
-        // /reset
-        if (user_command == '/reset'){
-            qs = {
-                reply_markup: JSON.stringify({"hide_keyboard":true}),
-                chat_id: chat_id,
-                text: "Ricerca resettata"
-            };
-            cinemasBot.sendMessage(token, qs);
-            session_request = false;
-            session_location = false;
-        }
-
-        // /getcinema [city]
-        if (user_command == '/getcinema'){
-            if (!user_parameter){
+        // Commands
+        switch(user_command) {
+            case '/start':
                 qs = {
-                    reply_markup: JSON.stringify({"hide_keyboard": true}),
+                    reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    text: 'Aggiungi una città dopo /getcinema'
+                    text: "Ciao " + req.body.message.chat.first_name + ", utilizza /getcinema seguito dalla tua città per ricevere la lista dei teatri e dei film nella tua zona"
                 };
                 cinemasBot.sendMessage(token, qs);
-            } else {
-                cinemasBot.getCinema(user_parameter, function(theaters){
+                break;
+
+            case '/reset':
+                qs = {
+                    reply_markup: JSON.stringify({"hide_keyboard":true}),
+                    chat_id: chat_id,
+                    text: "Ricerca resettata"
+                };
+                cinemasBot.sendMessage(token, qs);
+                session_request = false;
+                session_location = false;
+                break;
+
+            case '/getcinema':
+                if (!user_parameter){
                     qs = {
-                        reply_markup: JSON.stringify({"keyboard": theaters,"one_time_keyboard": true,"resize_keyboard": true}),
+                        reply_markup: JSON.stringify({"hide_keyboard": true}),
                         chat_id: chat_id,
-                        text: 'Scegli il cinema:'
+                        text: 'Aggiungi una città dopo /getcinema'
                     };
                     cinemasBot.sendMessage(token, qs);
-                    session_request = true;
-                    session_location = user_parameter;
-                    session_theaters = theaters;
-                    console.log('******* session_request: ', session_request);
-                });
-            }
+                } else {
+                    cinemasBot.getCinema(user_parameter, function(theaters){
+                        qs = {
+                            reply_markup: JSON.stringify({"keyboard": theaters,"one_time_keyboard": true,"resize_keyboard": true}),
+                            chat_id: chat_id,
+                            text: 'Scegli il cinema:'
+                        };
+                        cinemasBot.sendMessage(token, qs);
+                        session_request = true;
+                        session_location = user_parameter;
+                        session_theaters = theaters;
+                        console.log('******* session_request: ', session_request);
+                    });
+                }
+                break;
         }
 
     } else {
