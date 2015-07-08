@@ -113,7 +113,7 @@ app.post('/', function (req, res) {
         }
         if (session_request == "movie") {
 
-            cinemasBot.getMovies(session_location, session_theater_selected, req.body.message.text, function(movieTimes){
+            cinemasBot.getTimes(session_location, session_theater_selected, req.body.message.text, function(movieTimes){
                 qs = {
                     chat_id: chat_id,
                     text: movieTimes

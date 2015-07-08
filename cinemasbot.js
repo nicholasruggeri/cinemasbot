@@ -85,27 +85,35 @@ module.exports = {
         });
     },
 
-    getTime: function(location, theater, movie){
+    getTimes: function(location, theater, movie, callback){
+         console.log('****** enter getTimes');
         var googleUrl = 'http://www.google.it/movies?near='+location;
         request(googleUrl, function(error, response, html){
             if(!error){
                 var $ = cheerio.load(html);
-                $('.theater .desc h2.name a').each(function(index){
+                $('.theater .desc h2.name a').each(function(){
                     var text = $(this).text()
                     if (text == theater){
                         var data = $(this);
                         data.parent().parent().siblings('.showtimes').find('.movie').each(function(){
                             var text = $(this).find('.name').text();
+                            console.log('text', text);
+                            console.log('movie', movie);
                             if (text == movie){
                                 var data = $(this);
                                 var movieTimes = data.find('.times').text();
                                 var responseTimes = "Gli orari di " + decodeURI(movie) + " sono: " + movieTimes;
-                                return responseTimes;
                             }
                         });
+                        if (typeof callback == "function")
+                            return callback(responseTimes);
+                        else
+                            return responseTimes;
                     }
                 });
-            };
+            } else {
+                return 'error';
+            }
         });
     }
 }
