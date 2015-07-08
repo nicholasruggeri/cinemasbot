@@ -51,7 +51,9 @@ app.post('/', function (req, res) {
                 visitor.pageview("/start").send();
                 break;
 
-            case '/author', '/creator', '/dev':
+            case '/author':
+            case '/creator':
+            case '/dev':
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
@@ -62,7 +64,9 @@ app.post('/', function (req, res) {
                 visitor.pageview("/author").send();
                 break;
 
-            case '/reset', '/end', '/quit':
+            case '/reset':
+            case '/end':
+            case '/quit':
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
@@ -74,7 +78,8 @@ app.post('/', function (req, res) {
                 visitor.pageview("/reset").send();
                 break;
 
-            case '/help', '/info':
+            case '/help':
+            case '/info':
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
