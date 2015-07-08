@@ -29,6 +29,7 @@ module.exports = {
     },
 
     getCinema: function(location, callback){
+        console.log('****** enter getCinema');
         var googleUrl = 'http://www.google.it/movies?near='+location;
         request(googleUrl, function(error, response, html){
             if(!error){
@@ -62,8 +63,6 @@ module.exports = {
                 var movies = [];
                 $('.theater .desc h2.name a').each(function(index){
                     var text = $(this).text()
-                    console.log('theater', theater);
-                    console.log('text', text);
                     if (text == theater){
                         var data = $(this);
                         data.parent().parent().siblings('.showtimes').find('.movie').each(function(){

@@ -63,6 +63,15 @@ app.post('/', function (req, res) {
                     console.log('******* session_request: ', session_request);
                 });
             }
+        } else if (user_command == '/reset'){
+            qs = {
+                reply_markup: JSON.stringify({"hide_keyboard":true}),
+                chat_id: chat_id,
+                text: "Ricerca resettata"
+            };
+            cinemasBot.sendMessage(token, qs);
+            session_request = false;
+            session_location = false;
         }
 
     } else {
@@ -74,7 +83,6 @@ app.post('/', function (req, res) {
                         chat_id: chat_id,
                         text: 'Clicca sul film per saperne gli orari'
                     };
-                    console.log('MOVIES', movies);
                     cinemasBot.sendMessage(token, qs);
                     // session_request = false;
                     // session_location = false;
