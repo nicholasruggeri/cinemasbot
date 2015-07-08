@@ -1,7 +1,8 @@
 var express = require('express'),
-    bodyParser = require('body-parser'),
     request = require('request'),
     cheerio = require('cheerio'),
+    bodyParser = require('body-parser'),
+    _ = require('underscore'),
     cinemasBot = require('./cinemasbot');
 
 var app = express();
@@ -13,6 +14,8 @@ app.use(bodyParser.json());
 var session_request = false,
     session_location = false,
     session_theaters = false;
+
+var
 
 app.post('/', function (req, res) {
 
@@ -71,8 +74,7 @@ app.post('/', function (req, res) {
         console.log('******* session_request: ', session_request);
         if (session_request) {
             // inserire controllo se user_action == session_theaters[i]
-
-            if (session_theaters.indexOf(user_action) > -1){
+            if (_.flatten(session_theaters).indexOf(user_action) > -1){
                 console.log('click keyboard')
             } else {
                 console.log('Scrivi correttamente il teatro')
