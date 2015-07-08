@@ -18,8 +18,6 @@ var session_request = false,
 
 app.post('/', function (req, res) {
 
-    console.log('****** enter server');
-
     var chat_id = req.body.message.chat.id,
         user_action = req.body.message.text + " ",
         user_command = user_action.split(' ')[0],
@@ -52,7 +50,6 @@ app.post('/', function (req, res) {
                 };
                 cinemasBot.sendMessage(token, qs);
             } else {
-                console.log('******* session_request: ', session_request);
                 cinemasBot.getCinema(user_parameter, function(theaters){
                     qs = {
                         reply_markup: JSON.stringify({"keyboard": theaters,"one_time_keyboard": true,"resize_keyboard": true}),
@@ -69,10 +66,7 @@ app.post('/', function (req, res) {
         }
 
     } else {
-        console.log('other command');
-        console.log('******* session_request: ', session_request);
         if (session_request) {
-            // inserire controllo se user_action == session_theaters[i]
             if (_.flatten(session_theaters).indexOf(req.body.message.text) > -1){
                 cinemasBot.getMovies(session_location, user_action, function(movies){
                     qs = {

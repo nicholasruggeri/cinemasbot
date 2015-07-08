@@ -62,6 +62,8 @@ module.exports = {
                 var movies = [];
                 $('.theater .desc h2.name a').each(function(index){
                     var text = $(this).text()
+                    console.log('theater', theater);
+                    console.log('text', text);
                     if (text == theater){
                         var data = $(this);
                         data.parent().parent().siblings('.showtimes').find('.movie').each(function(){
@@ -74,10 +76,8 @@ module.exports = {
                     }
                 });
                 if (typeof callback == "function"){
-                    console.log('callback');
                     return callback(movies);
                 } else {
-                    console.log('array');
                     return movies;
                 }
             } else {
