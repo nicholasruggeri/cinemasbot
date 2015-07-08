@@ -96,7 +96,7 @@ module.exports = {
                     if (text == theater){
                         var data = $(this);
                         data.parent().parent().siblings('.showtimes').find('.movie').each(function(){
-                            var text = $(this).find('.name a').text();
+                            var text = $(this).find('.name').text();
                             if (text == movie){
                                 var data = $(this);
                                 var movieTimes = data.find('.times').text();
