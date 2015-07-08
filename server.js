@@ -96,7 +96,7 @@ app.post('/', function (req, res) {
                 session_theater_selected = req.body.message.text;
                 cinemasBot.getMovies(session_location, req.body.message.text, function(movies){
                     qs = {
-                        reply_markup: JSON.stringify({"keyboard": movies,"one_time_keyboard": true,"resize_keyboard": true}),
+                        reply_markup: JSON.stringify({"keyboard": movies,"resize_keyboard": true}),
                         chat_id: chat_id,
                         text: 'Clicca sul film per saperne gli orari'
                     };
