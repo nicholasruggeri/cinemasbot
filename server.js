@@ -41,9 +41,10 @@ app.post('/', function (req, res) {
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    text: "Ciao " + req.body.message.chat.first_name + ", utilizza /getcinema seguito dalla tua città per ricevere la lista dei teatri e dei film nella tua zona"
+                    text: "Ciao " + req.body.message.chat.first_name + ", utilizza /getcinema seguito dalla tua città per ricevere la lista dei teatri e dei film nella tua zona. Scrivi /help per la lista dei comandi"
                 };
                 cinemasBot.sendMessage(token, qs);
+                session_request = false;
                 break;
 
             case '/reset':
