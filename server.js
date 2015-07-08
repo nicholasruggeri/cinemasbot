@@ -68,7 +68,7 @@ app.post('/', function (req, res) {
     } else {
         if (session_request) {
             if (_.flatten(session_theaters).indexOf(req.body.message.text) > -1){
-                cinemasBot.getMovies(session_location, user_action, function(movies){
+                cinemasBot.getMovies(session_location, req.body.message.text, function(movies){
                     qs = {
                         reply_markup: JSON.stringify({"keyboard": movies,"one_time_keyboard": true,"resize_keyboard": true}),
                         chat_id: chat_id,
