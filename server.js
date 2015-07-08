@@ -93,7 +93,7 @@ app.post('/', function (req, res) {
                         session_location = user_parameter;
                         session_theaters = theaters;
                     });
-                    visitor.pageview("/city/" + user_parameter).send();
+                    visitor.pageview("/city/" + session_location).send();
                 }
                 break;
         }
@@ -111,7 +111,7 @@ app.post('/', function (req, res) {
                     cinemasBot.sendMessage(token, qs);
                     session_request = "movie";
                 });
-                visitor.pageview("/getcinema/"+  session_theater_selected ).send();
+                visitor.pageview("/getcinema/"+ session_location + "/" + session_theater_selected ).send();
             } else {
                 qs = {
                     chat_id: chat_id,
@@ -129,7 +129,7 @@ app.post('/', function (req, res) {
                     text: movieTimes
                 };
                 cinemasBot.sendMessage(token, qs);
-                visitor.pageview("/getmovie/"+  session_theater_selected +"/"+ req.body.message.text).send();
+                visitor.pageview("/getmovie/"+ session_location + "/"+ session_theater_selected +"/"+ req.body.message.text).send();
             });
 
         }
