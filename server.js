@@ -30,7 +30,7 @@ app.post('/', function (req, res) {
     console.log('*** session_request: ', session_request);
 
 
-    if (user_command.charAt(0) == '/') {
+    if (user_action.charAt(0) == '/') {
 
         var user_command = user_action.split(' ')[0],
             user_parameter = user_action.substring(user_command.length+1, user_action.length);
@@ -108,14 +108,14 @@ app.post('/', function (req, res) {
                 }
                 break;
 
-            // default:
-            //     qs = {
-            //         reply_markup: JSON.stringify({"hide_keyboard":true}),
-            //         chat_id: chat_id,
-            //         text: "Command not found, use /help for list of commands"
-            //     };
-            //     cinemasBot.sendMessage(token, qs);
-            //     visitor.pageview("/error-command").send();
+            default:
+                qs = {
+                    reply_markup: JSON.stringify({"hide_keyboard":true}),
+                    chat_id: chat_id,
+                    text: "Command not found, use /help for list of commands"
+                };
+                cinemasBot.sendMessage(token, qs);
+                visitor.pageview("/error-command").send();
 
         }
 
