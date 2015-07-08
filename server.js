@@ -73,7 +73,7 @@ app.post('/', function (req, res) {
         console.log('******* session_request: ', session_request);
         if (session_request) {
             // inserire controllo se user_action == session_theaters[i]
-            if (_.flatten(session_theaters).indexOf(user_action) > -1){
+            if (_.flatten(session_theaters).indexOf(req.body.message.text) > -1){
                 console.log('click keyboard');
             } else {
                 console.log(_.flatten(session_theaters));
