@@ -3,10 +3,12 @@ var express = require('express'),
     cheerio = require('cheerio'),
     bodyParser = require('body-parser'),
     _ = require('underscore'),
+    ua = require('universal-analytics'),
     cinemasBot = require('./cinemasbot');
 
 var app = express();
 var token = process.env.TELEGRAM_TOKEN;
+var visitor = ua(process.env.UA_TOKEN);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -19,6 +21,7 @@ var session_request = false,
 
 
 app.post('/', function (req, res) {
+
 
     var chat_id = req.body.message.chat.id,
         user_action = req.body.message.text + " ",
@@ -45,6 +48,7 @@ app.post('/', function (req, res) {
                 };
                 cinemasBot.sendMessage(token, qs);
                 session_request = false;
+                visitor.pageview("/start").send();
                 break;
 
             case '/reset':
@@ -56,6 +60,7 @@ app.post('/', function (req, res) {
                 cinemasBot.sendMessage(token, qs);
                 session_request = false;
                 session_location = false;
+                visitor.pageview("/reset").send();
                 break;
 
             case '/help':
@@ -65,6 +70,7 @@ app.post('/', function (req, res) {
                     text: "This is the list of commands: \n /start\n /reset\n /getcinema\n /help"
                 };
                 cinemasBot.sendMessage(token, qs);
+                visitor.pageview("/help").send();
                 break;
 
             case '/getcinema':
@@ -88,6 +94,7 @@ app.post('/', function (req, res) {
                         session_theaters = theaters;
                     });
                 }
+                visitor.pageview("/getcinema").send();
                 break;
         }
 
@@ -104,12 +111,14 @@ app.post('/', function (req, res) {
                     cinemasBot.sendMessage(token, qs);
                     session_request = "movie";
                 });
+                visitor.pageview("/getcinema/"+  session_theater_selected ).send();
             } else {
                 qs = {
                     chat_id: chat_id,
                     text: 'Use your keyboard with these options to reply'
                 };
                 cinemasBot.sendMessage(token, qs);
+                visitor.pageview("/getcinema/error").send();
             }
         }
         if (session_request == "movie") {
@@ -120,6 +129,7 @@ app.post('/', function (req, res) {
                     text: movieTimes
                 };
                 cinemasBot.sendMessage(token, qs);
+                visitor.pageview("/getcinema/"+  session_theater_selected +"/"+ req.body.message.text).send();
             });
 
         }

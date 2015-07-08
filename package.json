@@ -9,6 +9,7 @@
     "request": "latest",
     "cheerio": "latest",
     "body-parser": "1.13.1",
-    "underscore": "latest"
+    "underscore": "latest",
+    "universal-analytics": "latest"
   }
 }
