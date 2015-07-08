@@ -86,7 +86,7 @@ module.exports = {
     },
 
     getTimes: function(location, theater, movie, callback){
-         console.log('****** enter getTimes');
+        console.log('****** enter getTimes');
         var googleUrl = 'http://www.google.it/movies?near='+location;
         request(googleUrl, function(error, response, html){
             if(!error){
@@ -97,8 +97,6 @@ module.exports = {
                         var data = $(this);
                         data.parent().parent().siblings('.showtimes').find('.movie').each(function(){
                             var text = $(this).find('.name').text();
-                            console.log('text', text);
-                            console.log('movie', movie);
                             if (text == movie){
                                 var data = $(this);
                                 var movieTimes = data.find('.times').text();
