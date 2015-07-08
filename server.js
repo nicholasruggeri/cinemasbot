@@ -51,6 +51,17 @@ app.post('/', function (req, res) {
                 visitor.pageview("/start").send();
                 break;
 
+            case '/author':
+                qs = {
+                    reply_markup: JSON.stringify({"hide_keyboard":true}),
+                    chat_id: chat_id,
+                    text: "The creator of this amazing Bot is the brilliant @nicksruggeri"
+                };
+                cinemasBot.sendMessage(token, qs);
+                session_request = false;
+                visitor.pageview("/author").send();
+                break;
+
             case '/reset':
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
