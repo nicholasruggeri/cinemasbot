@@ -93,8 +93,8 @@ app.post('/', function (req, res) {
                         session_location = user_parameter;
                         session_theaters = theaters;
                     });
+                    visitor.pageview("/city/" + user_parameter).send();
                 }
-                visitor.pageview("/getcinema").send();
                 break;
         }
 
@@ -129,7 +129,7 @@ app.post('/', function (req, res) {
                     text: movieTimes
                 };
                 cinemasBot.sendMessage(token, qs);
-                visitor.pageview("/getcinema/"+  session_theater_selected +"/"+ req.body.message.text).send();
+                visitor.pageview("/getmovie/"+  session_theater_selected +"/"+ req.body.message.text).send();
             });
 
         }
