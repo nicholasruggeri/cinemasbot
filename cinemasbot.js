@@ -62,7 +62,7 @@ module.exports = {
                 var movies = [];
                 $('.theater .desc h2.name a').each(function(index){
                     var text = $(this).text()
-                    if (text == decodeURItheater){
+                    if (text == theater){
                         var data = $(this);
                         data.parent().parent().siblings('.showtimes').find('.movie').each(function(){
                             var element = {};
