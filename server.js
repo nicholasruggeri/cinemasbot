@@ -59,7 +59,7 @@ app.post('/', function (req, res) {
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    text: "Questa è la lista dei comandi: \n /start /reset /getcinema /help"
+                    text: "Questa è la lista dei comandi: \n /start\n /reset\n /getcinema\n /help"
                 };
                 cinemasBot.sendMessage(token, qs);
                 break;
