@@ -100,7 +100,7 @@ module.exports = {
                             if (text == movie){
                                 var data = $(this);
                                 var movieTimes = data.find('.times').text();
-                                var responseTimes = "Gli orari di " + decodeURI(movie) + " sono: " + movieTimes;
+                                var responseTimes = "The show times for " + decodeURI(movie) + " are: " + movieTimes;
                                 if (typeof callback == "function")
                                     return callback(responseTimes);
                                 else
