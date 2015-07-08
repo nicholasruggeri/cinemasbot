@@ -108,14 +108,14 @@ app.post('/', function (req, res) {
                 }
                 break;
 
-            default:
-                qs = {
-                    reply_markup: JSON.stringify({"hide_keyboard":true}),
-                    chat_id: chat_id,
-                    text: "Command not found, use /help for list of commands"
-                };
-                cinemasBot.sendMessage(token, qs);
-                visitor.pageview("/error-command").send();
+            // default:
+            //     qs = {
+            //         reply_markup: JSON.stringify({"hide_keyboard":true}),
+            //         chat_id: chat_id,
+            //         text: "Command not found, use /help for list of commands"
+            //     };
+            //     cinemasBot.sendMessage(token, qs);
+            //     visitor.pageview("/error-command").send();
 
         }
 
