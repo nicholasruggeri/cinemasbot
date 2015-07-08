@@ -1,3 +1,3 @@
 # cinemasbot
 
-Add @CinemasBot to your chats to find and share movie theater schedules near you.
+Add [@CinemasBot](https://telegram.me/cinemasbot) to your chats to find and share movie theater schedules near you.
