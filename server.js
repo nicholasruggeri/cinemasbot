@@ -34,6 +34,9 @@ app.post('/', function (req, res) {
 
     if (user_command.charAt(0) == '/') {
 
+        // Command
+
+        // /start
         if (user_command == '/start') {
             qs = {
                 reply_markup: JSON.stringify({"hide_keyboard":true}),
@@ -41,7 +44,22 @@ app.post('/', function (req, res) {
                 text: "Ciao " + req.body.message.chat.first_name + ", utilizza /getcinema seguito dalla tua città per ricevere la lista dei teatri e dei film nella tua zona"
             };
             cinemasBot.sendMessage(token, qs);
-        } else if (user_command == '/getcinema'){
+        }
+
+        // /reset
+        if (user_command == '/reset'){
+            qs = {
+                reply_markup: JSON.stringify({"hide_keyboard":true}),
+                chat_id: chat_id,
+                text: "Ricerca resettata"
+            };
+            cinemasBot.sendMessage(token, qs);
+            session_request = false;
+            session_location = false;
+        }
+
+        // /getcinema [city]
+        if (user_command == '/getcinema'){
             if (!user_parameter){
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard": true}),
@@ -63,15 +81,6 @@ app.post('/', function (req, res) {
                     console.log('******* session_request: ', session_request);
                 });
             }
-        } else if (user_command == '/reset'){
-            qs = {
-                reply_markup: JSON.stringify({"hide_keyboard":true}),
-                chat_id: chat_id,
-                text: "Ricerca resettata"
-            };
-            cinemasBot.sendMessage(token, qs);
-            session_request = false;
-            session_location = false;
         }
 
     } else {
