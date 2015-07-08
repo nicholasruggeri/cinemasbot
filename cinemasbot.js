@@ -103,12 +103,12 @@ module.exports = {
                                 var data = $(this);
                                 var movieTimes = data.find('.times').text();
                                 var responseTimes = "Gli orari di " + decodeURI(movie) + " sono: " + movieTimes;
+                                if (typeof callback == "function")
+                                    return callback(responseTimes);
+                                else
+                                    return responseTimes;
                             }
                         });
-                        if (typeof callback == "function")
-                            return callback(responseTimes);
-                        else
-                            return responseTimes;
                     }
                 });
             } else {
