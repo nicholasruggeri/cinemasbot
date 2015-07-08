@@ -84,30 +84,28 @@ module.exports = {
             }
         });
     },
-}
 
-    // getTime: function(location, theater, movie, res){
-    //     var googleUrl = 'http://www.google.it/movies?near='+location;
-    //     request(googleUrl, function(error, response, html){
-    //         if(!error){
-    //             var $ = cheerio.load(html);
-    //             var times = [];
-    //             $('.theater .desc h2.name a').each(function(index){
-    //                 var text = $(this).text()
-    //                 if (decodeURI(text) == decodeURI(theater)){
-    //                     var data = $(this);
-    //                     data.parent().parent().siblings('.showtimes').find('.movie').each(function(){
-    //                         var text = $(this).find('.name').text();
-    //                         if (decodeURI(text) == decodeURI(movie)){
-    //                             var data = $(this);
-    //                             var movieTimes = data.find('.times').text();
-    //                             var responseTimes = "Gli orari di " + decodeURI(movie) + " sono: " + movieTimes;
-    //                             res.send(responseTimes);
-    //                             return;
-    //                         }
-    //                     });
-    //                 }
-    //             });
-    //         };
-    //     });
-    // }
+    getTime: function(location, theater, movie){
+        var googleUrl = 'http://www.google.it/movies?near='+location;
+        request(googleUrl, function(error, response, html){
+            if(!error){
+                var $ = cheerio.load(html);
+                $('.theater .desc h2.name a').each(function(index){
+                    var text = $(this).text()
+                    if (text == theater){
+                        var data = $(this);
+                        data.parent().parent().siblings('.showtimes').find('.movie').each(function(){
+                            var text = $(this).find('.name').text();
+                            if (text == movie){
+                                var data = $(this);
+                                var movieTimes = data.find('.times').text();
+                                var responseTimes = "Gli orari di " + decodeURI(movie) + " sono: " + movieTimes;
+                                return responseTimes;
+                            }
+                        });
+                    }
+                });
+            };
+        });
+    }
+}

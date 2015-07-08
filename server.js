@@ -13,7 +13,9 @@ app.use(bodyParser.json());
 
 var session_request = false,
     session_location = false,
-    session_theaters = false;
+    session_theaters = false,
+    session_movies = false,
+    session_theater_selected = false;
 
 
 app.post('/', function (req, res) {
@@ -80,18 +82,18 @@ app.post('/', function (req, res) {
                             text: 'Scegli il cinema:'
                         };
                         cinemasBot.sendMessage(token, qs);
-                        session_request = true;
+                        session_request = "cinema";
                         session_location = user_parameter;
                         session_theaters = theaters;
-                        console.log('******* session_request: ', session_request);
                     });
                 }
                 break;
         }
 
     } else {
-        if (session_request) {
+        if (session_request == "cinema") {
             if (_.flatten(session_theaters).indexOf(req.body.message.text) > -1){
+                session_theater_selected = req.body.message.text;
                 cinemasBot.getMovies(session_location, req.body.message.text, function(movies){
                     qs = {
                         reply_markup: JSON.stringify({"keyboard": movies,"one_time_keyboard": true,"resize_keyboard": true}),
@@ -99,8 +101,7 @@ app.post('/', function (req, res) {
                         text: 'Clicca sul film per saperne gli orari'
                     };
                     cinemasBot.sendMessage(token, qs);
-                    // session_request = false;
-                    // session_location = false;
+                    session_request = "movie";
                 });
             } else {
                 qs = {
@@ -109,6 +110,17 @@ app.post('/', function (req, res) {
                 };
                 cinemasBot.sendMessage(token, qs);
             }
+        }
+        if (session_request == "movie") {
+
+            cinemasBot.getMovies(session_location, session_theater_selected, req.body.message.text, function(movieTimes){
+                qs = {
+                    chat_id: chat_id,
+                    text: movieTimes
+                };
+                cinemasBot.sendMessage(token, qs);
+            });
+
         }
     }
 
