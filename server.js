@@ -2,7 +2,7 @@ var express = require('express'),
     request = require('request'),
     cheerio = require('cheerio'),
     bodyParser = require('body-parser'),
-    underscore = require('underscore'),
+    _ = require('underscore'),
     cinemasBot = require('./cinemasbot');
 
 var app = express();
@@ -74,7 +74,7 @@ app.post('/', function (req, res) {
         console.log('******* session_request: ', session_request);
         if (session_request) {
             // inserire controllo se user_action == session_theaters[i]
-            if (underscore.flatten(session_theaters).indexOf(user_action) > -1){
+            if ((_.flatten(session_theaters)).indexOf(user_action) > -1){
                 console.log('click keyboard')
             } else {
                 console.log('Scrivi correttamente il teatro')
