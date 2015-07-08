@@ -15,7 +15,6 @@ var session_request = false,
     session_location = false,
     session_theaters = false;
 
-var
 
 app.post('/', function (req, res) {
 
@@ -74,7 +73,7 @@ app.post('/', function (req, res) {
         console.log('******* session_request: ', session_request);
         if (session_request) {
             // inserire controllo se user_action == session_theaters[i]
-            if ((_.flatten(session_theaters)).indexOf(user_action) > -1){
+            if (_.flatten(session_theaters).indexOf(user_action) > -1){
                 console.log('click keyboard')
             } else {
                 console.log('Scrivi correttamente il teatro')
