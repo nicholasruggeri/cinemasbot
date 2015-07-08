@@ -74,23 +74,24 @@ app.post('/', function (req, res) {
         if (session_request) {
             // inserire controllo se user_action == session_theaters[i]
             if (_.flatten(session_theaters).indexOf(req.body.message.text) > -1){
-                console.log('click keyboard');
+                cinemasBot.getMovies(session_location, user_action, function(movies){
+                    qs = {
+                        reply_markup: JSON.stringify({"keyboard": movies,"one_time_keyboard": true,"resize_keyboard": true}),
+                        chat_id: chat_id,
+                        text: 'Clicca sul film per saperne gli orari'
+                    };
+                    console.log('MOVIES', movies);
+                    cinemasBot.sendMessage(token, qs);
+                    // session_request = false;
+                    // session_location = false;
+                });
             } else {
-                console.log(_.flatten(session_theaters));
+                qs = {
+                    chat_id: chat_id,
+                    text: 'Usa la tastiera con le opzioni per rispondere'
+                };
+                cinemasBot.sendMessage(token, qs);
             }
-
-
-            // cinemasBot.getMovies(session_location, user_action, function(movies){
-            //     qs = {
-            //         reply_markup: JSON.stringify({"keyboard": movies,"one_time_keyboard": true,"resize_keyboard": true}),
-            //         chat_id: chat_id,
-            //         text: 'Clicca sul film per saperne gli orari'
-            //     };
-            //     console.log('MOVIES', movies);
-            //     cinemasBot.sendMessage(token, qs);
-            //     session_request = false;
-            //     session_location = false;
-            // });
         }
     }
 
