@@ -55,6 +55,15 @@ app.post('/', function (req, res) {
                 session_location = false;
                 break;
 
+            case '/help':
+                qs = {
+                    reply_markup: JSON.stringify({"hide_keyboard":true}),
+                    chat_id: chat_id,
+                    text: "Questa è la lista dei comandi: \n /start /reset /getcinema /help"
+                };
+                cinemasBot.sendMessage(token, qs);
+                break;
+
             case '/getcinema':
                 if (!user_parameter){
                     qs = {
