@@ -10,9 +10,6 @@ var app = express();
 var token = process.env.TELEGRAM_TOKEN;
 var visitor = ua(process.env.UA_TOKEN);
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
 var session_request = false,
     session_location = false,
     session_theaters = false,
@@ -20,24 +17,27 @@ var session_request = false,
     session_theater_selected = false;
 
 
-app.post('/', function (req, res) {
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
+app.post('/', function (req, res) {
 
     var chat_id = req.body.message.chat.id,
         user_action = req.body.message.text + " ",
-        user_command = user_action.split(' ')[0],
-        user_parameter = user_action.substring(user_command.length+1, user_action.length),
         qs = {}; // object containing the query string that will be serialized
 
-
-
-    console.log('******* user_action: ', user_action);
-    console.log('******* user_command: ', user_command);
-    console.log('******* user_parameter: ', user_parameter);
-    console.log('******* session_request: ', session_request);
+    console.log('*** user_action: ', user_action);
+    console.log('*** session_request: ', session_request);
 
 
     if (user_command.charAt(0) == '/') {
+
+        var user_command = user_action.split(' ')[0],
+            user_parameter = user_action.substring(user_command.length+1, user_action.length);
+
+        console.log('*** user_command: ', user_command);
+        console.log('*** user_parameter: ', user_parameter);
+
         // Commands
         switch(user_command) {
             case '/start':
@@ -107,6 +107,16 @@ app.post('/', function (req, res) {
                     visitor.pageview("/city/" + session_location).send();
                 }
                 break;
+
+            default:
+                qs = {
+                    reply_markup: JSON.stringify({"hide_keyboard":true}),
+                    chat_id: chat_id,
+                    text: "Command not found, use /help for list of commands"
+                };
+                cinemasBot.sendMessage(token, qs);
+                visitor.pageview("/error-command").send();
+
         }
 
     } else {
