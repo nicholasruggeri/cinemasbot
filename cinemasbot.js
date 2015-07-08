@@ -62,14 +62,16 @@ module.exports = {
                 var movies = [];
                 $('.theater .desc h2.name a').each(function(index){
                     var text = $(this).text()
-                    var data = $(this);
-                    data.parent().parent().siblings('.showtimes').find('.movie').each(function(){
-                        var element = {};
+                    if (text == decodeURItheater){
                         var data = $(this);
-                        var name = data.find('a').text();
-                        element = name;
-                        movies.push([element]);
-                    });
+                        data.parent().parent().siblings('.showtimes').find('.movie').each(function(){
+                            var element = {};
+                            var data = $(this);
+                            var name = data.find('a').text();
+                            element = name;
+                            movies.push([element]);
+                        });
+                    }
                 });
                 if (typeof callback == "function"){
                     console.log('callback');
