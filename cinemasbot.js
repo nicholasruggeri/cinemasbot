@@ -68,7 +68,7 @@ module.exports = {
                         data.parent().parent().siblings('.showtimes').find('.movie').each(function(){
                             var element = {};
                             var data = $(this);
-                            var name = data.find('a').text();
+                            var name = data.find('.name a').text();
                             element = name;
                             movies.push([element]);
                         });
@@ -96,7 +96,7 @@ module.exports = {
                     if (text == theater){
                         var data = $(this);
                         data.parent().parent().siblings('.showtimes').find('.movie').each(function(){
-                            var text = $(this).find('.name > a').text();
+                            var text = $(this).find('.name a').text();
                             if (text == movie){
                                 var data = $(this);
                                 var movieTimes = data.find('.times').text();
