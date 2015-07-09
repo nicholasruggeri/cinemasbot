@@ -26,21 +26,21 @@ app.post('/', function (req, res) {
         user_action = req.body.message.text + " ",
         qs = {}; // object containing the query string that will be serialized
 
-    console.log('*** user_action: ', user_action);
-    console.log('*** session_request: ', session_request);
-
-
     if (user_action.charAt(0) == '/') {
 
         var user_command = user_action.split(' ')[0],
             user_parameter = user_action.substring(user_command.length+1, user_action.length);
 
-        console.log('*** user_command: ', user_command);
-        console.log('*** user_parameter: ', user_parameter);
+        console.log('*** - COMMAND - Name: ' + req.body.message.chat.first_name);
+        console.log('*** - COMMAND: '+user_command+' - Name: ' + req.body.message.chat.first_name);
+        console.log('*** - PARAMETER: '+user_parameter+' - Name: ' + req.body.message.chat.first_name);
 
         // Commands
         switch(user_command) {
             case '/start':
+
+                console.log('*** - COMMAND: /START - Name: ' + req.body.message.chat.first_name);
+
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
@@ -68,6 +68,7 @@ app.post('/', function (req, res) {
             case '/reset':
             case '/end':
             case '/quit':
+                console.log('*** - COMMAND: /RESET - Name: ' + req.body.message.chat.first_name);
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
@@ -81,6 +82,7 @@ app.post('/', function (req, res) {
 
             case '/help':
             case '/info':
+                console.log('*** - COMMAND: /HELP - Name: ' + req.body.message.chat.first_name);
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
@@ -93,6 +95,7 @@ app.post('/', function (req, res) {
 
             case '/getcinema':
                 if (!user_parameter){
+                    console.log('*** - COMMAND: /GETCINEMA NOT PARAMETER- Name: ' + req.body.message.chat.first_name);
                     qs = {
                         reply_markup: JSON.stringify({"hide_keyboard": true}),
                         chat_id: chat_id,
@@ -100,8 +103,8 @@ app.post('/', function (req, res) {
                     };
                     cinemasBot.sendMessage(token, qs);
                 } else {
+                    console.log('*** - COMMAND: /GETCINEMA '+user_parameter+' - Name: ' + req.body.message.chat.first_name);
                     cinemasBot.getCinema(user_parameter, function(theaters){
-                        console.log("******** lenght",theaters.length)
                         if (theaters.length > 0){
                             qs = {
                                 reply_markup: JSON.stringify({"keyboard": theaters,"one_time_keyboard": true,"resize_keyboard": true}),
@@ -125,6 +128,7 @@ app.post('/', function (req, res) {
                 break;
 
             default:
+                console.log('*** - ERROR COMMAND: - Name: ' + req.body.message.chat.first_name);
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
@@ -136,8 +140,10 @@ app.post('/', function (req, res) {
         }
 
     } else {
+
         if (session_request == "cinema") {
             if (_.flatten(session_theaters).indexOf(req.body.message.text) > -1){
+                console.log('*** STEP 2 - CHOOSE CINEMA - Name: ' + req.body.message.chat.first_name);
                 session_theater_selected = req.body.message.text;
                 cinemasBot.getMovies(session_location, req.body.message.text, function(movies){
                     qs = {
@@ -151,6 +157,7 @@ app.post('/', function (req, res) {
                 });
                 visitor.pageview("/getcinema/"+ session_location + "/" + session_theater_selected ).send();
             } else {
+                console.log('*** STEP 2 - CHOOSE CINEMA ERROR - Name: ' + req.body.message.chat.first_name);
                 qs = {
                     chat_id: chat_id,
                     text: 'Use your keyboard with these options to reply'
@@ -162,6 +169,7 @@ app.post('/', function (req, res) {
         if (session_request == "movie") {
 
             if (_.flatten(session_movies).indexOf(req.body.message.text) > -1){
+                console.log('*** STEP 3 - CHOOSE MOVIE - Name: ' + req.body.message.chat.first_name);
                 cinemasBot.getTimes(session_location, session_theater_selected, req.body.message.text, function(movieTimes){
                     qs = {
                         chat_id: chat_id,
@@ -171,6 +179,7 @@ app.post('/', function (req, res) {
                     visitor.pageview("/getmovie/"+ session_location + "/"+ session_theater_selected +"/"+ req.body.message.text).send();
                 });
             } else {
+                console.log('*** STEP 3 - CHOOSE MOVIE ERROR - Name: ' + req.body.message.chat.first_name);
                 qs = {
                     chat_id: chat_id,
                     text: 'Use your keyboard with these options to reply'
@@ -179,6 +188,8 @@ app.post('/', function (req, res) {
                 visitor.pageview("/getmovie/error").send();
             }
         }
+    } else {
+        console.log('*** - NOT A COMMAND - Name: ' + req.body.message.chat.first_name);
     }
 
     res.send();

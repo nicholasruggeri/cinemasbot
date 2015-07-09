@@ -11,10 +11,10 @@ module.exports = {
             qs: qs
         }, function (err, response, body) {
             if (err) {
-                console.log(err); return;
+                console.log("ERROR SENDMESSAGE", err); return;
             }
-            console.log('Got response ' + response.statusCode);
-            console.log(body);
+            // console.log('Got response ' + response.statusCode);
+            // console.log(body);
         });
     },
 
@@ -39,7 +39,7 @@ module.exports = {
                 else
                     return theaters;
             } else {
-                return 'error';
+                console.log("ERROR GETCINEMA", err); return;
             }
         });
     },
@@ -70,7 +70,7 @@ module.exports = {
                     return movies;
                 }
             } else {
-                return 'error';
+                console.log("ERROR GETMOVIES", err); return;
             }
         });
     },
@@ -100,7 +100,7 @@ module.exports = {
                     }
                 });
             } else {
-                return 'error';
+                console.log("ERROR GETTIMES", err); return;
             }
         });
     }
