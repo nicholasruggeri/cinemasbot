@@ -42,7 +42,7 @@ app.post('/', function (req, res) {
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    text: "Hello " + req.body.message.chat.first_name + ", use '/getcinema [your city]' to receive the list of movie theaters near you.\nUse /help for list of commands.\n\nIf you found @CinemasBot useful, buy us a beer!\nPaypal: http://tinyurl.com/beer-for-cinemasbot",
+                    text: "Hello " + req.body.message.chat.first_name + ", use '/getcinema [your city]' to receive the list of movie theaters near you. Ex: '/getcinema Venezia'\n\nUse /help for list of commands.\n\nIf you found @CinemasBot useful, buy us a beer!\nPaypal: http://tinyurl.com/beer-for-cinemasbot",
                     disable_web_page_preview: true
                 };
                 cinemasBot.sendMessage(token, qs);
