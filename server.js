@@ -176,6 +176,7 @@ app.post('/', function (req, res) {
             if (_.flatten(session_movies).indexOf(req.body.message.text) > -1){
 
                 // Clicco su un film della lista
+                visitor.pageview("/gettimes/option-found").send();
                 visitor.pageview("/movie/"+req.body.message.text).send();
 
                 cinemasBot.getTimes(session_location, session_theater_selected, req.body.message.text, function(movieTimes){
