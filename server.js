@@ -136,6 +136,7 @@ app.post('/', function (req, res) {
                     };
                     cinemasBot.sendMessage(token, qs);
                     session_request = "movie";
+                    session_movies = movies;
                 });
                 visitor.pageview("/getcinema/"+ session_location + "/" + session_theater_selected ).send();
             } else {
@@ -149,15 +150,23 @@ app.post('/', function (req, res) {
         }
         if (session_request == "movie") {
 
-            cinemasBot.getTimes(session_location, session_theater_selected, req.body.message.text, function(movieTimes){
+            if (_.flatten(session_movies).indexOf(req.body.message.text) > -1){
+                cinemasBot.getTimes(session_location, session_theater_selected, req.body.message.text, function(movieTimes){
+                    qs = {
+                        chat_id: chat_id,
+                        text: movieTimes
+                    };
+                    cinemasBot.sendMessage(token, qs);
+                    visitor.pageview("/getmovie/"+ session_location + "/"+ session_theater_selected +"/"+ req.body.message.text).send();
+                });
+            } else {
                 qs = {
                     chat_id: chat_id,
-                    text: movieTimes
+                    text: 'Use your keyboard with these options to reply'
                 };
                 cinemasBot.sendMessage(token, qs);
-                visitor.pageview("/getmovie/"+ session_location + "/"+ session_theater_selected +"/"+ req.body.message.text).send();
-            });
-
+                visitor.pageview("/getmovie/error").send();
+            }
         }
     }
 
