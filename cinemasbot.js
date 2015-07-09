@@ -99,6 +99,8 @@ module.exports = {
                         });
                     }
                 });
+            } else {
+                console.log("ERROR GETTIMES", err); return;
             }
         });
     }

@@ -188,8 +188,6 @@ app.post('/', function (req, res) {
                 visitor.pageview("/getmovie/error").send();
             }
         }
-    } else {
-        console.log('*** - NOT A COMMAND - Name: ' + req.body.message.chat.first_name);
     }
 
     res.send();
