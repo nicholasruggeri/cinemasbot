@@ -113,7 +113,7 @@ app.post('/', function (req, res) {
                             qs = {
                                 reply_markup: JSON.stringify({"hide_keyboard":true}),
                                 chat_id: chat_id,
-                                text: 'Sorry, locations not found in this city'
+                                text: 'Sorry, locations not found in ' + user_parameter
                             };
                         }
                         cinemasBot.sendMessage(token, qs);
