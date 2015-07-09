@@ -117,6 +117,7 @@ app.post('/', function (req, res) {
                                 chat_id: chat_id,
                                 text: 'Sorry, cinemas not found in ' + user_parameter
                             };
+                            visitor.pageview("/city/"+user_parameter+"/cinemas-not-found").send();
                         }
                         cinemasBot.sendMessage(token, qs);
                     });
