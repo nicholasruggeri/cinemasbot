@@ -94,7 +94,7 @@ app.post('/', function (req, res) {
                     qs = {
                         reply_markup: JSON.stringify({"hide_keyboard": true}),
                         chat_id: chat_id,
-                        text: 'Add the name of your city after /getcinema. Es: /getcinema tokyo'
+                        text: 'Add the name of your city after /getcinema. Ex: /getcinema tokyo'
                     };
                     cinemasBot.sendMessage(token, qs);
                 } else {
