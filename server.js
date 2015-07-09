@@ -31,20 +31,18 @@ app.post('/', function (req, res) {
         var user_command = user_action.split(' ')[0],
             user_parameter = user_action.substring(user_command.length+1, user_action.length);
 
-        console.log('*** - COMMAND - Name: ' + req.body.message.chat.first_name);
-        console.log('*** - COMMAND: '+user_command+' - Name: ' + req.body.message.chat.first_name);
-        console.log('*** - PARAMETER: '+user_parameter+' - Name: ' + req.body.message.chat.first_name);
+        console.log('*** - Name: ' + req.body.message.chat.first_name);
+        console.log('*** - ACTION: '+ user_action +' - Name: ' + req.body.message.chat.first_name);
+        console.log('*** - COMMAND: '+ user_command +' - Name: ' + req.body.message.chat.first_name);
+        console.log('*** - PARAMETER: '+ user_parameter +' - Name: ' + req.body.message.chat.first_name);
 
         // Commands
         switch(user_command) {
             case '/start':
-
-                console.log('*** - COMMAND: /START - Name: ' + req.body.message.chat.first_name);
-
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    text: "Hello " + req.body.message.chat.first_name + ", use '/getcinema' followed by the name of your town to receive the list of movie theaters near you.  Use /help for list of commands. \n If you found @CinemasBot useful, buy us a beer! Paypal: http://tinyurl.com/beer-for-cinemasbot",
+                    text: "Hello " + req.body.message.chat.first_name + ", use '/getcinema [your city]' to receive the list of movie theaters near you.\nUse /help for list of commands.\n\nIf you found @CinemasBot useful, buy us a beer!\nPaypal: http://tinyurl.com/beer-for-cinemasbot",
                     disable_web_page_preview: true
                 };
                 cinemasBot.sendMessage(token, qs);
@@ -68,7 +66,6 @@ app.post('/', function (req, res) {
             case '/reset':
             case '/end':
             case '/quit':
-                console.log('*** - COMMAND: /RESET - Name: ' + req.body.message.chat.first_name);
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
@@ -82,11 +79,10 @@ app.post('/', function (req, res) {
 
             case '/help':
             case '/info':
-                console.log('*** - COMMAND: /HELP - Name: ' + req.body.message.chat.first_name);
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    text: "This is the list of commands: \n /start\n /reset\n /getcinema\n /help \n If you found @CinemasBot useful, buy us a beer! Paypal: http://tinyurl.com/beer-for-cinemasbot",
+                    text: "This is the list of commands: /start /reset /getcinema /help\n\nIf you found @CinemasBot useful, buy us a beer! Paypal: http://tinyurl.com/beer-for-cinemasbot",
                     disable_web_page_preview: true
                 };
                 cinemasBot.sendMessage(token, qs);
@@ -94,16 +90,16 @@ app.post('/', function (req, res) {
                 break;
 
             case '/getcinema':
+            case '/getc':
                 if (!user_parameter){
-                    console.log('*** - COMMAND: /GETCINEMA NOT PARAMETER- Name: ' + req.body.message.chat.first_name);
                     qs = {
                         reply_markup: JSON.stringify({"hide_keyboard": true}),
                         chat_id: chat_id,
                         text: "Add the name of your city after '/getcinema'. Ex: '/getcinema Venezia'"
                     };
                     cinemasBot.sendMessage(token, qs);
+                    visitor.pageview("/getcinema/not-parameter").send();
                 } else {
-                    console.log('*** - COMMAND: /GETCINEMA '+user_parameter+' - Name: ' + req.body.message.chat.first_name);
                     cinemasBot.getCinema(user_parameter, function(theaters){
                         if (theaters.length > 0){
                             qs = {
@@ -123,27 +119,31 @@ app.post('/', function (req, res) {
                         }
                         cinemasBot.sendMessage(token, qs);
                     });
-                    visitor.pageview("/city/" + session_location).send();
+                    visitor.pageview("/getcinema/ok-parameter").send();
                 }
                 break;
 
             default:
-                console.log('*** - ERROR COMMAND: - Name: ' + req.body.message.chat.first_name);
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
                     text: "Command not found, use /help for list of commands"
                 };
                 cinemasBot.sendMessage(token, qs);
-                visitor.pageview("/error-command").send();
-
+                visitor.pageview("/command-not-found").send();
         }
 
     } else {
 
         if (session_request == "cinema") {
+
+            // Scelgo cinema dalla lista
+
             if (_.flatten(session_theaters).indexOf(req.body.message.text) > -1){
-                console.log('*** STEP 2 - CHOOSE CINEMA - Name: ' + req.body.message.chat.first_name);
+
+                // Clicco su un cinema della lista
+                visitor.pageview("/getmovies/option-found").send();
+
                 session_theater_selected = req.body.message.text;
                 cinemasBot.getMovies(session_location, req.body.message.text, function(movies){
                     qs = {
@@ -155,37 +155,44 @@ app.post('/', function (req, res) {
                     session_request = "movie";
                     session_movies = movies;
                 });
-                visitor.pageview("/getcinema/"+ session_location + "/" + session_theater_selected ).send();
             } else {
-                console.log('*** STEP 2 - CHOOSE CINEMA ERROR - Name: ' + req.body.message.chat.first_name);
+
+                // Scrivo un opzione errata
+                visitor.pageview("/getmovies/option-not-found").send();
+
                 qs = {
                     chat_id: chat_id,
                     text: 'Use your keyboard with these options to reply'
                 };
                 cinemasBot.sendMessage(token, qs);
-                visitor.pageview("/getcinema/error").send();
             }
         }
         if (session_request == "movie") {
 
+            // Scelgo film dalla lista
+
             if (_.flatten(session_movies).indexOf(req.body.message.text) > -1){
-                console.log('*** STEP 3 - CHOOSE MOVIE - Name: ' + req.body.message.chat.first_name);
+
+                // Clicco su un film della lista
+                visitor.pageview("/gettimes/option-found").send();
+
                 cinemasBot.getTimes(session_location, session_theater_selected, req.body.message.text, function(movieTimes){
                     qs = {
                         chat_id: chat_id,
                         text: movieTimes
                     };
                     cinemasBot.sendMessage(token, qs);
-                    visitor.pageview("/getmovie/"+ session_location + "/"+ session_theater_selected +"/"+ req.body.message.text).send();
                 });
             } else {
-                console.log('*** STEP 3 - CHOOSE MOVIE ERROR - Name: ' + req.body.message.chat.first_name);
+
+                // Scrivo un opzione errata
+                visitor.pageview("/gettimes/option-not-found").send();
+
                 qs = {
                     chat_id: chat_id,
                     text: 'Use your keyboard with these options to reply'
                 };
                 cinemasBot.sendMessage(token, qs);
-                visitor.pageview("/getmovie/error").send();
             }
         }
     }
