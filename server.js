@@ -100,6 +100,7 @@ app.post('/', function (req, res) {
                     cinemasBot.sendMessage(token, qs);
                     visitor.pageview("/getcinema/not-parameter").send();
                 } else {
+                    visitor.pageview("/city/"+user_parameter).send();
                     cinemasBot.getCinema(user_parameter, function(theaters){
                         if (theaters.length > 0){
                             qs = {
@@ -145,6 +146,7 @@ app.post('/', function (req, res) {
                 visitor.pageview("/getmovies/option-found").send();
 
                 session_theater_selected = req.body.message.text;
+                visitor.pageview("/theater/"+session_theater_selected).send();
                 cinemasBot.getMovies(session_location, req.body.message.text, function(movies){
                     qs = {
                         reply_markup: JSON.stringify({"keyboard": movies,"resize_keyboard": true}),
@@ -170,11 +172,12 @@ app.post('/', function (req, res) {
         if (session_request == "movie") {
 
             // Scelgo film dalla lista
+            visitor.pageview("/movie/"+session_theater_selected).send();
 
             if (_.flatten(session_movies).indexOf(req.body.message.text) > -1){
 
                 // Clicco su un film della lista
-                visitor.pageview("/gettimes/option-found").send();
+                visitor.pageview("/movie/"+req.body.message.text).send();
 
                 cinemasBot.getTimes(session_location, session_theater_selected, req.body.message.text, function(movieTimes){
                     qs = {
