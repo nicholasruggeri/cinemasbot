@@ -100,15 +100,23 @@ app.post('/', function (req, res) {
                 } else {
                     cinemasBot.getCinema(user_parameter, function(theaters){
                         console.log("******** lenght",theaters.length)
-                        qs = {
-                            reply_markup: JSON.stringify({"keyboard": theaters,"one_time_keyboard": true,"resize_keyboard": true}),
-                            chat_id: chat_id,
-                            text: 'Choose movie theatre:'
-                        };
+                        if (theaters.length > 0){
+                            qs = {
+                                reply_markup: JSON.stringify({"keyboard": theaters,"one_time_keyboard": true,"resize_keyboard": true}),
+                                chat_id: chat_id,
+                                text: 'Choose movie theatre:'
+                            };
+                            session_request = "cinema";
+                            session_location = user_parameter;
+                            session_theaters = theaters;
+                        } else {
+                            qs = {
+                                reply_markup: JSON.stringify({"hide_keyboard":true}),
+                                chat_id: chat_id,
+                                text: 'Sorry, locations not found in this city'
+                            };
+                        }
                         cinemasBot.sendMessage(token, qs);
-                        session_request = "cinema";
-                        session_location = user_parameter;
-                        session_theaters = theaters;
                     });
                     visitor.pageview("/city/" + session_location).send();
                 }
