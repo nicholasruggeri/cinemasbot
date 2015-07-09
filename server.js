@@ -172,7 +172,6 @@ app.post('/', function (req, res) {
         if (session_request == "movie") {
 
             // Scelgo film dalla lista
-            visitor.pageview("/movie/"+session_theater_selected).send();
 
             if (_.flatten(session_movies).indexOf(req.body.message.text) > -1){
 
