@@ -99,6 +99,7 @@ app.post('/', function (req, res) {
                     cinemasBot.sendMessage(token, qs);
                 } else {
                     cinemasBot.getCinema(user_parameter, function(theaters){
+                        console.log("******** lenght",theaters.length)
                         qs = {
                             reply_markup: JSON.stringify({"keyboard": theaters,"one_time_keyboard": true,"resize_keyboard": true}),
                             chat_id: chat_id,
