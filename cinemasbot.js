@@ -1,7 +1,7 @@
 var request = require('request'),
     cheerio = require('cheerio');
 
-var $theater_name = $('.theater .desc .name a');
+var theater_name = $('.theater .desc .name a');
 
 module.exports = {
 
@@ -24,7 +24,7 @@ module.exports = {
             if(!error){
                 var $ = cheerio.load(html);
                 var theaters = [];
-                $theater_name.each(function(index){
+                theater_name.each(function(index){
                     var element = {};
                     var data = $(this);
                     var name = data.text(),
@@ -50,7 +50,7 @@ module.exports = {
             if(!error){
                 var $ = cheerio.load(html);
                 var movies = [];
-                $theater_name.each(function(index){
+                theater_name.each(function(index){
                     var text = $(this).text()
                     if (text == theater){
                         var data = $(this);
@@ -80,7 +80,7 @@ module.exports = {
         request(googleUrl, function(error, response, html){
             if(!error){
                 var $ = cheerio.load(html);
-                $theater_name.each(function(){
+                theater_name.each(function(){
                     var text = $(this).text()
                     if (text == theater){
                         var data = $(this);
