@@ -16,8 +16,11 @@ var session_request = false,
     session_movies = false,
     session_theater_selected = false;
 
-var text = {
-    beer: "\n\nIf you found @CinemasBot useful, buy us a 🍺!\nPaypal: http://tinyurl.com/beer-for-cinemasbot"
+var text_response = {
+    beer: "\n\nIf you found @CinemasBot useful, buy us a 🍺!\nPaypal: http://tinyurl.com/beer-for-cinemasbot",
+    author: "The creator of this amazing Bot is the brilliant @nicksruggeri",
+    hint_keyboard: "Use your keyboard with these options to reply",
+    example: "Ex: /getcinema Venezia"
 }
 
 
@@ -46,7 +49,7 @@ app.post('/', function (req, res) {
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    text: "Hello " + req.body.message.chat.first_name + ",\nuse '/getcinema [your city]' to receive the list of movie theaters near you.\nEx: '/getcinema Venezia'\n\nUse /help for list of commands." + text.beer,
+                    text: "Hello " + req.body.message.chat.first_name + ",\nuse '/getcinema [your city]' to receive the list of movie theaters near you.\n" + text_response.example + "\n\nUse /help for list of commands." + text_response.beer,
                     disable_web_page_preview: true
                 };
                 cinemasBot.sendMessage(token, qs);
@@ -60,7 +63,7 @@ app.post('/', function (req, res) {
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    text: "The creator of this amazing Bot is the brilliant @nicksruggeri"
+                    text: text_response.author
                 };
                 cinemasBot.sendMessage(token, qs);
                 session_request = false;
@@ -86,7 +89,7 @@ app.post('/', function (req, res) {
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    text: "This is the list of commands: /start /reset /getcinema /help" + text.beer,
+                    text: "This is the list of commands: /start /reset /getcinema /help" + text_response.beer,
                     disable_web_page_preview: true
                 };
                 cinemasBot.sendMessage(token, qs);
@@ -99,7 +102,7 @@ app.post('/', function (req, res) {
                     qs = {
                         reply_markup: JSON.stringify({"hide_keyboard": true}),
                         chat_id: chat_id,
-                        text: "Add the name of your city after '/getcinema'. Ex: '/getcinema Venezia'"
+                        text: "Add the name of your city after '/getcinema'.\n" + text_response.example
                     };
                     cinemasBot.sendMessage(token, qs);
                     visitor.pageview("/getcinema/not-parameter").send();
@@ -185,7 +188,7 @@ app.post('/', function (req, res) {
 
                 qs = {
                     chat_id: chat_id,
-                    text: 'Use your keyboard with these options to reply'
+                    text: text_response.hint_keyboard
                 };
                 cinemasBot.sendMessage(token, qs);
             }
@@ -214,7 +217,7 @@ app.post('/', function (req, res) {
 
                 qs = {
                     chat_id: chat_id,
-                    text: 'Use your keyboard with these options to reply'
+                    text: text_response.hint_keyboard
                 };
                 cinemasBot.sendMessage(token, qs);
             }
