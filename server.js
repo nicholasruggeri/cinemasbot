@@ -1,6 +1,5 @@
 var express = require('express'),
     request = require('request'),
-    cheerio = require('cheerio'),
     bodyParser = require('body-parser'),
     _ = require('underscore'),
     ua = require('universal-analytics'),
