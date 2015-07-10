@@ -150,7 +150,7 @@ app.post('/', function (req, res) {
                 visitor.pageview("/theater/"+session_theater_selected).send();
                 cinemasBot.getMovies(session_location, req.body.message.text, function(movies){
                     list_movies = movies;
-                    console.log(list_movies);
+                    console.log(list_movies.push(['/reset']));
                     qs = {
                         reply_markup: JSON.stringify({"keyboard": movies,"resize_keyboard": true}),
                         chat_id: chat_id,
