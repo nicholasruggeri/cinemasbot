@@ -16,6 +16,10 @@ var session_request = false,
     session_movies = false,
     session_theater_selected = false;
 
+var text = {
+    beer: "\n\nIf you found @CinemasBot useful, buy us a 🍺!\nPaypal: http://tinyurl.com/beer-for-cinemasbot"
+}
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -42,7 +46,7 @@ app.post('/', function (req, res) {
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    text: "Hello " + req.body.message.chat.first_name + ",\nuse '/getcinema [your city]' to receive the list of movie theaters near you.\nEx: '/getcinema Venezia'\n\nUse /help for list of commands.\n\nIf you found @CinemasBot useful, buy us a beer!\nPaypal: http://tinyurl.com/beer-for-cinemasbot",
+                    text: "Hello " + req.body.message.chat.first_name + ",\nuse '/getcinema [your city]' to receive the list of movie theaters near you.\nEx: '/getcinema Venezia'\n\nUse /help for list of commands." + text.beer,
                     disable_web_page_preview: true
                 };
                 cinemasBot.sendMessage(token, qs);
@@ -82,7 +86,7 @@ app.post('/', function (req, res) {
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    text: "This is the list of commands: /start /reset /getcinema /help\n\nIf you found @CinemasBot useful, buy us a beer! Paypal: http://tinyurl.com/beer-for-cinemasbot",
+                    text: "This is the list of commands: /start /reset /getcinema /help" + text.beer,
                     disable_web_page_preview: true
                 };
                 cinemasBot.sendMessage(token, qs);
