@@ -18,7 +18,7 @@ var session_request = false,
 
 var text_response = {
     beer: "\n\nIf you found @CinemasBot useful, buy us a 🍺!\nPaypal: http://tinyurl.com/beer-for-cinemasbot",
-    author: "The creator of this amazing Bot is the brilliant @nicksruggeri",
+    author: "The creator of this amazing Bot is the brilliant @nicksruggeri 😎",
     hint_keyboard: "Use your keyboard with these options to reply",
     example: "Ex: /getcinema Venezia"
 }
@@ -49,7 +49,7 @@ app.post('/', function (req, res) {
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    text: "Hello " + req.body.message.chat.first_name + ",\nuse '/getcinema [your city]' to receive the list of movie theaters near you.\n" + text_response.example + "\n\nUse /help for list of commands." + text_response.beer,
+                    text: "Hello " + req.body.message.chat.first_name + ",\nuse '/getcinema city' to receive the list of movie theaters near you.\n" + text_response.example + "\n\nUse /help for list of commands." + text_response.beer,
                     disable_web_page_preview: true
                 };
                 cinemasBot.sendMessage(token, qs);
