@@ -42,7 +42,6 @@ app.post('/', function (req, res) {
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    action: "text messages",
                     text: "Hello " + req.body.message.chat.first_name + ",\nuse '/getcinema [your city]' to receive the list of movie theaters near you.\nEx: '/getcinema Venezia'\n\nUse /help for list of commands.\n\nIf you found @CinemasBot useful, buy us a beer!\nPaypal: http://tinyurl.com/beer-for-cinemasbot",
                     disable_web_page_preview: true
                 };
@@ -57,7 +56,6 @@ app.post('/', function (req, res) {
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    action: "text messages",
                     text: "The creator of this amazing Bot is the brilliant @nicksruggeri"
                 };
                 cinemasBot.sendMessage(token, qs);
@@ -71,7 +69,6 @@ app.post('/', function (req, res) {
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    action: "text messages",
                     text: "Search reset"
                 };
                 cinemasBot.sendMessage(token, qs);
@@ -85,7 +82,6 @@ app.post('/', function (req, res) {
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    action: "text messages",
                     text: "This is the list of commands: /start /reset /getcinema /help\n\nIf you found @CinemasBot useful, buy us a beer! Paypal: http://tinyurl.com/beer-for-cinemasbot",
                     disable_web_page_preview: true
                 };
@@ -99,7 +95,6 @@ app.post('/', function (req, res) {
                     qs = {
                         reply_markup: JSON.stringify({"hide_keyboard": true}),
                         chat_id: chat_id,
-                        action: "text messages",
                         text: "Add the name of your city after '/getcinema'. Ex: '/getcinema Venezia'"
                     };
                     cinemasBot.sendMessage(token, qs);
@@ -113,7 +108,6 @@ app.post('/', function (req, res) {
                             qs = {
                                 reply_markup: JSON.stringify({"keyboard": list_theaters,"one_time_keyboard": true,"resize_keyboard": true}),
                                 chat_id: chat_id,
-                                action: "text messages",
                                 text: 'Choose movie theatre:'
                             };
                             session_request = "cinema";
@@ -124,7 +118,6 @@ app.post('/', function (req, res) {
                             qs = {
                                 reply_markup: JSON.stringify({"hide_keyboard":true}),
                                 chat_id: chat_id,
-                                action: "text messages",
                                 text: 'Sorry, cinemas not found in ' + user_parameter
                             };
                             visitor.pageview("/city/"+user_parameter+"/cinemas-not-found").send();
@@ -139,7 +132,6 @@ app.post('/', function (req, res) {
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    action: "text messages",
                     text: "Command not found, use /help for list of commands"
                 };
                 cinemasBot.sendMessage(token, qs);
@@ -150,7 +142,6 @@ app.post('/', function (req, res) {
         qs = {
             reply_markup: JSON.stringify({"hide_keyboard":true}),
             chat_id: chat_id,
-            action: "text messages",
             text: "Search closed"
         };
         cinemasBot.sendMessage(token, qs);
@@ -176,7 +167,6 @@ app.post('/', function (req, res) {
                     qs = {
                         reply_markup: JSON.stringify({"keyboard": list_movies,"resize_keyboard": true}),
                         chat_id: chat_id,
-                        action: "text messages",
                         text: 'Click on the movie you would like to find out showtimes'
                     };
                     cinemasBot.sendMessage(token, qs);
@@ -191,7 +181,6 @@ app.post('/', function (req, res) {
 
                 qs = {
                     chat_id: chat_id,
-                    action: "text messages",
                     text: 'Use your keyboard with these options to reply'
                 };
                 cinemasBot.sendMessage(token, qs);
@@ -210,7 +199,6 @@ app.post('/', function (req, res) {
                 cinemasBot.getTimes(session_location, session_theater_selected, req.body.message.text, function(movieTimes){
                     qs = {
                         chat_id: chat_id,
-                        action: "text messages",
                         text: movieTimes
                     };
                     cinemasBot.sendMessage(token, qs);
@@ -222,7 +210,6 @@ app.post('/', function (req, res) {
 
                 qs = {
                     chat_id: chat_id,
-                    action: "text messages",
                     text: 'Use your keyboard with these options to reply'
                 };
                 cinemasBot.sendMessage(token, qs);
