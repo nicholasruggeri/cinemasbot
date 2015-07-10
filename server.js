@@ -21,6 +21,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.post('/', function (req, res) {
+    res.set({
+        'Content-Type' : 'text/plain; charset=utf-8'
+    });
 
     var chat_id = req.body.message.chat.id,
         user_action = req.body.message.text + " ",
