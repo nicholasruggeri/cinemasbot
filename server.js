@@ -42,7 +42,7 @@ app.post('/', function (req, res) {
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    text: "Hello " + req.body.message.chat.first_name + ", use '/getcinema [your city]' to receive the list of movie theaters near you. Ex: '/getcinema Venezia'\n\nUse /help for list of commands.\n\nIf you found @CinemasBot useful, buy us a beer!\nPaypal: http://tinyurl.com/beer-for-cinemasbot",
+                    text: "Hello " + req.body.message.chat.first_name + ",\nuse '/getcinema [your city]' to receive the list of movie theaters near you.\nEx: '/getcinema Venezia'\n\nUse /help for list of commands.\n\nIf you found @CinemasBot useful, buy us a beer!\nPaypal: http://tinyurl.com/beer-for-cinemasbot",
                     disable_web_page_preview: true
                 };
                 cinemasBot.sendMessage(token, qs);
@@ -103,8 +103,10 @@ app.post('/', function (req, res) {
                     visitor.pageview("/city/"+user_parameter).send();
                     cinemasBot.getCinema(user_parameter, function(theaters){
                         if (theaters.length > 0){
+                            var list_theaters = theaters;
+                            list_theaters.push(['/reset ✖️'])
                             qs = {
-                                reply_markup: JSON.stringify({"keyboard": theaters,"one_time_keyboard": true,"resize_keyboard": true}),
+                                reply_markup: JSON.stringify({"keyboard": list_theaters,"one_time_keyboard": true,"resize_keyboard": true}),
                                 chat_id: chat_id,
                                 text: 'Choose movie theatre:'
                             };
