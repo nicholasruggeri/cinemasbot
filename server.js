@@ -103,7 +103,7 @@ app.post('/', function (req, res) {
                     visitor.pageview("/city/"+user_parameter).send();
                     cinemasBot.getCinema(user_parameter, function(theaters){
                         if (theaters.length > 0){
-                            var list_theaters = theaters;
+                            var list_theaters = theaters.slice(0);
                             list_theaters.push(['/reset ✖️'])
                             qs = {
                                 reply_markup: JSON.stringify({"keyboard": list_theaters,"one_time_keyboard": true,"resize_keyboard": true}),
@@ -113,6 +113,7 @@ app.post('/', function (req, res) {
                             session_request = "cinema";
                             session_location = user_parameter;
                             session_theaters = theaters;
+                            console.log(theaters);
                         } else {
                             qs = {
                                 reply_markup: JSON.stringify({"hide_keyboard":true}),
@@ -151,7 +152,7 @@ app.post('/', function (req, res) {
                 session_theater_selected = req.body.message.text;
                 visitor.pageview("/theater/"+session_theater_selected).send();
                 cinemasBot.getMovies(session_location, req.body.message.text, function(movies){
-                    var list_movies = movies;
+                    var list_movies = movies.slice(0);
                     list_movies.push(['/reset ✖️'])
                     qs = {
                         reply_markup: JSON.stringify({"keyboard": list_movies,"resize_keyboard": true}),
