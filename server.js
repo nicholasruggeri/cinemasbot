@@ -104,7 +104,7 @@ app.post('/', function (req, res) {
                     cinemasBot.getCinema(user_parameter, function(theaters){
                         if (theaters.length > 0){
                             var list_theaters = theaters.slice(0);
-                            list_theaters.push(['/reset ✖️'])
+                            list_theaters.push(['✖️'])
                             qs = {
                                 reply_markup: JSON.stringify({"keyboard": list_theaters,"one_time_keyboard": true,"resize_keyboard": true}),
                                 chat_id: chat_id,
@@ -138,6 +138,16 @@ app.post('/', function (req, res) {
                 visitor.pageview("/command-not-found").send();
         }
 
+    } else if (user_action.charAt(0) == '✖') {
+        qs = {
+            reply_markup: JSON.stringify({"hide_keyboard":true}),
+            chat_id: chat_id,
+            text: "Search closed"
+        };
+        cinemasBot.sendMessage(token, qs);
+        session_request = false;
+        session_location = false;
+        visitor.pageview("/reset").send();
     } else {
 
         if (session_request == "cinema") {
@@ -153,7 +163,7 @@ app.post('/', function (req, res) {
                 visitor.pageview("/theater/"+session_theater_selected).send();
                 cinemasBot.getMovies(session_location, req.body.message.text, function(movies){
                     var list_movies = movies.slice(0);
-                    list_movies.push(['/reset ✖️'])
+                    list_movies.push(['✖️'])
                     qs = {
                         reply_markup: JSON.stringify({"keyboard": list_movies,"resize_keyboard": true}),
                         chat_id: chat_id,
