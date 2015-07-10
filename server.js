@@ -150,8 +150,9 @@ app.post('/', function (req, res) {
                 visitor.pageview("/theater/"+session_theater_selected).send();
                 cinemasBot.getMovies(session_location, req.body.message.text, function(movies){
                     list_movies = movies.push(['/reset']);
+                    console.log(list_movies);
                     qs = {
-                        reply_markup: JSON.stringify({"keyboard": list_movies,"resize_keyboard": true}),
+                        reply_markup: JSON.stringify({"keyboard": movies,"resize_keyboard": true}),
                         chat_id: chat_id,
                         text: 'Click on the movie you would like to find out showtimes'
                     };
