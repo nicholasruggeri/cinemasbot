@@ -231,9 +231,9 @@ app.post('/', function (req, res) {
     } else if (req.body.message.location) {
         console.log('USER SEND LOCATION');
 
-        var user_location = req.body.message.location.longitude + ", " + req.body.message.location.latitude;
+        user_location = req.body.message.location.longitude + "," + req.body.message.location.latitude;
 
-        console.log('USER_LOCATION,' user_location);
+
 
         cinemasBot.getCinema(user_location, function(theaters){
             if (theaters.length > 0){
