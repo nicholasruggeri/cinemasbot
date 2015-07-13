@@ -28,6 +28,7 @@ app.use(bodyParser.json());
 
 app.post('/', function (req, res) {
 
+    console.log('MESSAGE', req.body.message);
     console.log('LOCATION', req.body.message.location);
     console.log('TEXT', req.body.message.text);
 
