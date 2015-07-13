@@ -207,6 +207,7 @@ app.post('/', function (req, res) {
                         cinemasBot.getTimes(session_location, session_theater_selected, req.body.message.text, function(movieTimes){
                             qs = {
                                 chat_id: chat_id,
+                                disable_web_page_preview: true,
                                 text: movieTimes
                             };
                             cinemasBot.sendMessage(token, qs);
