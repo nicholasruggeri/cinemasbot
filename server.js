@@ -36,7 +36,7 @@ app.post('/', function (req, res) {
         user_action = req.body.message.text + " ",
         qs = {}; // object containing the query string that will be serialized
 
-    if (req.body.message.text != "undefined"){
+    if (req.body.message.text){
         console.log('USER SEND TEXT');
         if (user_action.charAt(0) == '/') {
 
@@ -228,7 +228,7 @@ app.post('/', function (req, res) {
                 }
             }
         }
-    } else if (req.body.message.location != "undefined") {
+    } else if (req.body.message.location) {
         console.log('USER SEND LOCATION');
     }
 
