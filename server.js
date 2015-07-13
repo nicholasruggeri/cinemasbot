@@ -36,6 +36,8 @@ app.post('/', function (req, res) {
         user_action = req.body.message.text + " ",
         qs = {}; // object containing the query string that will be serialized
 
+    console.log(cinemasBot.typeMessage(req));
+
     if (req.body.message.text){
         visitor.pageview("/user-text").send();
         console.log('USER SEND TEXT');
