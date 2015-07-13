@@ -34,7 +34,7 @@ app.post('/', function (req, res) {
 
     switch (cinemasBot.typeMessage(req)) {
         case 'text':
-            console.log("user send text");
+            console.log("user send text:" + req.body.message.text);
             visitor.pageview("/user-text").send();
 
             if (cinemasBot.isCommand(user_action)) {
