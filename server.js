@@ -28,29 +28,26 @@ app.use(bodyParser.json());
 
 app.post('/', function (req, res) {
 
-    console.log('MESSAGE', req.body.message);
-    console.log('LOCATION', req.body.message.location);
-    console.log('TEXT', req.body.message.text);
-
     var chat_id = req.body.message.chat.id,
         user_action = req.body.message.text + " ",
         qs = {}; // object containing the query string that will be serialized
 
     console.log(cinemasBot.typeMessage(req));
 
+    if (cinemasBot.typeMessage(req) == "text") {
+        console.log("user send text")
+    } else if (cinemasBot.typeMessage(req) == "location") {
+        console.log("user send location")
+    }
+
+
+
     if (req.body.message.text){
         visitor.pageview("/user-text").send();
-        console.log('USER SEND TEXT');
         if (user_action.charAt(0) == '/') {
 
             var user_command = user_action.split(' ')[0],
                 user_parameter = user_action.substring(user_command.length+1, user_action.length);
-
-            console.log('*** - Name: ' + req.body.message.chat.first_name);
-            console.log('*** - ACTION: '+ user_action +' - Name: ' + req.body.message.chat.first_name);
-            console.log('*** - COMMAND: '+ user_command +' - Name: ' + req.body.message.chat.first_name);
-            console.log('*** - PARAMETER: '+ user_parameter +' - Name: ' + req.body.message.chat.first_name);
-
 
             // Commands
             switch(user_command) {
