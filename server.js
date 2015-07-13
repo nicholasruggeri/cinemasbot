@@ -109,7 +109,7 @@ app.post('/', function (req, res) {
                         qs = {
                             reply_markup: JSON.stringify({"hide_keyboard": true}),
                             chat_id: chat_id,
-                            text: "Add the name of your city after '/getcinema'.\n" + text_response.example
+                            text: "Add the name of your city after '/getcinema' or send your position.\n" + text_response.example
                         };
                         cinemasBot.sendMessage(token, qs);
                         visitor.pageview("/getcinema/not-parameter").send();
