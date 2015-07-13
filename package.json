@@ -1,7 +1,7 @@
 {
   "name": "cinemasbot",
   "version": "0.0.1",
-  "description": "Get theaters and movies.",
+  "description": "Find movie theaters and show times in your city",
   "main": "server.js",
   "author": "Nicholas Ruggeri",
   "dependencies": {

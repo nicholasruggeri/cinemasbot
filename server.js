@@ -42,6 +42,8 @@ app.post('/', function (req, res) {
         console.log('*** - COMMAND: '+ user_command +' - Name: ' + req.body.message.chat.first_name);
         console.log('*** - PARAMETER: '+ user_parameter +' - Name: ' + req.body.message.chat.first_name);
 
+        console.log('req', req);
+
         // Commands
         switch(user_command) {
             case '/start':
