@@ -32,17 +32,16 @@ app.post('/', function (req, res) {
         user_action = req.body.message.text + " ",
         qs = {}; // object containing the query string that will be serialized
 
-    console.log(cinemasBot.typeMessage(req));
-
-    if (cinemasBot.typeMessage(req) == "text") {
-        console.log("user send text")
-    } else if (cinemasBot.typeMessage(req) == "location") {
-        console.log("user send location")
+    switch (cinemasBot.typeMessage(req)) {
+        case 'text':
+            console.log("user send text")
+            break;
+        case 'location':
+            console.log("user send location")
+            break;
     }
 
-
-
-    if (req.body.message.text){
+    if (cinemasBot.typeMessage(req) == "text"){
         visitor.pageview("/user-text").send();
         if (user_action.charAt(0) == '/') {
 
