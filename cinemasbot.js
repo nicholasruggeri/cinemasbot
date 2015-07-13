@@ -11,7 +11,7 @@ module.exports = {
     },
 
     isCommand: function(data) {
-        if (data.charAt(0) == '/') {
+        if (data.charAt(0) == '/')
             return true;
         else
             return false;
