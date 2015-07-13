@@ -34,10 +34,11 @@ app.post('/', function (req, res) {
 
     switch (cinemasBot.typeMessage(req)) {
         case 'text':
-            console.log("user send text")
+            console.log("user send text");
             visitor.pageview("/user-text").send();
 
-            if (user_action.charAt(0) == '/') {
+            if (cinemasBot.isCommand(user_action)) {
+                console.log("user send command");
 
                 var user_command = user_action.split(' ')[0],
                     user_parameter = user_action.substring(user_command.length+1, user_action.length);
@@ -54,7 +55,7 @@ app.post('/', function (req, res) {
                         cinemasBot.sendMessage(token, qs);
                         session_request = false;
                         visitor.pageview("/start").send();
-                        break;
+                    break;
 
                     case '/author':
                     case '/creator':
@@ -67,7 +68,7 @@ app.post('/', function (req, res) {
                         cinemasBot.sendMessage(token, qs);
                         session_request = false;
                         visitor.pageview("/author").send();
-                        break;
+                    break;
 
                     case '/reset':
                     case '/end':
@@ -81,7 +82,7 @@ app.post('/', function (req, res) {
                         session_request = false;
                         session_location = false;
                         visitor.pageview("/reset").send();
-                        break;
+                    break;
 
                     case '/help':
                     case '/info':
@@ -93,7 +94,7 @@ app.post('/', function (req, res) {
                         };
                         cinemasBot.sendMessage(token, qs);
                         visitor.pageview("/help").send();
-                        break;
+                    break;
 
                     case '/getcinema':
                     case '/getc':
@@ -132,7 +133,7 @@ app.post('/', function (req, res) {
                             });
                             visitor.pageview("/getcinema/ok-parameter").send();
                         }
-                        break;
+                    break;
 
                     default:
                         qs = {
@@ -144,6 +145,7 @@ app.post('/', function (req, res) {
                         visitor.pageview("/command-not-found").send();
                 }
             } else if (user_action.charAt(0) == '✖') {
+                console.log("user close keyboard");
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
@@ -154,6 +156,7 @@ app.post('/', function (req, res) {
                 session_location = false;
                 visitor.pageview("/reset").send();
             } else {
+                console.log("user NOT send command");
 
                 if (session_request == "cinema") {
 
@@ -221,8 +224,7 @@ app.post('/', function (req, res) {
                     }
                 }
             }
-
-            break;
+        break;
 
         case 'location':
             console.log("user send location")
@@ -251,8 +253,10 @@ app.post('/', function (req, res) {
                 }
                 cinemasBot.sendMessage(token, qs);
             });
-            break;
+        break;
     };
+
+
 
 
     res.send();
