@@ -28,11 +28,14 @@ app.use(bodyParser.json());
 
 app.post('/', function (req, res) {
 
-    console.log('req', req);
+    console.log('LOCATION', req.body.message.location);
+    console.log('TEXT', req.body.message.text);
 
     var chat_id = req.body.message.chat.id,
         user_action = req.body.message.text + " ",
         qs = {}; // object containing the query string that will be serialized
+
+
 
     if (user_action.charAt(0) == '/') {
 
