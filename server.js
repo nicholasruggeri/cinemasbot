@@ -230,6 +230,32 @@ app.post('/', function (req, res) {
         }
     } else if (req.body.message.location) {
         console.log('USER SEND LOCATION');
+
+        user_location = "" + req.body.message.location.longitude + "," + req.body.message.location.latitude;
+
+        cinemasBot.getCinema(user_location, function(theaters){
+            if (theaters.length > 0){
+                var list_theaters = theaters.slice(0);
+                list_theaters.push(['✖️']);
+                qs = {
+                    reply_markup: JSON.stringify({"keyboard": list_theaters,"one_time_keyboard": true,"resize_keyboard": true}),
+                    chat_id: chat_id,
+                    text: 'Choose movie theatre:'
+                };
+                session_request = "cinema";
+                session_location = user_location;
+                session_theaters = theaters;
+                console.log(theaters);
+            } else {
+                qs = {
+                    reply_markup: JSON.stringify({"hide_keyboard":true}),
+                    chat_id: chat_id,
+                    text: 'Sorry, cinemas not found in ' + user_parameter
+                };
+                visitor.pageview("/city/"+user_parameter+"/cinemas-not-found").send();
+            }
+            cinemasBot.sendMessage(token, qs);
+        });
     }
 
 
