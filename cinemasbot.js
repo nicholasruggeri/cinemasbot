@@ -101,7 +101,7 @@ module.exports = {
                             if (text == movie){
                                 var data = $(this);
                                 var movieTimes = data.find('.times').text();
-                                var responseTimes = "The show times for " + decodeURI(movie) + " are: " + movieTimes + ".\n\nIf you found @CinemasBot useful, offer me a 🍺!\nPaypal: http://tinyurl.com/beer-for-cinemasbot";
+                                var responseTimes = "The show times for " + decodeURI(movie) + " are: " + movieTimes + ".\n\nIf you found @CinemasBot useful, offer me a 🍺!\nPaypal: http://bit.ly/1HYoLFB";
                                 if (typeof callback == "function")
                                     return callback(responseTimes);
                                 else

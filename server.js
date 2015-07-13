@@ -16,7 +16,7 @@ var session_request = false,
     session_theater_selected = false;
 
 var text_response = {
-    beer: "\n\nIf you found @CinemasBot useful, offer me a 🍺!\nPaypal: http://tinyurl.com/beer-for-cinemasbot",
+    beer: "\n\nIf you found @CinemasBot useful, offer me a 🍺!\nPaypal: http://bit.ly/1HYoLFB",
     author: "The creator of this amazing Bot is the brilliant @nicksruggeri 😎",
     hint_keyboard: "Use your keyboard with these options to reply",
     example: "Ex: /getcinema Venezia"
