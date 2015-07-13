@@ -8,7 +8,7 @@ module.exports = {
             return "text";
         else if (data.body.message.location)
             return "location";
-    }
+    },
 
     sendMessage: function(token, qs){
         request({
