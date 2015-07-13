@@ -55,7 +55,7 @@ app.post('/', function (req, res) {
                     qs = {
                         reply_markup: JSON.stringify({"hide_keyboard":true}),
                         chat_id: chat_id,
-                        text: "Hello " + req.body.message.chat.first_name + ",\nuse '/getcinema city' to receive the list of movie theaters near you.\n" + text_response.example + "\n\nUse /help for list of commands." + text_response.beer,
+                        text: "Hello " + req.body.message.chat.first_name + ",\n send your position or use '/getcinema city' to receive the list of movie theaters near you.\n" + text_response.example + "\n\nUse /help for list of commands." + text_response.beer,
                         disable_web_page_preview: true
                     };
                     cinemasBot.sendMessage(token, qs);
@@ -251,7 +251,7 @@ app.post('/', function (req, res) {
                     chat_id: chat_id,
                     text: 'Sorry, cinemas not found in ' + user_location
                 };
-                // visitor.pageview("/city/"+user_parameter+"/cinemas-not-found").send();
+                visitor.pageview("/city/"+user_parameter+"/cinemas-not-found-with-location").send();
             }
             cinemasBot.sendMessage(token, qs);
         });
