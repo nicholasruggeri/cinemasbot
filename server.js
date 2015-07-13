@@ -28,6 +28,8 @@ app.use(bodyParser.json());
 
 app.post('/', function (req, res) {
 
+    console.log('req', req);
+
     var chat_id = req.body.message.chat.id,
         user_action = req.body.message.text + " ",
         qs = {}; // object containing the query string that will be serialized
@@ -42,7 +44,6 @@ app.post('/', function (req, res) {
         console.log('*** - COMMAND: '+ user_command +' - Name: ' + req.body.message.chat.first_name);
         console.log('*** - PARAMETER: '+ user_parameter +' - Name: ' + req.body.message.chat.first_name);
 
-        console.log('req', req);
 
         // Commands
         switch(user_command) {
