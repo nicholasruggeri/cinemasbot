@@ -230,11 +230,8 @@ app.post('/', function (req, res) {
         }
     } else if (req.body.message.location) {
         console.log('USER SEND LOCATION');
-
-        user_location = req.body.message.location.longitude + "," + req.body.message.location.latitude;
-
-
-
+        user_location = req.body.message.location.latitude + "," + req.body.message.location.longitude;
+        console.log('user_location', user_location);
         cinemasBot.getCinema(user_location, function(theaters){
             if (theaters.length > 0){
                 var list_theaters = theaters.slice(0);
