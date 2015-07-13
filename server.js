@@ -231,7 +231,9 @@ app.post('/', function (req, res) {
     } else if (req.body.message.location) {
         console.log('USER SEND LOCATION');
 
-        user_location = "" + req.body.message.location.longitude + "," + req.body.message.location.latitude;
+        var user_location = req.body.message.location.longitude + ", " + req.body.message.location.latitude;
+
+        console.log('USER_LOCATION,' user_location);
 
         cinemasBot.getCinema(user_location, function(theaters){
             if (theaters.length > 0){
@@ -250,9 +252,9 @@ app.post('/', function (req, res) {
                 qs = {
                     reply_markup: JSON.stringify({"hide_keyboard":true}),
                     chat_id: chat_id,
-                    text: 'Sorry, cinemas not found in ' + user_parameter
+                    text: 'Sorry, cinemas not found in ' + user_location
                 };
-                visitor.pageview("/city/"+user_parameter+"/cinemas-not-found").send();
+                // visitor.pageview("/city/"+user_parameter+"/cinemas-not-found").send();
             }
             cinemasBot.sendMessage(token, qs);
         });
