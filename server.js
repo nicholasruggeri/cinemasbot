@@ -1,9 +1,12 @@
+// Dipendenze terze parti
 var express = require('express'),
     request = require('request'),
     bodyParser = require('body-parser'),
     _ = require('underscore'),
-    ua = require('universal-analytics'),
-    helpers = require('./helpers/helpers'),
+    ua = require('universal-analytics');
+
+// Dipendenze
+var helpers = require('./helpers/helpers'),
     services = require('./services/services'),
     events = require('./events/events');
 
@@ -21,7 +24,7 @@ var text_response = {
     beer: "\n\nIf you found @CinemasBot useful, offer me a 🍺!\nPaypal: http://bit.ly/1HYoLFB",
     author: "The creator of this amazing Bot is the brilliant @nicksruggeri 😎",
     hint_keyboard: "Use your keyboard with these options to reply",
-    example: "Ex: /getcinema Venezia"
+    example: "Ex: /getcinema Venezia or /getcinema 31010 (postal code)"
 }
 
 
@@ -34,7 +37,7 @@ app.post('/', function (req, res) {
         user_action = req.body.message.text + " ",
         qs = {}; // object containing the query string that will be serialized
 
-    switch (helpers.typeMessage(req)) {
+    switch (helpers.messageType(req)) {
         case 'text':
             console.log("user send text:" + req.body.message.text);
             visitor.pageview("/user-text").send();
@@ -111,27 +114,7 @@ app.post('/', function (req, res) {
                         } else {
                             visitor.pageview("/city/"+user_parameter).send();
                             services.getCinema(user_parameter, function(theaters){
-                                if (theaters.length > 0){
-                                    var list_theaters = theaters.slice(0);
-                                    list_theaters.push(['✖️']);
-                                    qs = {
-                                        reply_markup: JSON.stringify({"keyboard": list_theaters,"one_time_keyboard": true,"resize_keyboard": true}),
-                                        chat_id: chat_id,
-                                        text: 'Choose movie theatre:'
-                                    };
-                                    session_request = "cinema";
-                                    session_location = user_parameter;
-                                    session_theaters = theaters;
-                                    console.log(theaters);
-                                } else {
-                                    qs = {
-                                        reply_markup: JSON.stringify({"hide_keyboard":true}),
-                                        chat_id: chat_id,
-                                        text: 'Sorry, cinemas not found in ' + user_parameter
-                                    };
-                                    visitor.pageview("/city/"+user_parameter+"/cinemas-not-found").send();
-                                }
-                                events.sendMessage(token, qs);
+                                events.sendListCinema(theaters, chat_id);
                             });
                             visitor.pageview("/getcinema/ok-parameter").send();
                         }
@@ -235,26 +218,7 @@ app.post('/', function (req, res) {
 
             user_location = req.body.message.location.latitude + "," + req.body.message.location.longitude;
             services.getCinema(user_location, function(theaters){
-                if (theaters.length > 0){
-                    var list_theaters = theaters.slice(0);
-                    list_theaters.push(['✖️']);
-                    qs = {
-                        reply_markup: JSON.stringify({"keyboard": list_theaters,"one_time_keyboard": true,"resize_keyboard": true}),
-                        chat_id: chat_id,
-                        text: 'Choose movie theatre:'
-                    };
-                    session_request = "cinema";
-                    session_location = user_location;
-                    session_theaters = theaters;
-                } else {
-                    qs = {
-                        reply_markup: JSON.stringify({"hide_keyboard":true}),
-                        chat_id: chat_id,
-                        text: 'Sorry, cinemas not found in ' + user_location
-                    };
-                    visitor.pageview("/city/"+user_parameter+"/cinemas-not-found-with-location").send();
-                }
-                events.sendMessage(token, qs);
+                events.sendListCinema(theaters, chat_id);
             });
         break;
     };
