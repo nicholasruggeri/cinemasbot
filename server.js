@@ -218,7 +218,7 @@ app.post('/', function (req, res) {
 
             user_location = req.body.message.location.latitude + "," + req.body.message.location.longitude;
             services.getCinema(user_location, function(theaters){
-                events.sendListCinema(theaters, chat_id);
+                events.sendListCinema(theaters, chat_id, user_location);
             });
         break;
     };
