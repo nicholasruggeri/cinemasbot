@@ -114,7 +114,7 @@ app.post('/', function (req, res) {
                         } else {
                             visitor.pageview("/city/"+user_parameter).send();
                             services.getCinema(user_parameter, function(theaters){
-                                events.sendListCinema(theaters, chat_id, user_parameter);
+                                events.sendListCinema(token, theaters, chat_id, user_parameter);
                             });
                             visitor.pageview("/getcinema/ok-parameter").send();
                         }
@@ -218,7 +218,7 @@ app.post('/', function (req, res) {
 
             user_location = req.body.message.location.latitude + "," + req.body.message.location.longitude;
             services.getCinema(user_location, function(theaters){
-                events.sendListCinema(theaters, chat_id, user_location);
+                events.sendListCinema(token, theaters, chat_id, user_location);
             });
         break;
     };

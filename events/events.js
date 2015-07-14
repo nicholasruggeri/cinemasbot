@@ -18,7 +18,7 @@ module.exports = {
         });
     },
 
-    sendListCinema: function (theaters, chat_id, user_location) {
+    sendListCinema: function (theaters, chat_id, user_location, token) {
 
         if (theaters.length > 0){
             var list_theaters = theaters.slice(0);
