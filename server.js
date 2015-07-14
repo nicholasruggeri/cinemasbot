@@ -4,7 +4,8 @@ var express = require('express'),
     _ = require('underscore'),
     ua = require('universal-analytics'),
 
-    helpers = require('./helpers/helpers');
+    helpers = require('./helpers/helpers'),
+    services = require('./services/services'),
     cinemasBot = require('./cinemasbot');
 
 var app = express();
@@ -110,7 +111,7 @@ app.post('/', function (req, res) {
                             visitor.pageview("/getcinema/not-parameter").send();
                         } else {
                             visitor.pageview("/city/"+user_parameter).send();
-                            cinemasBot.getCinema(user_parameter, function(theaters){
+                            services.getCinema(user_parameter, function(theaters){
                                 if (theaters.length > 0){
                                     var list_theaters = theaters.slice(0);
                                     list_theaters.push(['✖️']);
@@ -171,7 +172,7 @@ app.post('/', function (req, res) {
 
                         session_theater_selected = req.body.message.text;
                         visitor.pageview("/theater/"+session_theater_selected).send();
-                        cinemasBot.getMovies(session_location, req.body.message.text, function(movies){
+                        services.getMovies(session_location, req.body.message.text, function(movies){
                             var list_movies = movies.slice(0);
                             list_movies.push(['✖️']);
                             qs = {
@@ -206,7 +207,7 @@ app.post('/', function (req, res) {
                         visitor.pageview("/gettimes/option-found").send();
                         visitor.pageview("/movie/"+req.body.message.text).send();
 
-                        cinemasBot.getTimes(session_location, session_theater_selected, req.body.message.text, function(movieTimes){
+                        services.getTimes(session_location, session_theater_selected, req.body.message.text, function(movieTimes){
                             qs = {
                                 chat_id: chat_id,
                                 disable_web_page_preview: true,
@@ -234,7 +235,7 @@ app.post('/', function (req, res) {
             visitor.pageview("/user-location").send();
 
             user_location = req.body.message.location.latitude + "," + req.body.message.location.longitude;
-            cinemasBot.getCinema(user_location, function(theaters){
+            services.getCinema(user_location, function(theaters){
                 if (theaters.length > 0){
                     var list_theaters = theaters.slice(0);
                     list_theaters.push(['✖️']);
