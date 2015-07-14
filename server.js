@@ -3,9 +3,9 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     _ = require('underscore'),
     ua = require('universal-analytics'),
-    helpers = require('./helpers'),
-    services = require('./services'),
-    events = require('./events');
+    helpers = require('./helpers/helpers'),
+    services = require('./services/services'),
+    events = require('./events/events');
 
 var app = express();
 var token = process.env.TELEGRAM_TOKEN;
