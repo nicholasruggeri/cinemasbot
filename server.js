@@ -114,7 +114,7 @@ app.post('/', function (req, res) {
                         } else {
                             visitor.pageview("/city/"+user_parameter).send();
                             services.getCinema(user_parameter, function(theaters){
-                                events.sendListCinema(theaters, chat_id);
+                                events.sendListCinema(theaters, chat_id, user_parameter);
                             });
                             visitor.pageview("/getcinema/ok-parameter").send();
                         }
