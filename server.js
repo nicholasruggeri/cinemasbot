@@ -3,6 +3,8 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     _ = require('underscore'),
     ua = require('universal-analytics'),
+
+    helpers = require('./helpers/helpers');
     cinemasBot = require('./cinemasbot');
 
 var app = express();
@@ -32,12 +34,12 @@ app.post('/', function (req, res) {
         user_action = req.body.message.text + " ",
         qs = {}; // object containing the query string that will be serialized
 
-    switch (cinemasBot.typeMessage(req)) {
+    switch (helpers.typeMessage(req)) {
         case 'text':
             console.log("user send text:" + req.body.message.text);
             visitor.pageview("/user-text").send();
 
-            if (cinemasBot.isCommand(user_action)) {
+            if (helpers.isCommand(user_action)) {
                 console.log("user send command");
 
                 var user_command = user_action.split(' ')[0],
