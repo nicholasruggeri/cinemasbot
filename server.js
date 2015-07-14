@@ -3,10 +3,9 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     _ = require('underscore'),
     ua = require('universal-analytics'),
-
-    helpers = require('./helpers/helpers'),
-    services = require('./services/services'),
-    cinemasBot = require('./cinemasbot');
+    helpers = require('./helpers'),
+    services = require('./services'),
+    events = require('./events');
 
 var app = express();
 var token = process.env.TELEGRAM_TOKEN;
@@ -55,7 +54,7 @@ app.post('/', function (req, res) {
                             text: "Hello " + req.body.message.chat.first_name + ",\n send your position or use '/getcinema city' to receive the list of movie theaters near you.\n" + text_response.example + "\n\nUse /help for list of commands." + text_response.beer,
                             disable_web_page_preview: true
                         };
-                        cinemasBot.sendMessage(token, qs);
+                        events.sendMessage(token, qs);
                         session_request = false;
                         visitor.pageview("/start").send();
                     break;
@@ -68,7 +67,7 @@ app.post('/', function (req, res) {
                             chat_id: chat_id,
                             text: text_response.author
                         };
-                        cinemasBot.sendMessage(token, qs);
+                        events.sendMessage(token, qs);
                         session_request = false;
                         visitor.pageview("/author").send();
                     break;
@@ -81,7 +80,7 @@ app.post('/', function (req, res) {
                             chat_id: chat_id,
                             text: "Search reset"
                         };
-                        cinemasBot.sendMessage(token, qs);
+                        events.sendMessage(token, qs);
                         session_request = false;
                         session_location = false;
                         visitor.pageview("/reset").send();
@@ -95,7 +94,7 @@ app.post('/', function (req, res) {
                             text: "This is the list of commands: /start /reset /getcinema /help" + text_response.beer,
                             disable_web_page_preview: true
                         };
-                        cinemasBot.sendMessage(token, qs);
+                        events.sendMessage(token, qs);
                         visitor.pageview("/help").send();
                     break;
 
@@ -107,7 +106,7 @@ app.post('/', function (req, res) {
                                 chat_id: chat_id,
                                 text: "Add the name of your city after '/getcinema' or send your position.\n" + text_response.example
                             };
-                            cinemasBot.sendMessage(token, qs);
+                            events.sendMessage(token, qs);
                             visitor.pageview("/getcinema/not-parameter").send();
                         } else {
                             visitor.pageview("/city/"+user_parameter).send();
@@ -132,7 +131,7 @@ app.post('/', function (req, res) {
                                     };
                                     visitor.pageview("/city/"+user_parameter+"/cinemas-not-found").send();
                                 }
-                                cinemasBot.sendMessage(token, qs);
+                                events.sendMessage(token, qs);
                             });
                             visitor.pageview("/getcinema/ok-parameter").send();
                         }
@@ -144,7 +143,7 @@ app.post('/', function (req, res) {
                             chat_id: chat_id,
                             text: "Command not found, use /help for list of commands"
                         };
-                        cinemasBot.sendMessage(token, qs);
+                        events.sendMessage(token, qs);
                         visitor.pageview("/command-not-found").send();
                 }
             } else if (user_action.charAt(0) == '✖') {
@@ -154,7 +153,7 @@ app.post('/', function (req, res) {
                     chat_id: chat_id,
                     text: "Search closed"
                 };
-                cinemasBot.sendMessage(token, qs);
+                events.sendMessage(token, qs);
                 session_request = false;
                 session_location = false;
                 visitor.pageview("/reset").send();
@@ -180,7 +179,7 @@ app.post('/', function (req, res) {
                                 chat_id: chat_id,
                                 text: 'Click on the movie you would like to find out showtimes'
                             };
-                            cinemasBot.sendMessage(token, qs);
+                            events.sendMessage(token, qs);
                             session_request = "movie";
                             session_movies = movies;
                             console.log(movies);
@@ -194,7 +193,7 @@ app.post('/', function (req, res) {
                             chat_id: chat_id,
                             text: text_response.hint_keyboard
                         };
-                        cinemasBot.sendMessage(token, qs);
+                        events.sendMessage(token, qs);
                     }
                 }
                 if (session_request == "movie") {
@@ -213,7 +212,7 @@ app.post('/', function (req, res) {
                                 disable_web_page_preview: true,
                                 text: movieTimes
                             };
-                            cinemasBot.sendMessage(token, qs);
+                            events.sendMessage(token, qs);
                         });
                     } else {
 
@@ -224,7 +223,7 @@ app.post('/', function (req, res) {
                             chat_id: chat_id,
                             text: text_response.hint_keyboard
                         };
-                        cinemasBot.sendMessage(token, qs);
+                        events.sendMessage(token, qs);
                     }
                 }
             }
@@ -255,7 +254,7 @@ app.post('/', function (req, res) {
                     };
                     visitor.pageview("/city/"+user_parameter+"/cinemas-not-found-with-location").send();
                 }
-                cinemasBot.sendMessage(token, qs);
+                events.sendMessage(token, qs);
             });
         break;
     };
