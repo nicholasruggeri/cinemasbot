@@ -39,7 +39,7 @@ module.exports = {
             };
             visitor.pageview("/city/"+user_parameter+"/cinemas-not-found-with-location").send();
         }
-        sendMessage(token, qs);
+        this.sendMessage(token, qs);
 
     }
 
