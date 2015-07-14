@@ -8,6 +8,7 @@ var express = require('express'),
 // Dipendenze
 var helpers = require('./helpers/helpers'),
     services = require('./services/services'),
+    // commands = require('./commands/commands'),
     events = require('./events/events');
 
 var app = express();
@@ -114,7 +115,27 @@ app.post('/', function (req, res) {
                         } else {
                             visitor.pageview("/city/"+user_parameter).send();
                             services.getCinema(user_parameter, function(theaters){
-                                events.sendListCinema(token, theaters, chat_id, user_parameter);
+                                if (theaters.length > 0){
+                                    var list_theaters = theaters.slice(0);
+                                    list_theaters.push(['✖️']);
+                                    qs = {
+                                        reply_markup: JSON.stringify({"keyboard": list_theaters,"one_time_keyboard": true,"resize_keyboard": true}),
+                                        chat_id: chat_id,
+                                        text: 'Choose movie theatre:'
+                                    };
+                                    session_request = "cinema";
+                                    session_location = user_parameter;
+                                    session_theaters = theaters;
+                                    console.log(theaters);
+                                } else {
+                                    qs = {
+                                        reply_markup: JSON.stringify({"hide_keyboard":true}),
+                                        chat_id: chat_id,
+                                        text: 'Sorry, cinemas not found in ' + user_parameter
+                                    };
+                                    visitor.pageview("/city/"+user_parameter+"/cinemas-not-found").send();
+                                }
+                                events.sendMessage(token, qs);
                             });
                             visitor.pageview("/getcinema/ok-parameter").send();
                         }
@@ -218,7 +239,26 @@ app.post('/', function (req, res) {
 
             user_location = req.body.message.location.latitude + "," + req.body.message.location.longitude;
             services.getCinema(user_location, function(theaters){
-                events.sendListCinema(token, theaters, chat_id, user_location);
+                if (theaters.length > 0){
+                    var list_theaters = theaters.slice(0);
+                    list_theaters.push(['✖️']);
+                    qs = {
+                        reply_markup: JSON.stringify({"keyboard": list_theaters,"one_time_keyboard": true,"resize_keyboard": true}),
+                        chat_id: chat_id,
+                        text: 'Choose movie theatre:'
+                    };
+                    session_request = "cinema";
+                    session_location = user_location;
+                    session_theaters = theaters;
+                } else {
+                    qs = {
+                        reply_markup: JSON.stringify({"hide_keyboard":true}),
+                        chat_id: chat_id,
+                        text: 'Sorry, cinemas not found in ' + user_location
+                    };
+                    visitor.pageview("/city/"+user_parameter+"/cinemas-not-found-with-location").send();
+                }
+                events.sendMessage(token, qs);
             });
         break;
     };

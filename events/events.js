@@ -1,8 +1,4 @@
 var request = require('request');
-var ua = require('universal-analytics');
-
-// Dipendenze
-// var events = require('./events/events');
 
 module.exports = {
 
@@ -16,31 +12,6 @@ module.exports = {
                 console.log("ERROR SENDMESSAGE", err); return;
             }
         });
-    },
-
-    sendListCinema: function (theaters, chat_id, user_location, token) {
-
-        if (theaters.length > 0){
-            var list_theaters = theaters.slice(0);
-            list_theaters.push(['✖️']);
-            qs = {
-                reply_markup: JSON.stringify({"keyboard": list_theaters,"one_time_keyboard": true,"resize_keyboard": true}),
-                chat_id: chat_id,
-                text: 'Choose movie theatre:'
-            };
-            session_request = "cinema";
-            session_location = user_location;
-            session_theaters = theaters;
-        } else {
-            qs = {
-                reply_markup: JSON.stringify({"hide_keyboard":true}),
-                chat_id: chat_id,
-                text: 'Sorry, cinemas not found in ' + user_location
-            };
-            visitor.pageview("/city/"+user_parameter+"/cinemas-not-found-with-location").send();
-        }
-        this.sendMessage(token, qs);
-
     }
 
 }
