@@ -12,6 +12,13 @@ module.exports = {
             return true;
         else
             return false;
+    },
+
+    textResponse: {
+        beer: "\n\nIf you found @CinemasBot useful, offer me a 🍺!\nPaypal: http://bit.ly/1HYoLFB",
+        author: "The creator of this amazing Bot is the brilliant @nicksruggeri 😎",
+        hint_keyboard: "Use your keyboard with these options to reply",
+        example: "Ex: /getcinema Venezia or /getcinema 31010 (postal code)"
     }
 
 }

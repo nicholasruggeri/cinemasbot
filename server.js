@@ -8,7 +8,6 @@ var express = require('express'),
 // Dipendenze
 var helpers = require('./helpers/helpers'),
     services = require('./services/services'),
-    // commands = require('./commands/commands'),
     events = require('./events/events');
 
 var app = express();
@@ -55,7 +54,7 @@ app.post('/', function (req, res) {
                         qs = {
                             reply_markup: JSON.stringify({"hide_keyboard":true}),
                             chat_id: chat_id,
-                            text: "Hello " + req.body.message.chat.first_name + ",\n send your position or use '/getcinema city' to receive the list of movie theaters near you.\n" + text_response.example + "\n\nUse /help for list of commands." + text_response.beer,
+                            text: "Hello " + req.body.message.chat.first_name + ",\n send your position or use '/getcinema city' to receive the list of movie theaters near you.\n" + text_response.example + "\n\nUse /help for list of commands." + helpers.textResponse.beer,
                             disable_web_page_preview: true
                         };
                         events.sendMessage(token, qs);
@@ -69,7 +68,7 @@ app.post('/', function (req, res) {
                         qs = {
                             reply_markup: JSON.stringify({"hide_keyboard":true}),
                             chat_id: chat_id,
-                            text: text_response.author
+                            text: helpers.textResponse.author
                         };
                         events.sendMessage(token, qs);
                         session_request = false;
