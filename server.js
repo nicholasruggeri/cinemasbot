@@ -122,7 +122,7 @@ app.post('/', function (req, res) {
                                     qs = {
                                         reply_markup: JSON.stringify({"hide_keyboard":true}),
                                         chat_id: chat_id,
-                                        text: 'Sorry, cinemas not found in ' + user_parameter
+                                        text: helpers.textResponse.sorry + user_parameter
                                     };
                                     visitor.pageview("/city/"+user_parameter+"/cinemas-not-found").send();
                                 }
@@ -245,7 +245,7 @@ app.post('/', function (req, res) {
                     qs = {
                         reply_markup: JSON.stringify({"hide_keyboard":true}),
                         chat_id: chat_id,
-                        text: 'Sorry, cinemas not found in ' + user_location
+                        text: helpers.textResponse.sorry + user_location
                     };
                     visitor.pageview("/city/"+user_parameter+"/cinemas-not-found-with-location").send();
                 }
