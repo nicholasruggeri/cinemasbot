@@ -1,7 +1,7 @@
 var request = require('request'),
     cheerio = require('cheerio');
 
-var helpers = require('/helpers/helpers');
+var helpers = require('../helpers/helpers');
 
 module.exports = {
 
