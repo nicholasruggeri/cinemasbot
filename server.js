@@ -20,14 +20,6 @@ var session_request = false,
     session_movies = false,
     session_theater_selected = false;
 
-var text_response = {
-    beer: "\n\nIf you found @CinemasBot useful, offer me a 🍺!\nPaypal: http://bit.ly/1HYoLFB",
-    author: "The creator of this amazing Bot is the brilliant @nicksruggeri 😎",
-    hint_keyboard: "Use your keyboard with these options to reply",
-    example: "Ex: /getcinema Venezia or /getcinema 31010 (postal code)"
-}
-
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -54,7 +46,7 @@ app.post('/', function (req, res) {
                         qs = {
                             reply_markup: JSON.stringify({"hide_keyboard":true}),
                             chat_id: chat_id,
-                            text: "Hello " + req.body.message.chat.first_name + ",\n send your position or use '/getcinema city' to receive the list of movie theaters near you.\n" + text_response.example + "\n\nUse /help for list of commands." + helpers.textResponse.beer,
+                            text: "Hello " + req.body.message.chat.first_name + ",\n send your position or use '/getcinema city' to receive the list of movie theaters near you.\n" + helpers.textResponse.example + "\n\nUse /help for list of commands." + helpers.textResponse.beer,
                             disable_web_page_preview: true
                         };
                         events.sendMessage(token, qs);
@@ -94,7 +86,7 @@ app.post('/', function (req, res) {
                         qs = {
                             reply_markup: JSON.stringify({"hide_keyboard":true}),
                             chat_id: chat_id,
-                            text: "This is the list of commands: /start /reset /getcinema /help" + text_response.beer,
+                            text: "This is the list of commands: /start /reset /getcinema /help" + helpers.textResponse.beer,
                             disable_web_page_preview: true
                         };
                         events.sendMessage(token, qs);
@@ -107,7 +99,7 @@ app.post('/', function (req, res) {
                             qs = {
                                 reply_markup: JSON.stringify({"hide_keyboard": true}),
                                 chat_id: chat_id,
-                                text: "Add the name of your city after '/getcinema' or send your position.\n" + text_response.example
+                                text: "Add the name of your city after '/getcinema' or send your position.\n" + helpers.textResponse.example
                             };
                             events.sendMessage(token, qs);
                             visitor.pageview("/getcinema/not-parameter").send();
@@ -194,7 +186,7 @@ app.post('/', function (req, res) {
 
                         qs = {
                             chat_id: chat_id,
-                            text: text_response.hint_keyboard
+                            text: helpers.textResponse.hint_keyboard
                         };
                         events.sendMessage(token, qs);
                     }
@@ -224,7 +216,7 @@ app.post('/', function (req, res) {
 
                         qs = {
                             chat_id: chat_id,
-                            text: text_response.hint_keyboard
+                            text: helpers.textResponse.hint_keyboard
                         };
                         events.sendMessage(token, qs);
                     }

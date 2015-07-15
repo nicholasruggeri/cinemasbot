@@ -1,6 +1,8 @@
 var request = require('request'),
     cheerio = require('cheerio');
 
+var helpers = require('./helpers/helpers'),
+
 module.exports = {
 
     getCinema: function(location, callback){
@@ -75,7 +77,7 @@ module.exports = {
                             if (text == movie){
                                 var data = $(this);
                                 var movieTimes = data.find('.times').text();
-                                var responseTimes = "The show times for " + decodeURI(movie) + " are: " + movieTimes + ".\n\nIf you found @CinemasBot useful, offer me a 🍺!\nPaypal: http://bit.ly/1HYoLFB";
+                                var responseTimes = "The show times for " + decodeURI(movie) + " are: " + movieTimes + ". " + helpers.textResponse.beer;
                                 if (typeof callback == "function")
                                     return callback(responseTimes);
                                 else
