@@ -15,7 +15,7 @@ module.exports = {
     },
 
     textResponse: {
-        beer: "\n\nIf you found @CinemasBot useful, offer me a 🍺!\nPaypal: http://bit.ly/1HYoLFB",
+        beer: "\n\nIf you found @CinemasBot useful, offer me a 🍺!\nPaypal: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PX3EU8YNJF8JS",
         author: "The creator of this amazing Bot is the brilliant @nicksruggeri 😎",
         hint_keyboard: "Use your keyboard with these options to reply",
         example: "Ex: /getcinema Venezia or /getcinema 31010 (postal code)",
