@@ -25,6 +25,9 @@ app.use(bodyParser.json());
 
 app.post('/', function (req, res) {
 
+    // Log the request body.
+    console.log(req.body);
+
     var chat_id = req.body.message.chat.id,
         user_action = req.body.message.text + " ",
         qs = {}; // object containing the query string that will be serialized
