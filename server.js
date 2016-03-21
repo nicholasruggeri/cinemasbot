@@ -14,7 +14,7 @@ var app = express();
 var token = process.env.TELEGRAM_TOKEN;
 var visitor = ua(process.env.UA_TOKEN);
 
-var session_request = false,
+var session_request = {},
     session_location = false,
     session_theaters = false,
     session_movies = false,
@@ -41,19 +41,19 @@ app.post('/', function (req, res) {
                 console.log("user send command");
 
                 var user_command = user_action.split(' ')[0],
-                    user_parameter = user_action.substring(user_command.length+1, user_action.length);
+                    user_parameter = user_action.substring(user_command.length + 1, user_action.length);
 
                 // Commands
                 switch(user_command) {
                     case '/start':
                         qs = {
-                            reply_markup: JSON.stringify({"hide_keyboard":true}),
+                            reply_markup: JSON.stringify({"hide_keyboard": true}),
                             chat_id: chat_id,
                             text: "Hello " + req.body.message.chat.first_name + ",\n send your position or use '/getcinema city' to receive the list of movie theaters near you.\n" + helpers.textResponse.example + "\n\nUse /help for list of commands." + helpers.textResponse.beer,
                             disable_web_page_preview: true
                         };
                         events.sendMessage(token, qs);
-                        session_request = false;
+                        session_request[chat_id] = false;
                         visitor.pageview("/start").send();
                     break;
 
@@ -66,7 +66,7 @@ app.post('/', function (req, res) {
                             text: helpers.textResponse.author
                         };
                         events.sendMessage(token, qs);
-                        session_request = false;
+                        session_request[chat_id] = false;
                         visitor.pageview("/author").send();
                     break;
 
@@ -74,12 +74,12 @@ app.post('/', function (req, res) {
                     case '/end':
                     case '/quit':
                         qs = {
-                            reply_markup: JSON.stringify({"hide_keyboard":true}),
+                            reply_markup: JSON.stringify({"hide_keyboard": true}),
                             chat_id: chat_id,
                             text: "Search reset"
                         };
                         events.sendMessage(token, qs);
-                        session_request = false;
+                        session_request[chat_id] = false;
                         session_location = false;
                         visitor.pageview("/reset").send();
                     break;
@@ -87,7 +87,7 @@ app.post('/', function (req, res) {
                     case '/help':
                     case '/info':
                         qs = {
-                            reply_markup: JSON.stringify({"hide_keyboard":true}),
+                            reply_markup: JSON.stringify({"hide_keyboard": true}),
                             chat_id: chat_id,
                             text: "This is the list of commands: /start /reset /getcinema /help" + helpers.textResponse.beer,
                             disable_web_page_preview: true
@@ -98,7 +98,7 @@ app.post('/', function (req, res) {
 
                     case '/getcinema':
                     case '/getc':
-                        if (!user_parameter){
+                        if (!user_parameter) {
                             qs = {
                                 reply_markup: JSON.stringify({"hide_keyboard": true}),
                                 chat_id: chat_id,
@@ -107,17 +107,17 @@ app.post('/', function (req, res) {
                             events.sendMessage(token, qs);
                             visitor.pageview("/getcinema/not-parameter").send();
                         } else {
-                            visitor.pageview("/city/"+user_parameter).send();
+                            visitor.pageview("/city/" + user_parameter).send();
                             services.getCinema(user_parameter, function(theaters){
                                 if (theaters.length > 0){
                                     var list_theaters = theaters.slice(0);
                                     list_theaters.push(['✖️']);
                                     qs = {
-                                        reply_markup: JSON.stringify({"keyboard": list_theaters,"one_time_keyboard": true,"resize_keyboard": true}),
+                                        reply_markup: JSON.stringify({"keyboard": list_theaters,"one_time_keyboard": true, "resize_keyboard": true}),
                                         chat_id: chat_id,
                                         text: 'Choose movie theatre:'
                                     };
-                                    session_request = "cinema";
+                                    session_request[chat_id] = "cinema";
                                     session_location = user_parameter;
                                     session_theaters = theaters;
                                     console.log(theaters);
@@ -127,7 +127,7 @@ app.post('/', function (req, res) {
                                         chat_id: chat_id,
                                         text: helpers.textResponse.sorry + user_parameter
                                     };
-                                    visitor.pageview("/city/"+user_parameter+"/cinemas-not-found").send();
+                                    visitor.pageview("/city/" + user_parameter + "/cinemas-not-found").send();
                                 }
                                 events.sendMessage(token, qs);
                             });
@@ -137,7 +137,7 @@ app.post('/', function (req, res) {
 
                     default:
                         qs = {
-                            reply_markup: JSON.stringify({"hide_keyboard":true}),
+                            reply_markup: JSON.stringify({"hide_keyboard": true}),
                             chat_id: chat_id,
                             text: "Command not found, use /help for list of commands"
                         };
@@ -147,43 +147,39 @@ app.post('/', function (req, res) {
             } else if (user_action.charAt(0) == '✖') {
                 console.log("user close keyboard");
                 qs = {
-                    reply_markup: JSON.stringify({"hide_keyboard":true}),
+                    reply_markup: JSON.stringify({"hide_keyboard": true}),
                     chat_id: chat_id,
                     text: "Search closed"
                 };
                 events.sendMessage(token, qs);
-                session_request = false;
+                session_request[chat_id] = false;
                 session_location = false;
                 visitor.pageview("/reset").send();
             } else {
                 console.log("user NOT send command");
 
-                if (session_request == "cinema") {
-
+                if (session_request[chat_id] == "cinema") {
                     // Scelgo cinema dalla lista
-
                     if (_.flatten(session_theaters).indexOf(req.body.message.text) > -1){
-
                         // Clicco su un cinema della lista
                         visitor.pageview("/getmovies/option-found").send();
 
                         session_theater_selected = req.body.message.text;
-                        visitor.pageview("/theater/"+session_theater_selected).send();
+                        visitor.pageview("/theater/" + session_theater_selected).send();
                         services.getMovies(session_location, req.body.message.text, function(movies){
                             var list_movies = movies.slice(0);
                             list_movies.push(['✖️']);
                             qs = {
-                                reply_markup: JSON.stringify({"keyboard": list_movies,"resize_keyboard": true}),
+                                reply_markup: JSON.stringify({"keyboard": list_movies, "resize_keyboard": true}),
                                 chat_id: chat_id,
                                 text: 'Click on the movie you would like to find out showtimes'
                             };
                             events.sendMessage(token, qs);
-                            session_request = "movie";
+                            session_request[chat_id] = "movie";
                             session_movies = movies;
                             console.log(movies);
                         });
                     } else {
-
                         // Scrivo un opzione errata
                         visitor.pageview("/getmovies/option-not-found").send();
 
@@ -194,15 +190,14 @@ app.post('/', function (req, res) {
                         events.sendMessage(token, qs);
                     }
                 }
-                if (session_request == "movie") {
 
+                if (session_request[chat_id] == "movie") {
                     // Scelgo film dalla lista
 
                     if (_.flatten(session_movies).indexOf(req.body.message.text) > -1){
-
                         // Clicco su un film della lista
                         visitor.pageview("/gettimes/option-found").send();
-                        visitor.pageview("/movie/"+req.body.message.text).send();
+                        visitor.pageview("/movie/" + req.body.message.text).send();
 
                         services.getTimes(session_location, session_theater_selected, req.body.message.text, function(movieTimes){
                             qs = {
@@ -213,7 +208,6 @@ app.post('/', function (req, res) {
                             events.sendMessage(token, qs);
                         });
                     } else {
-
                         // Scrivo un opzione errata
                         visitor.pageview("/gettimes/option-not-found").send();
 
@@ -237,31 +231,27 @@ app.post('/', function (req, res) {
                     var list_theaters = theaters.slice(0);
                     list_theaters.push(['✖️']);
                     qs = {
-                        reply_markup: JSON.stringify({"keyboard": list_theaters,"one_time_keyboard": true,"resize_keyboard": true}),
+                        reply_markup: JSON.stringify({"keyboard": list_theaters, "one_time_keyboard": true, "resize_keyboard": true}),
                         chat_id: chat_id,
                         text: 'Choose movie theatre:'
                     };
-                    session_request = "cinema";
+                    session_request[chat_id] = "cinema";
                     session_location = user_location;
                     session_theaters = theaters;
                 } else {
                     qs = {
-                        reply_markup: JSON.stringify({"hide_keyboard":true}),
+                        reply_markup: JSON.stringify({"hide_keyboard": true}),
                         chat_id: chat_id,
                         text: helpers.textResponse.sorry + user_location
                     };
-                    visitor.pageview("/city/"+user_parameter+"/cinemas-not-found-with-location").send();
+                    visitor.pageview("/city/" + user_parameter + "/cinemas-not-found-with-location").send();
                 }
                 events.sendMessage(token, qs);
             });
         break;
     };
 
-
-
-
     res.send();
-
 });
 
 app.listen(process.env.PORT);
