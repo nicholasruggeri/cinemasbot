@@ -70,6 +70,55 @@ module.exports = {
             text: helpers.textResponse.author
         };
         events.sendMessage(token, qs)
+    },
+
+    getMovies: (chat_id, token, movies) => {
+        console.log('user get movies')
+        var list_movies = movies.slice(0);
+        list_movies.push(['✖️']);
+        qs = {
+            reply_markup: JSON.stringify({"keyboard": list_movies, "resize_keyboard": true}),
+            chat_id: chat_id,
+            text: 'Click on the movie you would like to find out showtimes'
+        };
+        events.sendMessage(token, qs);
+    },
+
+    getTimes: (chat_id, token, movieTimes) => {
+        console.log('user get times')
+        qs = {
+            chat_id: chat_id,
+            disable_web_page_preview: true,
+            text: movieTimes
+        };
+        events.sendMessage(token, qs);
+    },
+
+    getCinema: (chat_id, token, theaters) => {
+        console.log('user get theaters')
+        var list_theaters = theaters.slice(0);
+        list_theaters.push(['✖️']);
+        qs = {
+            reply_markup: JSON.stringify({"keyboard": list_theaters, "one_time_keyboard": true, "resize_keyboard": true}),
+            chat_id: chat_id,
+            text: 'Choose movie theatre:'
+        };
+        events.sendMessage(token, qs);
+    },
+
+    notParameter: (chat_id, token) => {
+        qs = {
+            reply_markup: JSON.stringify({"hide_keyboard": true}),
+            chat_id: chat_id,
+            text: "Add the name of your city after '/getcinema' or send your position.\n" + helpers.textResponse.example
+        };
+        events.sendMessage(token, qs);
     }
+
+
+
+
+
+
 
 }

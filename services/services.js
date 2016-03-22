@@ -6,7 +6,6 @@ var helpers = require('../helpers/helpers');
 module.exports = {
 
     getCinema: function(location, callback){
-        console.log('****** enter getCinema');
         var googleUrl = 'http://www.google.it/movies?near='+location;
         request(googleUrl, function(error, response, html){
             if(!error){
@@ -32,7 +31,6 @@ module.exports = {
     },
 
     getMovies: function(location, theater, callback){
-        console.log('****** enter getMovies');
         var googleUrl = 'http://www.google.it/movies?near='+location;
         request(googleUrl, function(error, response, html){
             if(!error){
@@ -63,7 +61,6 @@ module.exports = {
     },
 
     getTimes: function(location, theater, movie, callback){
-        console.log('****** enter getTimes');
         var googleUrl = 'http://www.google.it/movies?near='+location;
         request(googleUrl, function(error, response, html){
             if(!error){
