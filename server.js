@@ -32,9 +32,9 @@ app.use(bodyParser.json());
 app.post('/', function (req, res) {
 
     // Log the request body.
-    console.log('req',req);
+    console.log('req',req.message);
 
-    if (req.message){
+    if (req.message !== undefined){
 
         var chat_id = req.body.message.chat.id,
             user_action = req.body.message.text + " ";
