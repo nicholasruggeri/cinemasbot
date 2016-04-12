@@ -35,6 +35,12 @@ app.post('/', function (req, res) {
     console.log('req body',req.body);
     console.log('req message',req.body.message);
 
+    if (req.body.message){
+        console.log('messaggio')
+    } else if (req.body.inline_query) {
+        conole.log('inline_query')
+    }
+
     var chat_id = req.body.message.chat.id,
         user_action = req.body.message.text + " ";
 
