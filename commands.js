@@ -8,7 +8,7 @@ module.exports = {
         qs = {
             reply_markup: JSON.stringify({"hide_keyboard": true}),
             chat_id: chat_id,
-            text: "Command not found, use /help for list of commands"
+            text: "Command not found, use /help more info."
         };
         events.sendMessage(token, qs)
     },
@@ -36,7 +36,7 @@ module.exports = {
         qs = {
             reply_markup: JSON.stringify({"hide_keyboard": true}),
             chat_id: chat_id,
-            text: "Hello " + user_name + ".\nNew features, update your Telegram if you have not done yet!\nUse /getcinema to receive the list of movie theaters near you.\n\nUse /help for list of commands.",
+            text: "Hello " + user_name + ".\nNew features, update your Telegram if you have not done yet!\nUse /getcinema to receive the list of movie theaters near you.\n\nUse /help more info..",
             disable_web_page_preview: true
         };
         events.sendMessage(token, qs)
@@ -57,7 +57,8 @@ module.exports = {
         qs = {
             reply_markup: JSON.stringify({"hide_keyboard": true}),
             chat_id: chat_id,
-            text: "This is the list of commands: /start /reset /getcinema /help" + helpers.textResponse.beer,
+            text: "Use /getcinema to start the search. \nIf the geolocation is not active, use '/getcinema' followed by your city. ex. /getcinema Venezia"
+                  + helpers.textResponse.beer,
             disable_web_page_preview: true,
             reply_markup: JSON.stringify({
                 "inline_keyboard": [
