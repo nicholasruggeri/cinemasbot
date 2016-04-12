@@ -196,9 +196,9 @@ app.post('/', function (req, res) {
             url: 'https://api.telegram.org/' + token + '/answerInlineQuery',
             method: 'POST',
             qs: {
-                    inline_query_id: chat_id,
-                    switch_pm_text: 'asd'
-                };
+                inline_query_id: chat_id,
+                switch_pm_text: 'asd'
+            }
         }, function (err, response, body) {
             if (err) {
                 console.log("ERROR SENDMESSAGE", err); return;
