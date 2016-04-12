@@ -58,7 +58,17 @@ module.exports = {
             reply_markup: JSON.stringify({"hide_keyboard": true}),
             chat_id: chat_id,
             text: "This is the list of commands: /start /reset /getcinema /help" + helpers.textResponse.beer,
-            disable_web_page_preview: true
+            disable_web_page_preview: true,
+            reply_markup: JSON.stringify({
+                "inline_keyboard": [
+                    [
+                        {
+                            'text':'Donate with Paypal',
+                            'url': 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PX3EU8YNJF8JS'
+                        }
+                    ]
+                ]
+            })
         };
         events.sendMessage(token, qs)
     },
@@ -66,9 +76,24 @@ module.exports = {
     creator: (chat_id, token) => {
         console.log('user get creator')
         qs = {
-            reply_markup: JSON.stringify({"hide_keyboard":true}),
             chat_id: chat_id,
-            text: helpers.textResponse.author
+            text: helpers.textResponse.author,
+            reply_markup: JSON.stringify({
+                "inline_keyboard": [
+                    [
+                        {
+                            'text':'More info',
+                            'url': 'http://ruggeri.io'
+                        }
+                    ],
+                    [
+                        {
+                            'text':'Donate with Paypal',
+                            'url': 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PX3EU8YNJF8JS'
+                        }
+                    ]
+                ]
+            })
         };
         events.sendMessage(token, qs)
     },
@@ -90,7 +115,17 @@ module.exports = {
         qs = {
             chat_id: chat_id,
             disable_web_page_preview: true,
-            text: movieTimes
+            text: movieTimes,
+            reply_markup: JSON.stringify({
+                "inline_keyboard": [
+                    [
+                        {
+                            'text':'Donate with Paypal',
+                            'url': 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PX3EU8YNJF8JS'
+                        }
+                    ]
+                ]
+            })
         };
         events.sendMessage(token, qs);
     },
