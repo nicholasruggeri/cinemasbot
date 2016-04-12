@@ -32,7 +32,9 @@ app.use(bodyParser.json());
 app.post('/', function (req, res) {
 
     // Log the request body.
-    console.log('req',req.message);
+    console.log('req',req);
+    console.log('req body',req.body);
+    console.log('req message',req.message);
 
     var chat_id = req.body.message.chat.id,
         user_action = req.body.message.text + " ";
