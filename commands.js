@@ -115,12 +115,7 @@ module.exports = {
         qs = {
             chat_id: chat_id,
             disable_web_page_preview: true,
-            text: movieTimes
-        };
-        qs2 = {
-            chat_id: chat_id,
-            disable_web_page_preview: true,
-            text: textResponse.beer,
+            text: movieTimes,
             reply_markup: JSON.stringify({
                 "inline_keyboard": [
                     [
@@ -133,7 +128,6 @@ module.exports = {
             })
         };
         events.sendMessage(token, qs);
-        events.sendMessage(token, qs2);
     },
 
     getCinema: (chat_id, token, theaters) => {
