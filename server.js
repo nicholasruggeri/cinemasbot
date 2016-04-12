@@ -32,158 +32,166 @@ app.use(bodyParser.json());
 app.post('/', function (req, res) {
 
     // Log the request body.
-    console.log('req',req.message);
+    console.log('req',req);
 
-    var chat_id = req.body.message.chat.id,
-        user_action = req.body.message.text + " ";
+    if (req.message){
 
-    switch (helpers.messageType(req)) {
-        case 'text':
-            console.log("user send text:" + req.body.message.text);
-            visitor.pageview("/user-text").send();
+        var chat_id = req.body.message.chat.id,
+            user_action = req.body.message.text + " ";
 
-            if (helpers.isCommand(user_action)) {
-                console.log("user send command");
+        switch (helpers.messageType(req)) {
+            case 'text':
+                console.log("user send text:" + req.body.message.text);
+                visitor.pageview("/user-text").send();
 
-                var user_command = user_action.split(' ')[0],
-                    user_parameter = user_action.substring(user_command.length + 1, user_action.length);
+                if (helpers.isCommand(user_action)) {
+                    console.log("user send command");
 
-                // Commands
-                switch(user_command) {
+                    var user_command = user_action.split(' ')[0],
+                        user_parameter = user_action.substring(user_command.length + 1, user_action.length);
 
-                    case '/start':
-                        session_request[chat_id] = false;
-                        commands.start(chat_id, req, token)
-                        visitor.pageview("/start").send();
-                    break;
+                    // Commands
+                    switch(user_command) {
 
-                    case '/author':
-                    case '/creator':
-                    case '/dev':
-                        session_request[chat_id] = false;
-                        commands.creator(chat_id, token)
-                        visitor.pageview("/author").send();
-                    break;
+                        case '/start':
+                            session_request[chat_id] = false;
+                            commands.start(chat_id, req, token)
+                            visitor.pageview("/start").send();
+                        break;
 
-                    case '/reset':
-                    case '/end':
-                    case '/quit':
-                        session_request[chat_id] = false;
-                        session_location = false;
-                        commands.reset(chat_id, token)
-                        visitor.pageview("/reset").send()
-                    break;
+                        case '/author':
+                        case '/creator':
+                        case '/dev':
+                            session_request[chat_id] = false;
+                            commands.creator(chat_id, token)
+                            visitor.pageview("/author").send();
+                        break;
 
-                    case '/help':
-                    case '/info':
-                        commands.info(chat_id, token)
-                        visitor.pageview("/help").send();
-                    break;
+                        case '/reset':
+                        case '/end':
+                        case '/quit':
+                            session_request[chat_id] = false;
+                            session_location = false;
+                            commands.reset(chat_id, token)
+                            visitor.pageview("/reset").send()
+                        break;
 
-                    case '/getcinema':
-                    case '/getc':
-                        if (!user_parameter) {
-                            commands.notParameter(chat_id, token)
-                            visitor.pageview("/getcinema/not-parameter").send();
-                        } else {
-                            visitor.pageview("/city/" + user_parameter).send();
-                            services.getCinema(user_parameter, function(theaters){
-                                if (theaters.length > 0){
-                                    session_request[chat_id] = "cinema";
-                                    session_location = user_parameter;
-                                    session_theaters = theaters;
-                                    commands.getCinema(chat_id, token, theaters)
-                                    events.sendMessage(token, qs);
-                                } else {
-                                    commands.notresults(chat_id, token, user_parameter)
-                                    visitor.pageview("/city/" + user_parameter + "/cinemas-not-found").send();
-                                }
-                            });
-                            visitor.pageview("/getcinema/ok-parameter").send();
-                        }
-                    break;
+                        case '/help':
+                        case '/info':
+                            commands.info(chat_id, token)
+                            visitor.pageview("/help").send();
+                        break;
 
-                    default:
-                        commands.error(chat_id, token)
-                        visitor.pageview("/command-not-found").send();
+                        case '/getcinema':
+                        case '/getc':
+                            if (!user_parameter) {
+                                commands.notParameter(chat_id, token)
+                                visitor.pageview("/getcinema/not-parameter").send();
+                            } else {
+                                visitor.pageview("/city/" + user_parameter).send();
+                                services.getCinema(user_parameter, function(theaters){
+                                    if (theaters.length > 0){
+                                        session_request[chat_id] = "cinema";
+                                        session_location = user_parameter;
+                                        session_theaters = theaters;
+                                        commands.getCinema(chat_id, token, theaters)
+                                        events.sendMessage(token, qs);
+                                    } else {
+                                        commands.notresults(chat_id, token, user_parameter)
+                                        visitor.pageview("/city/" + user_parameter + "/cinemas-not-found").send();
+                                    }
+                                });
+                                visitor.pageview("/getcinema/ok-parameter").send();
+                            }
+                        break;
 
-                }
-            } else if (user_action.charAt(0) == '✖') {
+                        default:
+                            commands.error(chat_id, token)
+                            visitor.pageview("/command-not-found").send();
 
-                session_request[chat_id] = false;
-                session_location = false;
-                commands.reset(chat_id, token)
-                visitor.pageview("/reset").send()
-
-            } else {
-
-                console.log("user NOT send command")
-
-                if (session_request[chat_id] == "cinema") {
-                    // Scelgo cinema dalla lista
-                    if (_.flatten(session_theaters).indexOf(req.body.message.text) > -1){
-                        // Clicco su un cinema della lista
-                        visitor.pageview("/getmovies/option-found").send()
-
-                        session_theater_selected = req.body.message.text;
-                        visitor.pageview("/theater/" + session_theater_selected).send();
-                        services.getMovies(session_location, req.body.message.text, function(movies){
-                            commands.getMovies(chat_id, token, movies)
-                            session_request[chat_id] = "movie";
-                            session_movies = movies;
-                        });
-                    } else {
-                        visitor.pageview("/getmovies/option-not-found").send();
-                        commands.notfound(chat_id, token)
                     }
-                }
+                } else if (user_action.charAt(0) == '✖') {
 
-                if (session_request[chat_id] == "movie") {
-                    // Scelgo film dalla lista
+                    session_request[chat_id] = false;
+                    session_location = false;
+                    commands.reset(chat_id, token)
+                    visitor.pageview("/reset").send()
 
-                    if (_.flatten(session_movies).indexOf(req.body.message.text) > -1){
-                        // Clicco su un film della lista
-                        visitor.pageview("/gettimes/option-found").send();
-                        visitor.pageview("/movie/" + req.body.message.text).send();
-
-                        services.getTimes(session_location, session_theater_selected, req.body.message.text, function(movieTimes){
-
-                            commands.getTimes(chat_id, token, movieTimes)
-
-                        });
-                    } else {
-                        visitor.pageview("/getmovies/option-not-found").send();
-                        commands.notfound(chat_id, token)
-                    }
-                }
-            }
-
-        break;
-
-        case 'location':
-
-            console.log("user send location")
-            visitor.pageview("/user-location").send();
-
-            user_location = req.body.message.location.latitude + "," + req.body.message.location.longitude;
-            services.getCinema(user_location, function(theaters){
-                if (theaters.length > 0){
-
-                    commands.getCinema(chat_id, token, theaters)
-                    session_request[chat_id] = "cinema";
-                    session_location = user_location;
-                    session_theaters = theaters;
                 } else {
-                    commands.notresults(chat_id, token, user_parameter)
-                    visitor.pageview("/city/" + user_parameter + "/cinemas-not-found-with-location").send();
+
+                    console.log("user NOT send command")
+
+                    if (session_request[chat_id] == "cinema") {
+                        // Scelgo cinema dalla lista
+                        if (_.flatten(session_theaters).indexOf(req.body.message.text) > -1){
+                            // Clicco su un cinema della lista
+                            visitor.pageview("/getmovies/option-found").send()
+
+                            session_theater_selected = req.body.message.text;
+                            visitor.pageview("/theater/" + session_theater_selected).send();
+                            services.getMovies(session_location, req.body.message.text, function(movies){
+                                commands.getMovies(chat_id, token, movies)
+                                session_request[chat_id] = "movie";
+                                session_movies = movies;
+                            });
+                        } else {
+                            visitor.pageview("/getmovies/option-not-found").send();
+                            commands.notfound(chat_id, token)
+                        }
+                    }
+
+                    if (session_request[chat_id] == "movie") {
+                        // Scelgo film dalla lista
+
+                        if (_.flatten(session_movies).indexOf(req.body.message.text) > -1){
+                            // Clicco su un film della lista
+                            visitor.pageview("/gettimes/option-found").send();
+                            visitor.pageview("/movie/" + req.body.message.text).send();
+
+                            services.getTimes(session_location, session_theater_selected, req.body.message.text, function(movieTimes){
+
+                                commands.getTimes(chat_id, token, movieTimes)
+
+                            });
+                        } else {
+                            visitor.pageview("/getmovies/option-not-found").send();
+                            commands.notfound(chat_id, token)
+                        }
+                    }
                 }
-            });
 
-        break;
+            break;
 
-    };
+            case 'location':
 
-    res.send();
+                console.log("user send location")
+                visitor.pageview("/user-location").send();
+
+                user_location = req.body.message.location.latitude + "," + req.body.message.location.longitude;
+                services.getCinema(user_location, function(theaters){
+                    if (theaters.length > 0){
+
+                        commands.getCinema(chat_id, token, theaters)
+                        session_request[chat_id] = "cinema";
+                        session_location = user_location;
+                        session_theaters = theaters;
+                    } else {
+                        commands.notresults(chat_id, token, user_parameter)
+                        visitor.pageview("/city/" + user_parameter + "/cinemas-not-found-with-location").send();
+                    }
+                });
+
+            break;
+
+        };
+
+        res.send();
+
+    } else if (req.inline_query){
+        console.log('inline query')
+    }
+
+
 
 });
 
