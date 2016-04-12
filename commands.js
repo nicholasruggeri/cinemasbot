@@ -31,11 +31,12 @@ module.exports = {
     },
 
     start: (chat_id, req, token) => {
+        var user_name = req.body.message.chat.first_name;
         console.log('user start bot')
         qs = {
             reply_markup: JSON.stringify({"hide_keyboard": true}),
             chat_id: chat_id,
-            text: "Hello " + req.body.message.chat.first_name + ",\n send your position or use '/getcinema city' to receive the list of movie theaters near you.\n" + helpers.textResponse.example + "\n\nUse /help for list of commands." + helpers.textResponse.beer,
+            text: "Hello " + user_name + ".\nNew features, update your Telegram if you have not done yet!\nUse /getcinema to receive the list of movie theaters near you.\n\nUse /help for list of commands.",
             disable_web_page_preview: true
         };
         events.sendMessage(token, qs)
@@ -101,16 +102,26 @@ module.exports = {
         qs = {
             reply_markup: JSON.stringify({"keyboard": list_theaters, "one_time_keyboard": true, "resize_keyboard": true}),
             chat_id: chat_id,
-            text: 'Choose movie theatre:'
+            text: 'Great! Now choose an option:'
         };
         events.sendMessage(token, qs);
     },
 
     notParameter: (chat_id, token) => {
         qs = {
-            reply_markup: JSON.stringify({"hide_keyboard": true}),
+            reply_markup: JSON.stringify({
+                "keyboard": [
+                    [
+                        {
+                            'text':'Send my current location',
+                            'request_location': true
+                        }
+                    ],
+                    [{'text':'✖'}]
+                ]
+            }),
             chat_id: chat_id,
-            text: "Add the name of your city after '/getcinema' or send your position.\n" + helpers.textResponse.example
+            text: "Ok, now send your location"
         };
         events.sendMessage(token, qs);
     }
