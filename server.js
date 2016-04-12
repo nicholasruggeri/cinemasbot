@@ -192,7 +192,7 @@ app.post('/', function (req, res) {
         console.log(req.body.inline_query)
         console.log('inline_query')
 
-        function(token, qs){
+        () => {
             request({
                 url: 'https://api.telegram.org/' + token + '/answerInlineQuery',
                 method: 'POST',
