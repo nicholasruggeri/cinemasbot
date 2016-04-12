@@ -36,7 +36,7 @@ module.exports = {
         qs = {
             reply_markup: JSON.stringify({"hide_keyboard": true}),
             chat_id: chat_id,
-            text: "Hello " + user_name + ".\nNew features, update your Telegram if you have not done yet!\nUse /getcinema to receive the list of movie theaters near you.\n\nUse /help more info..",
+            text: "Hello " + user_name + ".\nNew features, update your Telegram if you have not done yet!\nUse /getcinema to receive the list of movie theaters near you.\n\nUse /help more info.",
             disable_web_page_preview: true
         };
         events.sendMessage(token, qs)
