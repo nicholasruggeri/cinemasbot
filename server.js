@@ -187,7 +187,7 @@ app.post('/', function (req, res) {
 
         res.send();
 
-    } else if (req.inline_query){
+    } else {
         console.log('inline query')
     }
 
