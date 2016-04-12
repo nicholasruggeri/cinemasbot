@@ -188,8 +188,24 @@ app.post('/', function (req, res) {
 
         res.send();
     } else if (req.body.inline_query) {
+
         console.log(req.body.inline_query)
         console.log('inline_query')
+
+        function(token, qs){
+            request({
+                url: 'https://api.telegram.org/' + token + '/answerInlineQuery',
+                method: 'POST',
+                qs: {
+                    inline_query_id: req.body.inline_query.id,
+                    switch_pm_text: 'asd'
+                }
+            }, function (err, response, body) {
+                if (err) {
+                    console.log("ERROR answerInlineQuery", err); return;
+                }
+            });
+        }
     }
 
 
